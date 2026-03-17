@@ -346,26 +346,80 @@
         </div>
     </div>
 
-    <!-- NAVBAR -->
+    <!-- ═══ NAVBAR ═══ -->
     <nav class="flourich-nav" id="mainNav">
         <div class="container d-flex align-items-center justify-content-between">
+            <!-- Brand -->
             <a href="index.html" class="nav-brand">
-                <img src="img/logo-flourich.png" alt="Flourich" onerror="this.style.display='none'">
+                <img src="img/logo-flourich.png" alt="Flourich Logo" onerror="this.style.display='none'">
                 <span class="nav-brand-text">Flourich</span>
             </a>
-            <div class="nav-links d-none d-lg-flex">
+
+            <!-- Links (desktop) -->
+            <div class="nav-links d-none d-lg-flex align-items-center">
                 <a href="index.html">หน้าแรก</a>
                 <a href="about.html">เกี่ยวกับเรา</a>
-                <a href="service.html" class="active">บริการ</a>
+                <a href="service.html"class="active">บริการ</a>
                 <a href="team.html">ทีมงาน</a>
+                <a href="blog.html">บทความ</a>
                 <a href="contact.html">ติดต่อ</a>
+
+                <!-- Search trigger -->
+                <button id="searchToggle" onclick="toggleSearch()" style="background:none;border:none;padding:7px 12px;border-radius:20px;cursor:pointer;color:var(--text-mid);font-size:.95rem;display:flex;align-items:center;gap:6px;transition:.25s;font-family:inherit;font-weight:500;">
+                    <i class="fas fa-search" style="font-size:.85rem;"></i> ค้นหา
+                </button>
             </div>
+
+            <!-- Auth buttons -->
             <div class="d-flex gap-2 align-items-center">
-                <a href="login.html" class="btn-nav-login d-none d-md-inline-flex"><i class="fas fa-sign-in-alt me-2"></i>Log In</a>
-                <a href="register.html" class="btn-nav-register"><i class="fas fa-user-plus me-2"></i>ลงทะเบียน</a>
+                <a href="login.html" class="nav-links a btn-nav-login d-none d-md-inline-flex align-items-center" style="border:2px solid var(--sage);padding:8px 22px;border-radius:24px;font-weight:600;color:var(--sage);text-decoration:none;transition:.3s;">
+                    <i class="fas fa-sign-in-alt me-2"></i> Log In
+                </a>
+                <a href="register.html" class="btn-nav-register" style="padding:8px 22px;background:var(--sage);color:#fff;border-radius:24px;font-weight:600;text-decoration:none;transition:.3s;border:2px solid var(--sage);display:inline-flex;align-items:center;">
+                    <i class="fas fa-user-plus me-2"></i> ลงทะเบียน
+                </a>
+            </div>
+        </div>
+
+        <!-- Search bar (dropdown) -->
+        <div id="searchBar" style="display:none;border-top:1px solid rgba(123,174,138,.15);padding:12px 0;background:rgba(253,250,245,.97);backdrop-filter:blur(12px);animation:slideDown .25s ease;">
+            <div class="container">
+                <div style="position:relative;max-width:600px;margin:0 auto;">
+                    <i class="fas fa-search" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-light);font-size:.9rem;pointer-events:none;"></i>
+                    <input id="searchInput" type="text" placeholder="ค้นหาบทความ บริการ หรือหัวข้อที่สนใจ..."
+                        style="width:100%;padding:12px 48px 12px 44px;border:1.5px solid var(--sage-pale);border-radius:24px;font-family:inherit;font-size:.93rem;color:var(--text-dark);background:#fff;outline:none;transition:.25s;"
+                        onfocus="this.style.borderColor='var(--sage)';this.style.boxShadow='0 0 0 4px rgba(123,174,138,.12)'"
+                        onblur="this.style.borderColor='var(--sage-pale)';this.style.boxShadow='none'"
+                        onkeydown="if(event.key==='Enter')doSearch();if(event.key==='Escape')toggleSearch()">
+                    <button onclick="toggleSearch()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-light);font-size:.9rem;padding:4px 8px;" title="ปิด">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
+
+    <style>
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-8px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    #searchToggle:hover { background: var(--sage-pale); color: var(--sage); }
+    </style>
+
+    <script>
+    function toggleSearch() {
+        const bar   = document.getElementById('searchBar');
+        const input = document.getElementById('searchInput');
+        const isOpen = bar.style.display !== 'none';
+        bar.style.display = isOpen ? 'none' : 'block';
+        if (!isOpen) setTimeout(() => input.focus(), 50);
+    }
+    function doSearch() {
+        const q = document.getElementById('searchInput').value.trim();
+        if (q) window.location.href = 'search.html?q=' + encodeURIComponent(q);
+    }
+    </script>
 
 
     <!-- ════════════════════════════
