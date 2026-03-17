@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+    <title>Flourich — เกี่ยวกับเรา</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <style>
+        :root {
+            --sage:#7BAE8A; --sage-light:#A8CBAF; --sage-pale:#D6EBD9; --mint:#B8E0C5;
+            --cream:#FDFAF5; --yellow-soft:#F5D87A; --peach:#F7C5A0; --blush:#F5B8C4;
+            --sky:#B8D8F0; --text-dark:#2D4A35; --text-mid:#5A7A62; --text-light:#8BA892;
+            --danger-soft:#F5B8B8; --danger:#D46060;
+        }
+        *{box-sizing:border-box;}
+        body{font-family:'Noto Sans Thai','Nunito',sans-serif;background:var(--cream);color:var(--text-dark);overflow-x:hidden;}
+
+        /* Spinner */
+        #spinner{opacity:0;visibility:hidden;transition:opacity .8s ease-out,visibility 0s linear .5s;z-index:99999;}
+        #spinner.show{transition:opacity .8s ease-out,visibility 0s linear 0s;visibility:visible;opacity:1;}
+
+        /* Navbar */
+        .flourich-nav{position:sticky;top:0;z-index:1000;background:rgba(253,250,245,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(123,174,138,.15);padding:14px 0;transition:box-shadow .3s;}
+        .flourich-nav.scrolled{box-shadow:0 4px 24px rgba(45,74,53,.08);}
+        .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+        .nav-brand img{width:42px;height:42px;border-radius:50%;object-fit:cover;}
+        .nav-brand-text{font-family:'Fredoka',sans-serif;font-size:1.6rem;font-weight:700;color:var(--sage);}
+        .nav-links{display:flex;gap:8px;align-items:center;}
+        .nav-links a{font-size:.95rem;font-weight:500;color:var(--text-mid);text-decoration:none;padding:7px 14px;border-radius:20px;transition:.25s;}
+        .nav-links a:hover,.nav-links a.active{background:var(--sage-pale);color:var(--sage);}
+        .btn-nav-login{padding:8px 22px;border:2px solid var(--sage);color:var(--sage)!important;border-radius:24px;font-weight:600!important;background:transparent;text-decoration:none;transition:.3s;display:inline-flex;align-items:center;}
+        .btn-nav-login:hover{background:var(--sage);color:#fff!important;}
+        .btn-nav-register{padding:8px 22px;background:var(--sage);color:#fff!important;border-radius:24px;font-weight:600;border:2px solid var(--sage);text-decoration:none;transition:.3s;display:inline-flex;align-items:center;}
+        .btn-nav-register:hover{background:var(--text-dark);border-color:var(--text-dark);}
+
+        /* Blobs */
+        .blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.38;pointer-events:none;z-index:0;}
+
+        /* Page Hero */
+        .page-hero{
+            background:linear-gradient(140deg,var(--cream) 0%,#E8F5EC 55%,#FDF0E4 100%);
+            padding:88px 0 70px;position:relative;overflow:hidden;text-align:center;
+        }
+        .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--sage-pale);color:var(--sage);font-size:.85rem;font-weight:600;padding:6px 18px;border-radius:20px;margin-bottom:18px;letter-spacing:.4px;}
+        .hero-eyebrow .dot{width:8px;height:8px;background:var(--sage);border-radius:50%;animation:pulse-dot 2s ease-in-out infinite;}
+        @keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.6}}
+        .page-hero h1{font-family:'Fredoka',sans-serif;font-size:clamp(2.2rem,5vw,3.6rem);font-weight:700;color:var(--text-dark);margin-bottom:16px;position:relative;z-index:1;line-height:1.2;}
+        .page-hero h1 .hl{color:var(--sage);position:relative;}
+        .page-hero h1 .hl::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:9px;background:var(--yellow-soft);border-radius:4px;z-index:-1;opacity:.65;}
+        .page-hero p{font-size:1.05rem;color:var(--text-mid);max-width:600px;margin:0 auto;line-height:1.8;position:relative;z-index:1;}
+
+        .wave-divider{line-height:0;}
+        .wave-divider svg{display:block;}
+
+        /* Section commons */
+        .section-eyebrow{font-size:.83rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sage);margin-bottom:10px;}
+        .section-title{font-family:'Fredoka',sans-serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;color:var(--text-dark);line-height:1.25;margin-bottom:14px;}
+        .section-sub{font-size:1rem;color:var(--text-mid);line-height:1.75;}
+
+        /* ── MISSION SECTION ── */
+        .mission-section{padding:90px 0;background:#fff;}
+        .mission-card{
+            background:linear-gradient(135deg,var(--sage) 0%,#5A9A6E 100%);
+            border-radius:28px;padding:48px 44px;color:#fff;position:relative;overflow:hidden;
+        }
+        .mission-card::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.08);}
+        .mission-card::after{content:'';position:absolute;bottom:-50px;left:-30px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.05);}
+        .mission-title{font-family:'Fredoka',sans-serif;font-size:1.9rem;font-weight:700;margin-bottom:14px;}
+        .mission-text{font-size:1rem;line-height:1.8;opacity:.9;margin-bottom:0;}
+        .vision-card{background:var(--cream);border-radius:28px;padding:36px 32px;border:1.5px solid var(--sage-pale);height:100%;}
+        .vision-icon{font-size:2.4rem;margin-bottom:16px;display:block;}
+        .vision-title{font-family:'Fredoka',sans-serif;font-size:1.3rem;font-weight:600;color:var(--text-dark);margin-bottom:10px;}
+        .vision-text{font-size:.93rem;color:var(--text-mid);line-height:1.7;}
+
+        /* ── PAIN POINTS ── */
+        .pain-section{
+            padding:90px 0;
+            background:linear-gradient(160deg,#1A3A24 0%,#2D5A3D 50%,#1E4A2D 100%);
+            position:relative;overflow:hidden;
+        }
+        .pain-section .section-eyebrow{color:var(--sage-light);}
+        .pain-section .section-title{color:#fff;}
+        .pain-section .section-sub{color:rgba(255,255,255,.75);}
+
+        /* Big stat */
+        .big-stat-row{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin-bottom:56px;}
+        .big-stat{
+            background:rgba(255,255,255,.08);backdrop-filter:blur(8px);
+            border:1px solid rgba(255,255,255,.12);border-radius:24px;
+            padding:32px 28px;text-align:center;flex:1;min-width:200px;max-width:260px;
+            transition:.3s;
+        }
+        .big-stat:hover{background:rgba(255,255,255,.13);transform:translateY(-4px);}
+        .big-stat-num{font-family:'Fredoka',sans-serif;font-size:3.2rem;font-weight:700;color:var(--yellow-soft);line-height:1;}
+        .big-stat-label{font-size:.85rem;color:rgba(255,255,255,.7);margin-top:8px;line-height:1.4;}
+        .big-stat-source{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:6px;}
+
+        /* Pain cards */
+        .pain-card{
+            background:rgba(255,255,255,.07);backdrop-filter:blur(8px);
+            border:1px solid rgba(255,255,255,.1);border-radius:22px;
+            padding:28px 26px;height:100%;transition:.3s;
+        }
+        .pain-card:hover{background:rgba(255,255,255,.12);transform:translateY(-4px);}
+        .pain-card-icon{font-size:2rem;margin-bottom:14px;display:block;}
+        .pain-card-text{font-size:.92rem;color:rgba(255,255,255,.82);line-height:1.7;}
+        .pain-card-highlight{color:var(--yellow-soft);font-weight:700;}
+
+        /* Quote banner */
+        .pain-quote{
+            background:rgba(255,255,255,.06);border-left:4px solid var(--sage-light);
+            border-radius:0 18px 18px 0;padding:24px 28px;
+            margin-top:48px;
+        }
+        .pain-quote p{font-size:1.05rem;color:rgba(255,255,255,.88);line-height:1.7;font-style:italic;margin:0;}
+        .pain-quote span{font-size:.82rem;color:rgba(255,255,255,.45);display:block;margin-top:8px;}
+
+        /* ── TARGET SECTION ── */
+        .target-section{padding:90px 0;background:#fff;}
+        .target-card{
+            background:linear-gradient(160deg,var(--sage-pale) 0%,#EAF5EE 100%);
+            border-radius:28px;padding:44px 40px;
+            border:2px solid var(--sage-light);position:relative;overflow:hidden;
+        }
+        .target-card::before{content:'🎯';position:absolute;right:24px;top:24px;font-size:4rem;opacity:.15;}
+        .target-age{font-family:'Fredoka',sans-serif;font-size:5rem;font-weight:700;color:var(--sage);line-height:1;margin-bottom:8px;}
+        .target-label{font-size:1rem;font-weight:600;color:var(--text-dark);margin-bottom:16px;}
+        .target-desc{font-size:.95rem;color:var(--text-mid);line-height:1.7;}
+        .target-source{font-size:.78rem;color:var(--text-light);margin-top:12px;}
+
+        .target-why-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;}
+        .why-icon{width:40px;height:40px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+        .wi-1{background:#FDECD7;}
+        .wi-2{background:var(--sage-pale);}
+        .wi-3{background:#DAF0FF;}
+        .wi-4{background:#FFF0D6;}
+        .why-text strong{display:block;font-size:.92rem;font-weight:600;color:var(--text-dark);}
+        .why-text span{font-size:.85rem;color:var(--text-mid);}
+
+        /* ── PIE CHART SECTION ── */
+        .barrier-section{
+            padding:90px 0;
+            background:linear-gradient(160deg,#E8F5EC 0%,var(--cream) 100%);
+        }
+        .chart-wrap{
+            background:#fff;border-radius:28px;padding:40px 36px;
+            box-shadow:0 8px 40px rgba(45,74,53,.09);
+            border:1.5px solid rgba(123,174,138,.15);
+            position:relative;
+        }
+        .chart-canvas-box{max-width:380px;margin:0 auto;position:relative;}
+        .chart-center-label{
+            position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+            text-align:center;pointer-events:none;
+        }
+        .chart-center-label .cl-num{font-family:'Fredoka',sans-serif;font-size:2rem;font-weight:700;color:var(--text-dark);line-height:1;}
+        .chart-center-label .cl-sub{font-size:.72rem;color:var(--text-light);line-height:1.3;}
+
+        .legend-grid{display:flex;flex-direction:column;gap:14px;}
+        .legend-item{display:flex;align-items:center;gap:14px;}
+        .legend-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;}
+        .legend-label{font-size:.9rem;color:var(--text-mid);flex:1;}
+        .legend-pct{font-family:'Fredoka',sans-serif;font-size:1.2rem;font-weight:700;color:var(--text-dark);}
+        .legend-bar-wrap{flex:1;height:8px;background:rgba(123,174,138,.12);border-radius:4px;overflow:hidden;}
+        .legend-bar{height:100%;border-radius:4px;transition:width 1.4s cubic-bezier(.22,.61,.36,1);}
+
+        /* ── SOLUTION SECTION ── */
+        .solution-section{padding:90px 0;background:#fff;}
+        .solution-card{
+            background:var(--cream);border-radius:24px;padding:32px 28px;
+            border:1.5px solid transparent;transition:.35s;height:100%;
+        }
+        .solution-card:hover{border-color:var(--sage-light);box-shadow:0 14px 40px rgba(123,174,138,.16);transform:translateY(-6px);}
+        .sol-icon{width:60px;height:60px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:20px;}
+        .si-1{background:var(--sage-pale);}
+        .si-2{background:#DAF0FF;}
+        .si-3{background:#FDECD7;}
+        .si-4{background:#F0D6F5;}
+        .sol-title{font-family:'Fredoka',sans-serif;font-size:1.15rem;font-weight:600;color:var(--text-dark);margin-bottom:8px;}
+        .sol-text{font-size:.88rem;color:var(--text-mid);line-height:1.7;}
+
+        /* ── VALUE SECTION ── */
+        .value-section{
+            padding:90px 0;
+            background:linear-gradient(160deg,var(--text-dark) 0%,#1E3D28 100%);
+            position:relative;overflow:hidden;
+        }
+        .value-card{
+            background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+            border-radius:22px;padding:32px 26px;text-align:center;
+            transition:.3s;
+        }
+        .value-card:hover{background:rgba(255,255,255,.12);transform:translateY(-4px);}
+        .value-icon{font-size:2.5rem;margin-bottom:14px;display:block;}
+        .value-title{font-family:'Fredoka',sans-serif;font-size:1.1rem;font-weight:600;color:var(--sage-light);margin-bottom:8px;}
+        .value-text{font-size:.88rem;color:rgba(255,255,255,.7);line-height:1.6;}
+
+        /* ── CTA ── */
+        .cta-section{padding:80px 0;background:linear-gradient(140deg,var(--cream) 0%,#E8F5EC 100%);}
+        .cta-card{background:linear-gradient(135deg,var(--sage) 0%,#5A9A6E 100%);border-radius:32px;padding:64px 48px;position:relative;overflow:hidden;text-align:center;}
+        .cta-card::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.08);}
+        .cta-title{font-family:'Fredoka',sans-serif;font-size:clamp(1.8rem,3vw,2.4rem);font-weight:700;color:#fff;margin-bottom:12px;}
+        .cta-sub{color:rgba(255,255,255,.85);font-size:1rem;margin-bottom:28px;}
+        .btn-cta-white{padding:14px 36px;background:#fff;color:var(--sage);border:none;border-radius:30px;font-size:1rem;font-weight:700;cursor:pointer;text-decoration:none;transition:.3s;box-shadow:0 6px 24px rgba(0,0,0,.15);display:inline-block;}
+        .btn-cta-white:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.2);color:var(--text-dark);}
+
+        /* Footer */
+        .flourich-footer{background:var(--text-dark);padding:60px 0 30px;color:rgba(255,255,255,.7);}
+        .footer-brand-name{font-family:'Fredoka',sans-serif;font-size:1.8rem;font-weight:700;color:var(--sage-light);}
+        .footer-desc{font-size:.9rem;line-height:1.7;margin:12px 0 20px;max-width:260px;}
+        .footer-social a{width:36px;height:36px;background:rgba(255,255,255,.08);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);text-decoration:none;margin-right:8px;transition:.25s;}
+        .footer-social a:hover{background:var(--sage);color:#fff;}
+        .footer-heading{font-family:'Fredoka',sans-serif;font-size:1rem;font-weight:600;color:#fff;margin-bottom:16px;}
+        .footer-links{list-style:none;padding:0;margin:0;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.9rem;transition:.2s;}
+        .footer-links a:hover{color:var(--sage-light);padding-left:4px;}
+        .footer-divider{border-color:rgba(255,255,255,.1);margin:30px 0 20px;}
+        .footer-bottom{font-size:.83rem;color:rgba(255,255,255,.4);}
+
+        /* Back to top */
+        .back-to-top{position:fixed;right:28px;bottom:28px;width:46px;height:46px;border-radius:50%;background:var(--sage);color:#fff;display:flex;align-items:center;justify-content:center;border:none;box-shadow:0 4px 18px rgba(123,174,138,.4);transition:.3s;z-index:99;opacity:0;text-decoration:none;}
+        .back-to-top:hover{background:var(--text-dark);transform:translateY(-3px);color:#fff;}
+
+        /* Fade-up */
+        .fade-up{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+        .fade-up.visible{opacity:1;transform:translateY(0);}
+        .delay-1{transition-delay:.1s!important;}
+        .delay-2{transition-delay:.2s!important;}
+        .delay-3{transition-delay:.3s!important;}
+        .delay-4{transition-delay:.4s!important;}
+
+        /* Count-up */
+        .countup{display:inline;}
+
+        @media(max-width:768px){
+            .page-hero{padding:60px 0 50px;}
+            .mission-card{padding:36px 28px;}
+            .big-stat-num{font-size:2.4rem;}
+            .cta-card{padding:44px 28px;}
+            .target-age{font-size:3.6rem;}
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Spinner -->
+    <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50 d-flex align-items-center justify-content-center">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+            <div style="width:52px;height:52px;background:var(--sage-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                <img src="img/logo-flourich.png" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%2220%22 fill=%22%23A8CBAF%22/%3E%3C/svg%3E'">
+            </div>
+            <p style="font-family:'Fredoka',sans-serif;color:#7BAE8A;font-size:1.1rem;font-weight:600;margin:0;">Flourich</p>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="flourich-nav" id="mainNav">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="index.html" class="nav-brand">
+                <img src="img/logo-flourich.png" alt="Flourich" onerror="this.style.display='none'">
+                <span class="nav-brand-text">Flourich</span>
+            </a>
+            <div class="nav-links d-none d-lg-flex">
+                <a href="index.html">หน้าแรก</a>
+                <a href="about.html" class="active">เกี่ยวกับเรา</a>
+                <a href="service.html">บริการ</a>
+                <a href="team.html">ทีมงาน</a>
+                <a href="contact.html">ติดต่อ</a>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+                <a href="login.html" class="btn-nav-login d-none d-md-inline-flex"><i class="fas fa-sign-in-alt me-2"></i>Log In</a>
+                <a href="register.html" class="btn-nav-register"><i class="fas fa-user-plus me-2"></i>ลงทะเบียน</a>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- ══════════════ PAGE HERO ══════════════ -->
+    <section class="page-hero">
+        <div class="blob" style="width:340px;height:340px;background:var(--mint);top:-80px;left:-80px;"></div>
+        <div class="blob" style="width:260px;height:260px;background:var(--yellow-soft);top:30px;right:-50px;"></div>
+        <div class="blob" style="width:200px;height:200px;background:var(--blush);bottom:0;left:30%;"></div>
+        <div class="container position-relative" style="z-index:2;">
+            <div class="hero-eyebrow fade-up visible">
+                <span class="dot"></span> เรื่องราวของ Flourich
+            </div>
+            <h1 class="fade-up visible delay-1">
+                เราเชื่อว่า<span class="hl">สุขภาพจิต</span><br>สำคัญไม่แพ้สุขภาพกาย
+            </h1>
+            <p class="fade-up visible delay-2">
+                Flourich เกิดจากความตั้งใจของคนรุ่นใหม่ที่เข้าใจว่า "การขอความช่วยเหลือ" ไม่ใช่ความอ่อนแอ<br>
+                แต่คือก้าวแรกที่กล้าหาญที่สุดในชีวิต 🌱
+            </p>
+        </div>
+    </section>
+
+    <div class="wave-divider" style="background:linear-gradient(140deg,var(--cream) 0%,#E8F5EC 55%,#FDF0E4 100%);">
+        <svg viewBox="0 0 1440 55" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,35 C480,70 960,0 1440,35 L1440,55 L0,55 Z" fill="#ffffff"/>
+        </svg>
+    </div>
+
+
+    <!-- ══════════════ MISSION / VISION ══════════════ -->
+    <section class="mission-section">
+        <div class="container">
+            <div class="row g-4 align-items-stretch">
+                <div class="col-lg-7 fade-up delay-1">
+                    <div class="mission-card h-100">
+                        <div class="position-relative" style="z-index:1;">
+                            <p style="font-size:.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px;">MISSION</p>
+                            <div class="mission-title">สร้างพื้นที่ปลอดภัย<br>ให้ทุกคนได้ดูแลใจตัวเอง</div>
+                            <p class="mission-text">
+                                Flourich คือแพลตฟอร์มผู้ช่วยสุขภาพจิต AI ที่ถูกออกแบบมาเพื่อเป็น "เพื่อนที่ดี" 
+                                ที่พร้อมรับฟังโดยไม่ตัดสิน วิเคราะห์อารมณ์อย่างเข้าใจ และเดินทางไปพร้อมกับคุณ
+                                ในทุกช่วงเวลาของชีวิต ไม่ว่าจะกลางวันหรือกลางดึก
+                            </p>
+                            <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:28px;">
+                                <div style="text-align:center;">
+                                    <div style="font-family:'Fredoka',sans-serif;font-size:2rem;font-weight:700;color:var(--yellow-soft);">24/7</div>
+                                    <div style="font-size:.8rem;color:rgba(255,255,255,.6);">พร้อมรับฟังเสมอ</div>
+                                </div>
+                                <div style="width:1px;background:rgba(255,255,255,.15);"></div>
+                                <div style="text-align:center;">
+                                    <div style="font-family:'Fredoka',sans-serif;font-size:2rem;font-weight:700;color:var(--yellow-soft);">3</div>
+                                    <div style="font-size:.8rem;color:rgba(255,255,255,.6);">พื้นที่ดูแลใจ</div>
+                                </div>
+                                <div style="width:1px;background:rgba(255,255,255,.15);"></div>
+                                <div style="text-align:center;">
+                                    <div style="font-family:'Fredoka',sans-serif;font-size:2rem;font-weight:700;color:var(--yellow-soft);">100%</div>
+                                    <div style="font-size:.8rem;color:rgba(255,255,255,.6);">ข้อมูลปลอดภัย</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="row g-4 h-100">
+                        <div class="col-12 fade-up delay-2">
+                            <div class="vision-card">
+                                <span class="vision-icon">🌱</span>
+                                <div class="vision-title">Vision</div>
+                                <p class="vision-text">เป็นแพลตฟอร์มดูแลสุขภาพจิตอันดับ 1 ที่คนไทยรุ่นใหม่วางใจ และเป็นก้าวแรกของการดูแลใจตัวเองอย่างยั่งยืน</p>
+                            </div>
+                        </div>
+                        <div class="col-12 fade-up delay-3">
+                            <div class="vision-card">
+                                <span class="vision-icon">💚</span>
+                                <div class="vision-title">Core Values</div>
+                                <p class="vision-text">เข้าใจ · ไม่ตัดสิน · ปลอดภัย · เติบโตไปด้วยกัน · ทุกความรู้สึกสำคัญ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════ PAIN POINTS ══════════════ -->
+    <section class="pain-section">
+        <div class="blob" style="width:400px;height:400px;background:#5A9A6E;top:-100px;right:-100px;opacity:.1;"></div>
+        <div class="blob" style="width:300px;height:300px;background:#A8CBAF;bottom:-80px;left:-60px;opacity:.08;"></div>
+        <div class="container position-relative" style="z-index:2;">
+
+            <div class="text-center mb-5">
+                <p class="section-eyebrow fade-up">ปัญหาที่เราเห็น</p>
+                <h2 class="section-title fade-up delay-1">ทำไมสุขภาพจิตถึงเป็นสิ่งสำคัญ?</h2>
+                <p class="section-sub text-center mx-auto fade-up delay-2" style="max-width:600px;">
+                    คนไทยจำนวนมากมีปัญหาสุขภาพจิต แต่กลับไม่สามารถเข้าถึงบริการที่จำเป็นได้
+                </p>
+            </div>
+
+            <!-- Big Stats -->
+            <div class="big-stat-row fade-up delay-2">
+                <div class="big-stat">
+                    <div class="big-stat-num">75<span style="font-size:2rem;">%</span></div>
+                    <div class="big-stat-label">ของผู้มีปัญหาสุขภาพจิตในเอเชียตะวันออกเฉียงใต้<br>ไม่ได้รับการรักษาที่จำเป็น</div>
+                    <div class="big-stat-source">WHO, 2024</div>
+                </div>
+                <div class="big-stat">
+                    <div class="big-stat-num" id="cnt-suicide">31,402</div>
+                    <div class="big-stat-label">รายผู้พยายามฆ่าตัวตายในปี 2023<br>และแนวโน้มยังเพิ่มขึ้นต่อเนื่อง</div>
+                    <div class="big-stat-source">กรมสุขภาพจิต, 2023</div>
+                </div>
+                <div class="big-stat">
+                    <div class="big-stat-num">1 ใน 7</div>
+                    <div class="big-stat-label">ของวัยรุ่นทั่วโลกมีภาวะสุขภาพจิตที่ต้องการความช่วยเหลือ</div>
+                    <div class="big-stat-source">WHO, 2024</div>
+                </div>
+            </div>
+
+            <!-- Pain Cards -->
+            <div class="row g-4">
+                <div class="col-lg-6 fade-up delay-1">
+                    <div class="pain-card">
+                        <span class="pain-card-icon">😔</span>
+                        <p class="pain-card-text">
+                            <span class="pain-card-highlight">กลุ่มวัยเรียนและวัยทำงานตอนต้น</span>คือกลุ่มที่เผชิญกับ
+                            ความเครียด วิตกกังวล ซึมเศร้า และหมดไฟสูงที่สุด แต่ส่วนใหญ่กลับ
+                            ไม่กล้าหรือไม่สะดวกเข้ารับคำปรึกษาจากผู้เชี่ยวชาญ
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 fade-up delay-2">
+                    <div class="pain-card">
+                        <span class="pain-card-icon">🏥</span>
+                        <p class="pain-card-text">
+                            ปัจจุบันมีสายด่วนสุขภาพจิตและบริการของรัฐ แต่
+                            <span class="pain-card-highlight">ยังไม่เพียงพอต่อความต้องการ</span>ที่สูงขึ้นทุกปี
+                            คนที่ต้องการความช่วยเหลือหลายคนต้องรอนาน หรือเลิกล้มความตั้งใจ
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 fade-up delay-3">
+                    <div class="pain-card">
+                        <span class="pain-card-icon">🔒</span>
+                        <p class="pain-card-text">
+                            คนส่วนใหญ่เลือก<span class="pain-card-highlight">เก็บปัญหาไว้กับตัวเอง</span>
+                            เพราะไม่มีพื้นที่ที่รู้สึกปลอดภัยพอที่จะพูด จนกลายเป็นปัญหาที่รุนแรงมากขึ้นในที่สุด
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 fade-up delay-4">
+                    <div class="pain-card">
+                        <span class="pain-card-icon">💭</span>
+                        <p class="pain-card-text">
+                            ไม่มีระบบที่เป็น<span class="pain-card-highlight">"พื้นที่ปลอดภัย"</span>
+                            ที่ช่วยสะท้อนอารมณ์ เข้าใจตนเอง หรือรับคำแนะนำอย่างตรงจุดได้ง่ายๆ ในชีวิตประจำวัน
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pain-quote fade-up delay-3">
+                <p>"แล้วมันจะดีกว่าไหม ถ้ามีแพลตฟอร์มที่มุ่งเน้นการดูแลสุขภาพจิตและการเติบโตทางอารมณ์ ที่เข้าถึงได้ง่าย ไม่ตัดสิน และอยู่เคียงข้างทุกวัน?"</p>
+                <span>— ความตั้งใจที่ทำให้ Flourich เกิดขึ้น</span>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ══════════════ TARGET ══════════════ -->
+    <section class="target-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <p class="section-eyebrow fade-up">กลุ่มเป้าหมาย</p>
+                <h2 class="section-title fade-up delay-1">เราออกแบบมาเพื่อใคร?</h2>
+            </div>
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-5 fade-up delay-1">
+                    <div class="target-card">
+                        <div class="target-age">18–22</div>
+                        <div class="target-label">ปี — กลุ่มที่เสี่ยงที่สุด</div>
+                        <p class="target-desc">
+                            วัยรุ่นและนักศึกษาในช่วงอายุ 18–22 ปีคือกลุ่มที่เผชิญกับ
+                            การเปลี่ยนแปลงครั้งใหญ่ของชีวิต ทั้งการเรียน ความสัมพันธ์
+                            อัตลักษณ์ และแรงกดดันจากสังคม
+                        </p>
+                        <div class="target-source">ที่มา: WHO, 2024</div>
+                    </div>
+                </div>
+                <div class="col-lg-7 fade-up delay-2">
+                    <div class="target-why-item">
+                        <div class="why-icon wi-1">📚</div>
+                        <div class="why-text">
+                            <strong>แรงกดดันด้านการเรียนและอนาคต</strong>
+                            <span>ความกังวลเรื่องเกรด การสอบ และการหางาน สร้างความเครียดสะสมอย่างต่อเนื่อง</span>
+                        </div>
+                    </div>
+                    <div class="target-why-item">
+                        <div class="why-icon wi-2">📱</div>
+                        <div class="why-text">
+                            <strong>ผลกระทบจาก Social Media</strong>
+                            <span>การเปรียบเทียบตัวเองกับผู้อื่นบนโลกออนไลน์ทำให้เกิดความรู้สึกไม่พอ และโดดเดี่ยว</span>
+                        </div>
+                    </div>
+                    <div class="target-why-item">
+                        <div class="why-icon wi-3">🤝</div>
+                        <div class="why-text">
+                            <strong>ขาดพื้นที่ระบายความรู้สึก</strong>
+                            <span>ไม่สะดวกพูดกับพ่อแม่ กลัวเป็นภาระเพื่อน หรือไม่มีคนที่รู้สึกว่าเข้าใจจริงๆ</span>
+                        </div>
+                    </div>
+                    <div class="target-why-item">
+                        <div class="why-icon wi-4">💸</div>
+                        <div class="why-text">
+                            <strong>ค่าบริการจิตวิทยาสูง ยากเข้าถึง</strong>
+                            <span>นักจิตวิทยาราคาหลักพัน–หมื่นบาทต่อครั้ง ไม่ใช่ตัวเลือกที่เข้าถึงได้สำหรับทุกคน</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════ PIE CHART — BARRIERS ══════════════ -->
+    <section class="barrier-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <p class="section-eyebrow fade-up">ข้อมูลเชิงลึก</p>
+                <h2 class="section-title fade-up delay-1">อุปสรรคที่ทำให้พวกเขาไม่กล้าขอความช่วยเหลือ</h2>
+                <p class="section-sub text-center mx-auto fade-up delay-2" style="max-width:560px;">
+                    เราสำรวจพบว่ากลุ่มวัยรุ่นมีเหตุผลหลายอย่างที่ทำให้ไม่กล้าเข้าถึงบริการสุขภาพจิต
+                </p>
+            </div>
+            <div class="chart-wrap fade-up delay-2">
+                <div class="row g-5 align-items-center">
+                    <!-- Doughnut chart -->
+                    <div class="col-lg-5">
+                        <div class="chart-canvas-box">
+                            <canvas id="barrierChart" width="380" height="380"></canvas>
+                            <div class="chart-center-label">
+                                <div class="cl-num">5</div>
+                                <div class="cl-sub">สาเหตุหลัก<br>ที่พวกเขาเลือกเงียบ</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Legend -->
+                    <div class="col-lg-7">
+                        <div class="legend-grid" id="barrierLegend">
+                            <!-- filled by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════ SOLUTION ══════════════ -->
+    <section class="solution-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <p class="section-eyebrow fade-up">วิธีที่เราแก้ปัญหา</p>
+                <h2 class="section-title fade-up delay-1">Flourich ออกแบบมาเพื่อตอบทุกอุปสรรค</h2>
+                <p class="section-sub text-center mx-auto fade-up delay-2" style="max-width:540px;">
+                    แต่ละฟีเจอร์ของ Flourich ถูกออกแบบโดยตรงเพื่อรื้อทุกกำแพงที่ขวางกั้นการขอความช่วยเหลือ
+                </p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6 fade-up delay-1">
+                    <div class="solution-card">
+                        <div class="sol-icon si-1">🌱</div>
+                        <div class="sol-title">เริ่มต้นง่ายใน 1 นาที</div>
+                        <p class="sol-text">ไม่ต้องรู้จะเริ่มยังไง แค่กด "เริ่มเลย" Flourich จะพาคุณผ่านทุกขั้นตอนเอง</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 fade-up delay-2">
+                    <div class="solution-card">
+                        <div class="sol-icon si-2">🔒</div>
+                        <div class="sol-title">พื้นที่ส่วนตัวสูงสุด</div>
+                        <p class="sol-text">ข้อมูลทุกอย่างเข้ารหัส เป็นความลับ ไม่มีใครรู้ว่าคุณกำลังใช้งาน Flourich</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 fade-up delay-3">
+                    <div class="solution-card">
+                        <div class="sol-icon si-3">💚</div>
+                        <div class="sol-title">ไม่มีการตัดสิน 0%</div>
+                        <p class="sol-text">Flourich รับฟังทุกความรู้สึกโดยไม่ตัดสิน ไม่แปลกใจ ไม่ดูถูก แค่เข้าใจ</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 fade-up delay-4">
+                    <div class="solution-card">
+                        <div class="sol-icon si-4">📈</div>
+                        <div class="sol-title">เห็นพัฒนาการชัดเจน</div>
+                        <p class="sol-text">ติดตามอารมณ์รายวัน เห็นว่าตัวเองดีขึ้นยังไง ไม่ต้องเดาว่ามันช่วยได้ไหม</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════ VALUES ══════════════ -->
+    <section class="value-section">
+        <div class="blob" style="width:350px;height:350px;background:var(--sage);top:-80px;right:-80px;opacity:.07;"></div>
+        <div class="container position-relative" style="z-index:1;">
+            <div class="text-center mb-5">
+                <p class="section-eyebrow" style="color:var(--sage-light);">สิ่งที่เรายืนหยัด</p>
+                <h2 class="section-title" style="color:#fff;" class="fade-up">ค่านิยมหลักของ Flourich</h2>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-2 col-md-4 col-6 fade-up delay-1">
+                    <div class="value-card">
+                        <span class="value-icon">🌱</span>
+                        <div class="value-title">เติบโต</div>
+                        <div class="value-text">เราเชื่อในศักยภาพการเติบโตของทุกคน</div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 fade-up delay-2">
+                    <div class="value-card">
+                        <span class="value-icon">💚</span>
+                        <div class="value-title">เมตตา</div>
+                        <div class="value-text">รับฟังด้วยความเข้าใจ ไม่มีการตัดสิน</div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 fade-up delay-3">
+                    <div class="value-card">
+                        <span class="value-icon">🔒</span>
+                        <div class="value-title">ปลอดภัย</div>
+                        <div class="value-text">ข้อมูลของคุณเป็นของคุณเท่านั้น</div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 fade-up delay-1">
+                    <div class="value-card">
+                        <span class="value-icon">✨</span>
+                        <div class="value-title">จริงใจ</div>
+                        <div class="value-text">โปร่งใสในทุกสิ่งที่เราทำ ไม่มีซ่อนเร้น</div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 fade-up delay-2">
+                    <div class="value-card">
+                        <span class="value-icon">🤝</span>
+                        <div class="value-title">ร่วมทาง</div>
+                        <div class="value-text">เราไม่ทิ้งคุณไว้คนเดียว เดินด้วยกันทุกก้าว</div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 fade-up delay-3">
+                    <div class="value-card">
+                        <span class="value-icon">🌍</span>
+                        <div class="value-title">เข้าถึงได้</div>
+                        <div class="value-text">สุขภาพจิตต้องไม่ใช่สิทธิ์ของคนรวยเท่านั้น</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════ CTA ══════════════ -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div class="position-relative" style="z-index:2;">
+                    <h2 class="cta-title">พร้อมเริ่มต้นดูแลใจของคุณแล้วหรือยัง?</h2>
+                    <p class="cta-sub">ทดลองใช้ฟรี 7 วัน ไม่ต้องใช้บัตรเครดิต<br>Flourich จะอยู่เคียงข้างคุณในทุกก้าวของการเติบโต 🌱</p>
+                    <a href="register.html" class="btn-cta-white">
+                        <i class="fas fa-seedling me-2"></i> เริ่มต้นฟรี — วันนี้เลย!
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer class="flourich-footer">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="img/logo-flourich.png" alt="Flourich" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'">
+                        <span class="footer-brand-name">Flourich</span>
+                    </div>
+                    <p class="footer-desc">พื้นที่ปลอดภัยสำหรับทุกคนที่ต้องการดูแลสุขภาพจิต เราเชื่อว่าทุกคนสมควรได้รับความเข้าใจและการดูแล</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-heading">บริการ</h5>
+                    <ul class="footer-links">
+                        <li><a href="service.html">Safe Room</a></li>
+                        <li><a href="service.html">Echo Room</a></li>
+                        <li><a href="service.html">Inner Child</a></li>
+                        <li><a href="blog.html">บทความ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-heading">บริษัท</h5>
+                    <ul class="footer-links">
+                        <li><a href="about.html">เกี่ยวกับเรา</a></li>
+                        <li><a href="team.html">ทีมงาน</a></li>
+                        <li><a href="contact.html">ติดต่อเรา</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="footer-heading">รับข่าวสาร</h5>
+                    <p style="font-size:.9rem;color:rgba(255,255,255,.6);margin-bottom:16px;">รับบทความและเคล็ดลับดูแลสุขภาพจิตทุกสัปดาห์</p>
+                    <div class="d-flex gap-2">
+                        <input type="email" placeholder="อีเมลของคุณ" style="flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:24px;padding:10px 18px;color:#fff;font-size:.9rem;outline:none;">
+                        <button style="background:var(--sage);border:none;border-radius:24px;padding:10px 20px;color:#fff;font-weight:600;cursor:pointer;white-space:nowrap;" onmouseover="this.style.background='#5A9A6E'" onmouseout="this.style.background='var(--sage)'">สมัคร</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <p class="footer-bottom mb-0">© 2025 Flourich. สงวนลิขสิทธิ์ทุกประการ</p>
+                <div class="d-flex gap-4">
+                    <a href="#" style="font-size:.83rem;color:rgba(255,255,255,.4);text-decoration:none;">นโยบายความเป็นส่วนตัว</a>
+                    <a href="#" style="font-size:.83rem;color:rgba(255,255,255,.4);text-decoration:none;">ข้อกำหนดการใช้งาน</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></a>
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+
+    <script>
+        // ── Spinner ──
+        window.addEventListener('load', () => { document.getElementById('spinner').classList.remove('show'); });
+
+        // ── Sticky nav + back-to-top ──
+        window.addEventListener('scroll', () => {
+            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
+            document.getElementById('backToTop').style.opacity = window.scrollY > 300 ? '1' : '0';
+        });
+
+        // ── Fade-up observer ──
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+        // ── Pie / Doughnut Chart ──
+        const barriers = [
+            { label: 'ไม่รู้จะเริ่มยังไง',           pct: 41, color: '#7BAE8A' },
+            { label: 'ไม่อยากให้ใครรู้',             pct: 20, color: '#5BA3C9' },
+            { label: 'กลัวโดนตัดสิน',               pct: 19, color: '#F7C5A0' },
+            { label: 'เคยลองแล้วไม่รู้สึกดีขึ้น',   pct: 17, color: '#D4874A' },
+            { label: 'อื่นๆ',                        pct:  3, color: '#C8C8C8' },
+        ];
+
+        // Build legend
+        const legendEl = document.getElementById('barrierLegend');
+        barriers.forEach(b => {
+            legendEl.innerHTML += `
+            <div class="legend-item">
+                <div class="legend-dot" style="background:${b.color};"></div>
+                <div style="flex:1;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+                        <span class="legend-label">${b.label}</span>
+                        <span class="legend-pct">${b.pct}%</span>
+                    </div>
+                    <div class="legend-bar-wrap">
+                        <div class="legend-bar" data-w="${b.pct}" style="width:0%;background:${b.color};"></div>
+                    </div>
+                </div>
+            </div>`;
+        });
+
+        // Animate bars on scroll
+        const barObs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if(e.isIntersecting) {
+                    document.querySelectorAll('.legend-bar').forEach(bar => {
+                        bar.style.width = bar.dataset.w + '%';
+                    });
+                }
+            });
+        }, {threshold: 0.3});
+        barObs.observe(document.getElementById('barrierLegend'));
+
+        // Draw chart
+        const ctx = document.getElementById('barrierChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: barriers.map(b => b.label),
+                datasets: [{
+                    data: barriers.map(b => b.pct),
+                    backgroundColor: barriers.map(b => b.color),
+                    borderColor: '#fff',
+                    borderWidth: 3,
+                    hoverOffset: 12
+                }]
+            },
+            options: {
+                cutout: '68%',
+                responsive: true,
+                animation: { animateRotate: true, duration: 1400 },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => ` ${ctx.label}: ${ctx.raw}%`
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

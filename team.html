@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+    <title>Flourich — ทีมของเรา</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        :root {
+            --sage:#7BAE8A; --sage-light:#A8CBAF; --sage-pale:#D6EBD9; --mint:#B8E0C5;
+            --cream:#FDFAF5; --yellow-soft:#F5D87A; --peach:#F7C5A0; --blush:#F5B8C4;
+            --text-dark:#2D4A35; --text-mid:#5A7A62; --text-light:#8BA892;
+        }
+        *{box-sizing:border-box;}
+        body{font-family:'Noto Sans Thai','Nunito',sans-serif;background:var(--cream);color:var(--text-dark);overflow-x:hidden;}
+
+        #spinner{opacity:0;visibility:hidden;transition:opacity .8s ease-out,visibility 0s linear .5s;z-index:99999;}
+        #spinner.show{transition:opacity .8s ease-out,visibility 0s linear 0s;visibility:visible;opacity:1;}
+
+        .flourich-nav{position:sticky;top:0;z-index:1000;background:rgba(253,250,245,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(123,174,138,.15);padding:14px 0;transition:box-shadow .3s;}
+        .flourich-nav.scrolled{box-shadow:0 4px 24px rgba(45,74,53,.08);}
+        .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+        .nav-brand img{width:42px;height:42px;border-radius:50%;object-fit:cover;}
+        .nav-brand-text{font-family:'Fredoka',sans-serif;font-size:1.6rem;font-weight:700;color:var(--sage);}
+        .nav-links{display:flex;gap:8px;align-items:center;}
+        .nav-links a{font-size:.95rem;font-weight:500;color:var(--text-mid);text-decoration:none;padding:7px 14px;border-radius:20px;transition:.25s;}
+        .nav-links a:hover,.nav-links a.active{background:var(--sage-pale);color:var(--sage);}
+        .btn-nav-login{padding:8px 22px;border:2px solid var(--sage);color:var(--sage)!important;border-radius:24px;font-weight:600!important;background:transparent;text-decoration:none;transition:.3s;display:inline-flex;align-items:center;}
+        .btn-nav-login:hover{background:var(--sage);color:#fff!important;}
+        .btn-nav-register{padding:8px 22px;background:var(--sage);color:#fff!important;border-radius:24px;font-weight:600;border:2px solid var(--sage);text-decoration:none;transition:.3s;display:inline-flex;align-items:center;}
+        .btn-nav-register:hover{background:var(--text-dark);border-color:var(--text-dark);}
+
+        .blob{position:absolute;border-radius:50%;filter:blur(55px);opacity:.4;pointer-events:none;z-index:0;}
+
+        .page-hero{background:linear-gradient(140deg,var(--cream) 0%,#E8F5EC 55%,#FDF0E4 100%);padding:80px 0 60px;position:relative;overflow:hidden;text-align:center;}
+        .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--sage-pale);color:var(--sage);font-size:.85rem;font-weight:600;padding:6px 18px;border-radius:20px;margin-bottom:18px;letter-spacing:.4px;}
+        .hero-eyebrow .dot{width:8px;height:8px;background:var(--sage);border-radius:50%;animation:pulse-dot 2s ease-in-out infinite;}
+        @keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.6}}
+        .page-hero h1{font-family:'Fredoka',sans-serif;font-size:clamp(2.2rem,5vw,3.4rem);font-weight:700;color:var(--text-dark);margin-bottom:14px;position:relative;z-index:1;}
+        .page-hero h1 .hl{color:var(--sage);position:relative;}
+        .page-hero h1 .hl::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:8px;background:var(--yellow-soft);border-radius:4px;z-index:-1;opacity:.7;}
+        .page-hero p{font-size:1.05rem;color:var(--text-mid);max-width:560px;margin:0 auto;line-height:1.8;position:relative;z-index:1;}
+        .uni-badge{display:inline-flex;align-items:center;gap:10px;background:#fff;border-radius:20px;padding:10px 22px;box-shadow:0 4px 18px rgba(45,74,53,.1);margin-top:28px;font-size:.9rem;font-weight:600;color:var(--text-dark);position:relative;z-index:1;}
+        .uni-badge span{color:var(--sage);}
+
+        .wave-divider{line-height:0;}
+        .wave-divider svg{display:block;}
+
+        .team-section{padding:80px 0 100px;background:#fff;}
+
+        .member-card{background:var(--cream);border-radius:28px;overflow:hidden;border:1.5px solid transparent;transition:.35s;height:100%;display:flex;flex-direction:column;}
+        .member-card:hover{border-color:var(--sage-light);box-shadow:0 20px 56px rgba(123,174,138,.18);transform:translateY(-8px);}
+
+        .member-photo-wrap{position:relative;padding:32px 0 0;text-align:center;overflow:hidden;}
+        .member-photo-wrap::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;background:rgba(255,255,255,.3);border-radius:50%;}
+        .member-photo-wrap::after{content:'';position:absolute;bottom:-20px;left:-20px;width:80px;height:80px;background:rgba(255,255,255,.2);border-radius:50%;}
+
+        .card-cpo .member-photo-wrap{background:linear-gradient(160deg,#D6EBD9 0%,#B8E0C5 100%);}
+        .card-cto1 .member-photo-wrap{background:linear-gradient(160deg,#DAF0FF 0%,#C4E4F5 100%);}
+        .card-ceo .member-photo-wrap{background:linear-gradient(160deg,#FDECD7 0%,#F7D5B5 100%);}
+        .card-cto2 .member-photo-wrap{background:linear-gradient(160deg,#F0D6F5 0%,#E0B8EA 100%);}
+        .card-cdo .member-photo-wrap{background:linear-gradient(160deg,#FFF0D6 0%,#EEE09055 100%);}
+
+        .member-photo{width:140px;height:140px;border-radius:50%;object-fit:cover;object-position:top center;border:4px solid rgba(255,255,255,.8);box-shadow:0 8px 28px rgba(45,74,53,.15);position:relative;z-index:1;transition:.35s;}
+        .member-card:hover .member-photo{transform:scale(1.06);}
+
+        .role-badge{display:inline-block;padding:5px 16px;border-radius:20px;font-size:.78rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin:14px 0 20px;position:relative;z-index:1;}
+        .card-cpo .role-badge{background:var(--sage);color:#fff;}
+        .card-cto1 .role-badge{background:#5BA3C9;color:#fff;}
+        .card-ceo .role-badge{background:#D4874A;color:#fff;}
+        .card-cto2 .role-badge{background:#9B6EC2;color:#fff;}
+        .card-cdo .role-badge{background:#C9A52A;color:#fff;}
+
+        .year-chip{position:absolute;top:16px;left:16px;background:rgba(255,255,255,.75);backdrop-filter:blur(6px);border-radius:12px;padding:4px 12px;font-size:.75rem;font-weight:700;color:var(--text-dark);z-index:2;}
+
+        .member-info{padding:24px 24px 28px;flex:1;display:flex;flex-direction:column;}
+        .member-name{font-family:'Fredoka',sans-serif;font-size:1.25rem;font-weight:600;color:var(--text-dark);margin-bottom:4px;}
+        .member-faculty{font-size:.82rem;color:var(--text-light);margin-bottom:18px;display:flex;align-items:flex-start;gap:6px;line-height:1.4;}
+        .member-faculty i{color:var(--sage);margin-top:2px;flex-shrink:0;}
+        .info-divider{height:1px;background:rgba(123,174,138,.15);margin-bottom:16px;}
+        .works-title{font-size:.8rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--sage);margin-bottom:12px;}
+        .works-list{list-style:none;padding:0;margin:0;flex:1;}
+        .works-list li{font-size:.84rem;color:var(--text-mid);padding:7px 0 7px 20px;border-bottom:1px dashed rgba(123,174,138,.15);position:relative;line-height:1.5;}
+        .works-list li:last-child{border-bottom:none;}
+        .works-list li::before{content:'🌱';position:absolute;left:0;top:7px;font-size:.7rem;}
+
+        .member-social{display:flex;gap:8px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(123,174,138,.12);}
+        .member-social a{width:34px;height:34px;background:var(--sage-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--sage);text-decoration:none;font-size:.85rem;transition:.25s;}
+        .member-social a:hover{background:var(--sage);color:#fff;transform:translateY(-2px);}
+
+        .cta-section{padding:80px 0;background:linear-gradient(140deg,var(--cream) 0%,#E8F5EC 100%);}
+        .cta-card{background:linear-gradient(135deg,var(--sage) 0%,#5A9A6E 100%);border-radius:32px;padding:60px 48px;position:relative;overflow:hidden;text-align:center;}
+        .cta-card::before{content:'';position:absolute;top:-80px;right:-80px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.1);}
+        .cta-title{font-family:'Fredoka',sans-serif;font-size:clamp(1.8rem,3vw,2.4rem);font-weight:700;color:#fff;margin-bottom:12px;}
+        .cta-sub{color:rgba(255,255,255,.85);font-size:1rem;margin-bottom:28px;}
+        .btn-cta-white{padding:14px 36px;background:#fff;color:var(--sage);border:none;border-radius:30px;font-size:1rem;font-weight:700;cursor:pointer;text-decoration:none;transition:.3s;box-shadow:0 6px 24px rgba(0,0,0,.15);display:inline-block;}
+        .btn-cta-white:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.2);color:var(--text-dark);}
+
+        .flourich-footer{background:var(--text-dark);padding:60px 0 30px;color:rgba(255,255,255,.7);}
+        .footer-brand-name{font-family:'Fredoka',sans-serif;font-size:1.8rem;font-weight:700;color:var(--sage-light);}
+        .footer-desc{font-size:.9rem;line-height:1.7;margin:12px 0 20px;max-width:260px;}
+        .footer-social a{width:36px;height:36px;background:rgba(255,255,255,.08);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);text-decoration:none;margin-right:8px;transition:.25s;}
+        .footer-social a:hover{background:var(--sage);color:#fff;}
+        .footer-heading{font-family:'Fredoka',sans-serif;font-size:1rem;font-weight:600;color:#fff;margin-bottom:16px;}
+        .footer-links{list-style:none;padding:0;margin:0;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.9rem;transition:.2s;}
+        .footer-links a:hover{color:var(--sage-light);padding-left:4px;}
+        .footer-divider{border-color:rgba(255,255,255,.1);margin:30px 0 20px;}
+        .footer-bottom{font-size:.83rem;color:rgba(255,255,255,.4);}
+
+        .back-to-top{position:fixed;right:28px;bottom:28px;width:46px;height:46px;border-radius:50%;background:var(--sage);color:#fff;display:flex;align-items:center;justify-content:center;border:none;box-shadow:0 4px 18px rgba(123,174,138,.4);transition:.3s;z-index:99;opacity:0;text-decoration:none;}
+        .back-to-top:hover{background:var(--text-dark);transform:translateY(-3px);color:#fff;}
+
+        .fade-up{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+        .fade-up.visible{opacity:1;transform:translateY(0);}
+        .delay-1{transition-delay:.1s!important;}
+        .delay-2{transition-delay:.2s!important;}
+        .delay-3{transition-delay:.3s!important;}
+
+        @media(max-width:768px){.page-hero{padding:60px 0 40px;}.cta-card{padding:40px 28px;}}
+    </style>
+</head>
+<body>
+
+    <!-- Spinner -->
+    <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50 d-flex align-items-center justify-content-center">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+            <div style="width:52px;height:52px;background:var(--sage-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                <img src="img/logo-flourich.png" alt="Flourich" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%2220%22 fill=%22%23A8CBAF%22/%3E%3C/svg%3E'">
+            </div>
+            <p style="font-family:'Fredoka',sans-serif;color:#7BAE8A;font-size:1.1rem;font-weight:600;margin:0;">Flourich</p>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="flourich-nav" id="mainNav">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="index.html" class="nav-brand">
+                <img src="img/logo-flourich.png" alt="Flourich Logo" onerror="this.style.display='none'">
+                <span class="nav-brand-text">Flourich</span>
+            </a>
+            <div class="nav-links d-none d-lg-flex">
+                <a href="index.html">หน้าแรก</a>
+                <a href="about.html">เกี่ยวกับเรา</a>
+                <a href="service.html">บริการ</a>
+                <a href="team.html" class="active">ทีมงาน</a>
+                <a href="contact.html">ติดต่อ</a>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+                <a href="login.html" class="btn-nav-login d-none d-md-inline-flex">
+                    <i class="fas fa-sign-in-alt me-2"></i> Log In
+                </a>
+                <a href="register.html" class="btn-nav-register">
+                    <i class="fas fa-user-plus me-2"></i> ลงทะเบียน
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+        <div class="blob" style="width:320px;height:320px;background:var(--mint);top:-80px;left:-60px;"></div>
+        <div class="blob" style="width:240px;height:240px;background:var(--yellow-soft);top:20px;right:-40px;"></div>
+        <div class="blob" style="width:200px;height:200px;background:var(--blush);bottom:0;left:35%;"></div>
+        <div class="container position-relative" style="z-index:2;">
+            <div class="hero-eyebrow fade-up visible">
+                <span class="dot"></span> ทีมผู้สร้าง Flourich
+            </div>
+            <h1 class="fade-up visible delay-1">พบกับ<span class="hl">ทีมงาน</span>ของเรา</h1>
+            <p class="fade-up visible delay-2">
+                5 คนที่มีความฝัน ความมุ่งมั่น และหัวใจที่อยากสร้างพื้นที่ปลอดภัย<br>
+                เพื่อสุขภาพจิตที่ดีขึ้นของทุกคน 🌱
+            </p>
+            <div class="uni-badge fade-up visible delay-3">
+                🎓 <span>มหาวิทยาลัยรังสิต</span> — นักศึกษาชั้นปีที่ 3 ทุกคน
+            </div>
+        </div>
+    </section>
+
+    <div class="wave-divider" style="background:linear-gradient(140deg,var(--cream) 0%,#E8F5EC 55%,#FDF0E4 100%);">
+        <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,30 C360,60 1080,0 1440,30 L1440,50 L0,50 Z" fill="#ffffff"/>
+        </svg>
+    </div>
+
+    <!-- TEAM SECTION -->
+    <section class="team-section">
+        <div class="container">
+
+            <!-- Row 1 — 3 cards -->
+            <div class="row g-4 justify-content-center mb-4">
+
+                <!-- 1. CPO : เกษมสันต์ -->
+                <div class="col-lg-4 col-md-6 fade-up delay-1">
+                    <div class="member-card card-cpo">
+                        <div class="member-photo-wrap">
+                            <span class="year-chip">ปี 3</span>
+                            <img src="img/profile_u.png" alt="เกษมสันต์ กำหนดศรี" class="member-photo"
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 140 140%22%3E%3Ccircle cx=%2270%22 cy=%2270%22 r=%2270%22 fill=%22%23D6EBD9%22/%3E%3C/svg%3E'">
+                            <span class="role-badge">CPO</span>
+                        </div>
+                        <div class="member-info">
+                            <div class="member-name">เกษมสันต์ กำหนดศรี</div>
+                            <div class="member-faculty"><i class="fas fa-graduation-cap"></i> คณะวิศวกรรมคอมพิวเตอร์ · RSU</div>
+                            <div class="info-divider"></div>
+                            <div class="works-title"><i class="fas fa-star me-1"></i> ผลงานเด่น</div>
+                            <ul class="works-list">
+                                <li>ออกแบบ UX/UI ผ่าน Figma</li>
+                                <li>IOT Self Balancing ผ่าน ESP32</li>
+                                <li>ตู้ปลาอัตโนมัติ ควบคุมผ่าน Blynk</li>
+                                <li>Web Frontend ร้านขายหนังสือ</li>
+                                <li>เกม XO ด้วยภาษา C# (Framework)</li>
+                                <li>Freelance: Web App Frontend AI Cat-Detector</li>
+                                <li>เกม Dodge the Falling Block ด้วย Python</li>
+                            </ul>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-github"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. CTO:AI : ปฐพี -->
+                <div class="col-lg-4 col-md-6 fade-up delay-2">
+                    <div class="member-card card-cto1">
+                        <div class="member-photo-wrap">
+                            <span class="year-chip">ปี 3</span>
+                            <img src="img/profile_meen.png" alt="ปฐพี สิริเบญจพลสกุล" class="member-photo"
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 140 140%22%3E%3Ccircle cx=%2270%22 cy=%2270%22 r=%2270%22 fill=%22%23DAF0FF%22/%3E%3C/svg%3E'">
+                            <span class="role-badge">CTO : AI</span>
+                        </div>
+                        <div class="member-info">
+                            <div class="member-name">ปฐพี สิริเบญจพลสกุล</div>
+                            <div class="member-faculty"><i class="fas fa-graduation-cap"></i> คณะวิศวกรรมชีวการแพทย์ · RSU</div>
+                            <div class="info-divider"></div>
+                            <div class="works-title"><i class="fas fa-star me-1"></i> ผลงานเด่น</div>
+                            <ul class="works-list">
+                                <li>นำเสนองานวิจัย IS-PAIR Conference 2025 &amp; 2026</li>
+                                <li>Brain Code Camp 2024 — Epileptic Seizure Classification (SVM)</li>
+                                <li>Super AI Engineer Season 5 (Track Researcher) พร้อมตีพิมพ์บทวิจัย</li>
+                                <li>รางวัลนวัตกรรมยอดเยี่ยม — Health Promotion INNOVATION PLAYGROUND (สสส × NIA)</li>
+                            </ul>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-github"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. CEO/CFO : ชิษณุพงศ์ -->
+                <div class="col-lg-4 col-md-6 fade-up delay-3">
+                    <div class="member-card card-ceo">
+                        <div class="member-photo-wrap">
+                            <span class="year-chip">ปี 3</span>
+                            <img src="img/profile_folk.png" alt="ชิษณุพงศ์ จันทะเพชร" class="member-photo"
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 140 140%22%3E%3Ccircle cx=%2270%22 cy=%2270%22 r=%2270%22 fill=%22%23FDECD7%22/%3E%3C/svg%3E'">
+                            <span class="role-badge">CEO &amp; CFO</span>
+                        </div>
+                        <div class="member-info">
+                            <div class="member-name">ชิษณุพงศ์ จันทะเพชร</div>
+                            <div class="member-faculty"><i class="fas fa-graduation-cap"></i> คณะวิศวกรรมชีวการแพทย์ · RSU</div>
+                            <div class="info-divider"></div>
+                            <div class="works-title"><i class="fas fa-star me-1"></i> ผลงานเด่น</div>
+                            <ul class="works-list">
+                                <li>อบรมที่ปรึกษาและนักวิเคราะห์การลงทุน — โครงการผลิตบัณฑิตพันธุ์ใหม่</li>
+                                <li>รองชนะเลิศ อันดับ 1 เงินรางวัล 10,000 บาท — BrainHackathon (BASE Playhouse)</li>
+                                <li>เหรียญทอง Thailand INVENTORS' 2025 — สำนักงานการวิจัยแห่งชาติ</li>
+                                <li>Outstanding Innovation Award — Malaysia Technology Expo 2025</li>
+                                <li>รางวัลนวัตกรรมยอดเยี่ยม — Health Promotion INNOVATION PLAYGROUND</li>
+                            </ul>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-github"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /row 1 -->
+
+            <!-- Row 2 — 2 cards centered -->
+            <div class="row g-4 justify-content-center">
+
+                <!-- 4. CTO:DATABASE : โรจน์วิศิษฐ์ -->
+                <div class="col-lg-4 col-md-6 fade-up delay-1">
+                    <div class="member-card card-cto2">
+                        <div class="member-photo-wrap">
+                            <span class="year-chip">ปี 3</span>
+                            <img src="img/profile_note.png" alt="โรจน์วิศิษฐ์ ชื่นอารมณ์" class="member-photo"
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 140 140%22%3E%3Ccircle cx=%2270%22 cy=%2270%22 r=%2270%22 fill=%22%23F0D6F5%22/%3E%3C/svg%3E'">
+                            <span class="role-badge">CTO : DATABASE</span>
+                        </div>
+                        <div class="member-info">
+                            <div class="member-name">โรจน์วิศิษฐ์ ชื่นอารมณ์</div>
+                            <div class="member-faculty"><i class="fas fa-graduation-cap"></i> คณะวิศวกรรมชีวการแพทย์ · RSU</div>
+                            <div class="info-divider"></div>
+                            <div class="works-title"><i class="fas fa-star me-1"></i> ผลงานเด่น</div>
+                            <ul class="works-list">
+                                <li>ผ่านเข้ารอบ Angel Fund for Startups Business Camp — ออกแบบ UX/UI</li>
+                                <li>เหรียญทอง Thailand INVENTORS' 2025 — สำนักงานการวิจัยแห่งชาติ</li>
+                                <li>HealthTech X 2 The Future — 1 ใน 52 ทีม ออกแบบแพลตฟอร์ม</li>
+                                <li>รางวัลนวัตกรรมยอดเยี่ยม — Health Promotion INNOVATION PLAYGROUND</li>
+                            </ul>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-github"></i></a>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. CDO : ปุณยพัฒน์ -->
+                <div class="col-lg-4 col-md-6 fade-up delay-2">
+                    <div class="member-card card-cdo">
+                        <div class="member-photo-wrap">
+                            <span class="year-chip">ปี 3</span>
+                            <img src="img/profile_pun.png" alt="ปุณยพัฒน์ ชินตราพงศ์" class="member-photo"
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 140 140%22%3E%3Ccircle cx=%2270%22 cy=%2270%22 r=%2270%22 fill=%22%23FFF0D6%22/%3E%3C/svg%3E'">
+                            <span class="role-badge">CDO</span>
+                        </div>
+                        <div class="member-info">
+                            <div class="member-name">ปุณยพัฒน์ ชินตราพงศ์</div>
+                            <div class="member-faculty"><i class="fas fa-graduation-cap"></i> ดิจิทัลอาร์ต สาขา 2D Animation &amp; Motion Graphic · RSU</div>
+                            <div class="info-divider"></div>
+                            <div class="works-title"><i class="fas fa-star me-1"></i> ผลงานเด่น</div>
+                            <ul class="works-list">
+                                <li>2D Animator / Motion Graphic Designer</li>
+                                <li>ออกแบบมาสคอตงาน CN Angel Run Minimarathon 2023</li>
+                                <li>Color Artist ช่องการ์ตูน Book Verse</li>
+                                <li>เข้าร่วมการแข่งขัน 24 hrs Animation</li>
+                            </ul>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-behance"></i></a>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /row 2 -->
+
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div class="position-relative" style="z-index:2;">
+                    <h2 class="cta-title">ร่วมเป็นส่วนหนึ่งของ Flourich</h2>
+                    <p class="cta-sub">เริ่มต้นดูแลใจตัวเองกับแพลตฟอร์มที่สร้างด้วยหัวใจ 🌱</p>
+                    <a href="register.html" class="btn-cta-white">
+                        <i class="fas fa-seedling me-2"></i> เริ่มใช้งานฟรี — วันนี้เลย!
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="flourich-footer">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="img/logo-flourich.png" alt="Flourich" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'">
+                        <span class="footer-brand-name">Flourich</span>
+                    </div>
+                    <p class="footer-desc">พื้นที่ปลอดภัยสำหรับทุกคนที่ต้องการดูแลสุขภาพจิต เราเชื่อว่าทุกคนสมควรได้รับความเข้าใจและการดูแล</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-heading">บริการ</h5>
+                    <ul class="footer-links">
+                        <li><a href="service.html">Safe Room</a></li>
+                        <li><a href="service.html">Echo Room</a></li>
+                        <li><a href="service.html">Inner Child</a></li>
+                        <li><a href="blog.html">บทความ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-heading">บริษัท</h5>
+                    <ul class="footer-links">
+                        <li><a href="about.html">เกี่ยวกับเรา</a></li>
+                        <li><a href="team.html">ทีมงาน</a></li>
+                        <li><a href="contact.html">ติดต่อเรา</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="footer-heading">รับข่าวสาร</h5>
+                    <p style="font-size:.9rem;color:rgba(255,255,255,.6);margin-bottom:16px;">รับบทความและเคล็ดลับดูแลสุขภาพจิตทุกสัปดาห์</p>
+                    <div class="d-flex gap-2">
+                        <input type="email" placeholder="อีเมลของคุณ" style="flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:24px;padding:10px 18px;color:#fff;font-size:.9rem;outline:none;">
+                        <button style="background:var(--sage);border:none;border-radius:24px;padding:10px 20px;color:#fff;font-weight:600;cursor:pointer;white-space:nowrap;" onmouseover="this.style.background='#5A9A6E'" onmouseout="this.style.background='var(--sage)'">สมัคร</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <p class="footer-bottom mb-0">© 2025 Flourich. สงวนลิขสิทธิ์ทุกประการ</p>
+                <div class="d-flex gap-4">
+                    <a href="#" style="font-size:.83rem;color:rgba(255,255,255,.4);text-decoration:none;">นโยบายความเป็นส่วนตัว</a>
+                    <a href="#" style="font-size:.83rem;color:rgba(255,255,255,.4);text-decoration:none;">ข้อกำหนดการใช้งาน</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></a>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script>
+        window.addEventListener('load', () => { document.getElementById('spinner').classList.remove('show'); });
+        window.addEventListener('scroll', () => {
+            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
+            document.getElementById('backToTop').style.opacity = window.scrollY > 300 ? '1' : '0';
+        });
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+    </script>
+</body>
+</html>

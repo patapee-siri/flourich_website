@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+    <title>Flourich — ติดต่อเรา</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --sage:#7BAE8A; --sage-light:#A8CBAF; --sage-pale:#D6EBD9; --mint:#B8E0C5;
+            --cream:#FDFAF5; --yellow-soft:#F5D87A; --peach:#F7C5A0; --blush:#F5B8C4;
+            --sky:#B8D8F0; --lavender:#D8D0F0;
+            --text-dark:#2D4A35; --text-mid:#5A7A62; --text-light:#8BA892;
+            --error:#D46060; --success:#5A9A6E;
+        }
+        *{box-sizing:border-box;}
+        body{font-family:'Noto Sans Thai','Nunito',sans-serif;background:var(--cream);color:var(--text-dark);overflow-x:hidden;}
+
+        /* Spinner */
+        #spinner{opacity:0;visibility:hidden;transition:opacity .8s ease-out,visibility 0s linear .5s;z-index:99999;}
+        #spinner.show{transition:opacity .8s ease-out,visibility 0s linear 0s;visibility:visible;opacity:1;}
+
+        /* Navbar */
+        .flourich-nav{position:sticky;top:0;z-index:1000;background:rgba(253,250,245,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(123,174,138,.15);padding:14px 0;transition:box-shadow .3s;}
+        .flourich-nav.scrolled{box-shadow:0 4px 24px rgba(45,74,53,.08);}
+        .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+        .nav-brand img{width:42px;height:42px;border-radius:50%;object-fit:cover;}
+        .nav-brand-text{font-family:'Fredoka',sans-serif;font-size:1.6rem;font-weight:700;color:var(--sage);}
+        .nav-links{display:flex;gap:8px;align-items:center;}
+        .nav-links a{font-size:.95rem;font-weight:500;color:var(--text-mid);text-decoration:none;padding:7px 14px;border-radius:20px;transition:.25s;}
+        .nav-links a:hover,.nav-links a.active{background:var(--sage-pale);color:var(--sage);}
+        .btn-nav-login{padding:8px 22px;border:2px solid var(--sage);color:var(--sage)!important;border-radius:24px;font-weight:600!important;background:transparent;text-decoration:none;transition:.3s;display:inline-flex;align-items:center;}
+        .btn-nav-login:hover{background:var(--sage);color:#fff!important;}
+        .btn-nav-register{padding:8px 22px;background:var(--sage);color:#fff!important;border-radius:24px;font-weight:600;border:2px solid var(--sage);text-decoration:none;transition:.3s;display:inline-flex;align-items:center;}
+        .btn-nav-register:hover{background:var(--text-dark);border-color:var(--text-dark);}
+
+        /* Blob */
+        .blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.38;pointer-events:none;z-index:0;}
+
+        /* Page Hero */
+        .page-hero{background:linear-gradient(140deg,var(--cream) 0%,#E8F5EC 55%,#FDF0E4 100%);padding:88px 0 70px;position:relative;overflow:hidden;text-align:center;}
+        .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--sage-pale);color:var(--sage);font-size:.85rem;font-weight:600;padding:6px 18px;border-radius:20px;margin-bottom:18px;letter-spacing:.4px;}
+        .hero-eyebrow .dot{width:8px;height:8px;background:var(--sage);border-radius:50%;animation:pulse-dot 2s ease-in-out infinite;}
+        @keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.6}}
+        .page-hero h1{font-family:'Fredoka',sans-serif;font-size:clamp(2.2rem,5vw,3.5rem);font-weight:700;color:var(--text-dark);margin-bottom:16px;position:relative;z-index:1;line-height:1.2;}
+        .page-hero h1 .hl{color:var(--sage);position:relative;}
+        .page-hero h1 .hl::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:9px;background:var(--yellow-soft);border-radius:4px;z-index:-1;opacity:.65;}
+        .page-hero p{font-size:1.05rem;color:var(--text-mid);max-width:560px;margin:0 auto;line-height:1.8;position:relative;z-index:1;}
+
+        /* Wave */
+        .wave-divider{line-height:0;}
+        .wave-divider svg{display:block;}
+
+        /* ── CONTACT SECTION ── */
+        .contact-section{padding:90px 0 100px;background:#fff;}
+
+        /* Info cards */
+        .info-card{
+            background:var(--cream);border-radius:24px;padding:30px 26px;
+            border:1.5px solid transparent;transition:.35s;
+            display:flex;align-items:flex-start;gap:18px;
+        }
+        .info-card:hover{border-color:var(--sage-light);box-shadow:0 12px 36px rgba(123,174,138,.14);transform:translateY(-4px);}
+        .info-icon{
+            width:52px;height:52px;border-radius:16px;
+            display:flex;align-items:center;justify-content:center;
+            font-size:1.4rem;flex-shrink:0;
+        }
+        .ii-1{background:var(--sage-pale);}
+        .ii-2{background:#DAF0FF;}
+        .ii-3{background:#FDECD7;}
+        .ii-4{background:#F0D6F5;}
+        .ii-5{background:#FFF0D6;}
+        .info-label{font-size:.78rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-light);margin-bottom:4px;}
+        .info-val{font-size:.95rem;font-weight:600;color:var(--text-dark);margin-bottom:2px;}
+        .info-sub{font-size:.82rem;color:var(--text-mid);}
+
+        /* Social strip */
+        .social-strip{background:var(--cream);border-radius:24px;padding:28px 32px;border:1.5px solid var(--sage-pale);}
+        .social-title{font-family:'Fredoka',sans-serif;font-size:1.1rem;font-weight:600;color:var(--text-dark);margin-bottom:18px;}
+        .social-btns{display:flex;gap:12px;flex-wrap:wrap;}
+        .soc-btn{
+            display:inline-flex;align-items:center;gap:8px;
+            padding:10px 20px;border-radius:20px;
+            font-size:.88rem;font-weight:600;text-decoration:none;transition:.3s;
+        }
+        .soc-fb  {background:#E8F0FF;color:#1877F2;}
+        .soc-ig  {background:#FFE8F5;color:#E1306C;}
+        .soc-tw  {background:#E8F5FF;color:#1DA1F2;}
+        .soc-line{background:#E8FFE8;color:#06C755;}
+        .soc-btn:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(45,74,53,.12);}
+
+        /* ── FORM CARD ── */
+        .form-card{
+            background:#fff;border-radius:28px;
+            box-shadow:0 8px 48px rgba(45,74,53,.1);
+            border:1.5px solid rgba(123,174,138,.15);
+            padding:44px 40px;
+            position:sticky;top:90px;
+        }
+        .form-card-title{font-family:'Fredoka',sans-serif;font-size:1.7rem;font-weight:700;color:var(--text-dark);margin-bottom:6px;}
+        .form-card-sub{font-size:.9rem;color:var(--text-mid);margin-bottom:28px;}
+
+        /* Topic chips */
+        .topic-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+        .topic-chip{
+            padding:7px 16px;border-radius:20px;font-size:.82rem;font-weight:600;
+            background:var(--cream);border:1.5px solid var(--sage-pale);
+            color:var(--text-mid);cursor:pointer;transition:.25s;
+        }
+        .topic-chip:hover,.topic-chip.selected{background:var(--sage-pale);border-color:var(--sage);color:var(--sage);}
+
+        /* Input groups */
+        .inp-group{margin-bottom:20px;}
+        .inp-group label{display:block;font-size:.875rem;font-weight:600;color:var(--text-dark);margin-bottom:8px;}
+        .inp-group label .req{color:var(--sage);margin-left:2px;}
+        .inp-wrap{position:relative;}
+        .inp-wrap .inp-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-light);font-size:.9rem;pointer-events:none;transition:.2s;}
+        .inp-wrap.textarea-wrap .inp-icon{top:16px;transform:none;}
+        .inp-wrap input,.inp-wrap textarea,.inp-wrap select{
+            width:100%;padding:13px 16px 13px 44px;
+            border:1.5px solid #E5EDE6;border-radius:14px;
+            font-family:'Noto Sans Thai','Nunito',sans-serif;
+            font-size:.93rem;color:var(--text-dark);background:var(--cream);
+            transition:.25s;outline:none;resize:none;
+        }
+        .inp-wrap select{cursor:pointer;}
+        .inp-wrap input::placeholder,.inp-wrap textarea::placeholder{color:var(--text-light);}
+        .inp-wrap input:focus,.inp-wrap textarea:focus,.inp-wrap select:focus{
+            border-color:var(--sage);background:#fff;
+            box-shadow:0 0 0 4px rgba(123,174,138,.12);
+        }
+        .inp-wrap input:focus~.inp-icon,.inp-wrap textarea:focus~.inp-icon{color:var(--sage);}
+        .row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+        @media(max-width:540px){.row-2{grid-template-columns:1fr;}}
+
+        /* Field error */
+        .field-error{font-size:.78rem;color:var(--error);margin-top:5px;display:none;}
+        .has-error .inp-wrap input,.has-error .inp-wrap textarea,.has-error .inp-wrap select{border-color:var(--error)!important;}
+        .has-error .field-error{display:block;}
+
+        /* Submit btn */
+        .btn-submit{
+            width:100%;padding:15px;background:var(--sage);color:#fff;
+            border:none;border-radius:16px;font-family:'Noto Sans Thai','Nunito',sans-serif;
+            font-size:1rem;font-weight:700;cursor:pointer;transition:.3s;
+            box-shadow:0 6px 24px rgba(123,174,138,.35);
+            display:flex;align-items:center;justify-content:center;gap:8px;
+            margin-top:8px;
+        }
+        .btn-submit:hover{background:var(--text-dark);box-shadow:0 10px 30px rgba(45,74,53,.2);transform:translateY(-2px);}
+        .btn-submit .spin{display:none;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        /* Success state */
+        .success-msg{
+            display:none;text-align:center;padding:32px 24px;
+            background:linear-gradient(135deg,var(--sage-pale),var(--mint));
+            border-radius:18px;margin-top:16px;
+        }
+        .success-msg .sm-icon{font-size:3.5rem;margin-bottom:12px;display:block;}
+        .success-msg .sm-title{font-family:'Fredoka',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text-dark);margin-bottom:6px;}
+        .success-msg .sm-sub{font-size:.9rem;color:var(--text-mid);}
+
+        /* ── FAQ MINI ── */
+        .faq-section{padding:80px 0;background:linear-gradient(160deg,#E8F5EC 0%,var(--cream) 100%);}
+        .faq-item{background:#fff;border-radius:18px;margin-bottom:12px;border:1.5px solid transparent;transition:.3s;overflow:hidden;}
+        .faq-item.open{border-color:var(--sage-light);}
+        .faq-q{padding:20px 24px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:.95rem;color:var(--text-dark);}
+        .faq-q .icon{width:28px;height:28px;border-radius:50%;background:var(--sage-pale);display:flex;align-items:center;justify-content:center;color:var(--sage);font-size:.8rem;transition:transform .3s;flex-shrink:0;}
+        .faq-item.open .faq-q .icon{transform:rotate(45deg);background:var(--sage);color:#fff;}
+        .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease;padding:0 24px;font-size:.9rem;color:var(--text-mid);line-height:1.7;}
+        .faq-item.open .faq-a{max-height:200px;padding:0 24px 20px;}
+
+        /* ── CTA ── */
+        .cta-section{padding:80px 0;background:#fff;}
+        .cta-card{background:linear-gradient(135deg,var(--sage) 0%,#5A9A6E 100%);border-radius:32px;padding:64px 48px;position:relative;overflow:hidden;text-align:center;}
+        .cta-card::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.08);}
+        .cta-title{font-family:'Fredoka',sans-serif;font-size:clamp(1.8rem,3vw,2.4rem);font-weight:700;color:#fff;margin-bottom:12px;}
+        .cta-sub{color:rgba(255,255,255,.85);font-size:1rem;margin-bottom:28px;}
+        .btn-cta-white{padding:14px 36px;background:#fff;color:var(--sage);border:none;border-radius:30px;font-size:1rem;font-weight:700;cursor:pointer;text-decoration:none;transition:.3s;box-shadow:0 6px 24px rgba(0,0,0,.15);display:inline-block;}
+        .btn-cta-white:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.2);color:var(--text-dark);}
+
+        /* Footer */
+        .flourich-footer{background:var(--text-dark);padding:60px 0 30px;color:rgba(255,255,255,.7);}
+        .footer-brand-name{font-family:'Fredoka',sans-serif;font-size:1.8rem;font-weight:700;color:var(--sage-light);}
+        .footer-desc{font-size:.9rem;line-height:1.7;margin:12px 0 20px;max-width:260px;}
+        .footer-social a{width:36px;height:36px;background:rgba(255,255,255,.08);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);text-decoration:none;margin-right:8px;transition:.25s;}
+        .footer-social a:hover{background:var(--sage);color:#fff;}
+        .footer-heading{font-family:'Fredoka',sans-serif;font-size:1rem;font-weight:600;color:#fff;margin-bottom:16px;}
+        .footer-links{list-style:none;padding:0;margin:0;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.9rem;transition:.2s;}
+        .footer-links a:hover{color:var(--sage-light);padding-left:4px;}
+        .footer-divider{border-color:rgba(255,255,255,.1);margin:30px 0 20px;}
+        .footer-bottom{font-size:.83rem;color:rgba(255,255,255,.4);}
+
+        /* Back to top */
+        .back-to-top{position:fixed;right:28px;bottom:28px;width:46px;height:46px;border-radius:50%;background:var(--sage);color:#fff;display:flex;align-items:center;justify-content:center;border:none;box-shadow:0 4px 18px rgba(123,174,138,.4);transition:.3s;z-index:99;opacity:0;text-decoration:none;}
+        .back-to-top:hover{background:var(--text-dark);transform:translateY(-3px);color:#fff;}
+
+        /* Fade-up */
+        .fade-up{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+        .fade-up.visible{opacity:1;transform:translateY(0);}
+        .delay-1{transition-delay:.1s!important;}
+        .delay-2{transition-delay:.2s!important;}
+        .delay-3{transition-delay:.3s!important;}
+        .delay-4{transition-delay:.4s!important;}
+        .delay-5{transition-delay:.5s!important;}
+
+        /* Map embed */
+        .map-card{border-radius:24px;overflow:hidden;box-shadow:0 8px 32px rgba(45,74,53,.1);border:1.5px solid var(--sage-pale);}
+
+        /* Section label */
+        .section-eyebrow{font-size:.83rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sage);margin-bottom:10px;}
+        .section-title{font-family:'Fredoka',sans-serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;color:var(--text-dark);line-height:1.25;margin-bottom:14px;}
+        .section-sub{font-size:1rem;color:var(--text-mid);line-height:1.75;}
+
+        /* Response time badge */
+        .response-badge{
+            display:inline-flex;align-items:center;gap:8px;
+            background:linear-gradient(135deg,var(--sage-pale),var(--mint));
+            border-radius:20px;padding:10px 20px;
+            font-size:.85rem;font-weight:600;color:var(--text-dark);
+            margin-top:24px;
+        }
+        .response-badge .ping{width:10px;height:10px;background:var(--sage);border-radius:50%;animation:pulse-dot 1.5s ease-in-out infinite;}
+
+        @media(max-width:991px){.form-card{position:static;margin-top:40px;}}
+        @media(max-width:768px){.page-hero{padding:60px 0 50px;}.cta-card{padding:44px 28px;}.form-card{padding:32px 24px;}}
+    </style>
+</head>
+<body>
+
+    <!-- Spinner -->
+    <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50 d-flex align-items-center justify-content-center">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+            <div style="width:52px;height:52px;background:var(--sage-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                <img src="img/logo-flourich.png" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%2220%22 fill=%22%23A8CBAF%22/%3E%3C/svg%3E'">
+            </div>
+            <p style="font-family:'Fredoka',sans-serif;color:#7BAE8A;font-size:1.1rem;font-weight:600;margin:0;">Flourich</p>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="flourich-nav" id="mainNav">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="index.html" class="nav-brand">
+                <img src="img/logo-flourich.png" alt="Flourich" onerror="this.style.display='none'">
+                <span class="nav-brand-text">Flourich</span>
+            </a>
+            <div class="nav-links d-none d-lg-flex">
+                <a href="index.html">หน้าแรก</a>
+                <a href="about.html">เกี่ยวกับเรา</a>
+                <a href="service.html">บริการ</a>
+                <a href="team.html">ทีมงาน</a>
+                <a href="contact.html" class="active">ติดต่อ</a>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+                <a href="login.html" class="btn-nav-login d-none d-md-inline-flex"><i class="fas fa-sign-in-alt me-2"></i>Log In</a>
+                <a href="register.html" class="btn-nav-register"><i class="fas fa-user-plus me-2"></i>ลงทะเบียน</a>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- ═══════════ PAGE HERO ═══════════ -->
+    <section class="page-hero">
+        <div class="blob" style="width:340px;height:340px;background:var(--mint);top:-80px;left:-80px;"></div>
+        <div class="blob" style="width:260px;height:260px;background:var(--yellow-soft);top:30px;right:-50px;"></div>
+        <div class="blob" style="width:200px;height:200px;background:var(--blush);bottom:0;left:30%;"></div>
+        <div class="container position-relative" style="z-index:2;">
+            <div class="hero-eyebrow fade-up visible">
+                <span class="dot"></span> เราอยู่ตรงนี้เสมอ
+            </div>
+            <h1 class="fade-up visible delay-1">
+                มีอะไรอยากพูด?<br><span class="hl">บอกเราได้เลย</span>
+            </h1>
+            <p class="fade-up visible delay-2">
+                ไม่ว่าจะเป็นคำถาม ข้อเสนอแนะ หรืออยากร่วมมือกัน<br>
+                ทีม Flourich พร้อมรับฟังคุณเสมอ 💚
+            </p>
+        </div>
+    </section>
+
+    <div class="wave-divider" style="background:linear-gradient(140deg,var(--cream) 0%,#E8F5EC 55%,#FDF0E4 100%);">
+        <svg viewBox="0 0 1440 55" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,35 C480,70 960,0 1440,35 L1440,55 L0,55 Z" fill="#ffffff"/>
+        </svg>
+    </div>
+
+
+    <!-- ═══════════ MAIN CONTACT SECTION ═══════════ -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="row g-5">
+
+                <!-- LEFT — Info -->
+                <div class="col-lg-5">
+                    <p class="section-eyebrow fade-up">ข้อมูลติดต่อ</p>
+                    <h2 class="section-title fade-up delay-1" style="font-size:clamp(1.6rem,3vw,2.2rem);">ช่องทางติดต่อ<br>ทีม Flourich</h2>
+                    <p class="section-sub fade-up delay-2" style="margin-bottom:32px;">
+                        เราตอบกลับทุกข้อความด้วยความใส่ใจ ทีมงานพร้อมรับฟังคุณในวันทำการ
+                    </p>
+
+                    <!-- Info cards -->
+                    <div class="d-flex flex-column gap-3 mb-4">
+
+                        <div class="info-card fade-up delay-1">
+                            <div class="info-icon ii-1">📧</div>
+                            <div>
+                                <div class="info-label">Email</div>
+                                <div class="info-val">hello@flourich.app</div>
+                                <div class="info-sub">สำหรับติดต่อทั่วไปและสอบถามข้อมูล</div>
+                            </div>
+                        </div>
+
+                        <div class="info-card fade-up delay-2">
+                            <div class="info-icon ii-2">🆘</div>
+                            <div>
+                                <div class="info-label">Crisis Support</div>
+                                <div class="info-val">support@flourich.app</div>
+                                <div class="info-sub">ถ้าต้องการความช่วยเหลือด่วนด้านสุขภาพจิต</div>
+                            </div>
+                        </div>
+
+                        <div class="info-card fade-up delay-3">
+                            <div class="info-icon ii-3">🤝</div>
+                            <div>
+                                <div class="info-label">Partnership &amp; Business</div>
+                                <div class="info-val">partner@flourich.app</div>
+                                <div class="info-sub">สำหรับความร่วมมือและโอกาสทางธุรกิจ</div>
+                            </div>
+                        </div>
+
+                        <div class="info-card fade-up delay-4">
+                            <div class="info-icon ii-4">🎓</div>
+                            <div>
+                                <div class="info-label">มหาวิทยาลัย</div>
+                                <div class="info-val">มหาวิทยาลัยรังสิต</div>
+                                <div class="info-sub">ปทุมธานี, ประเทศไทย 12000</div>
+                            </div>
+                        </div>
+
+                        <div class="info-card fade-up delay-5">
+                            <div class="info-icon ii-5">⏰</div>
+                            <div>
+                                <div class="info-label">เวลาทำการ</div>
+                                <div class="info-val">จันทร์ – ศุกร์</div>
+                                <div class="info-sub">09:00 – 18:00 น. (ตอบกลับภายใน 24 ชม.)</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Response time badge -->
+                    <div class="fade-up delay-3">
+                        <div class="response-badge">
+                            <span class="ping"></span>
+                            ⚡ เวลาตอบกลับเฉลี่ย: <strong>ภายใน 4 ชั่วโมง</strong> (วันทำการ)
+                        </div>
+                    </div>
+
+                    <!-- Social Links -->
+                    <div class="social-strip mt-4 fade-up delay-4">
+                        <div class="social-title">🌿 ติดตามเราบน Social Media</div>
+                        <div class="social-btns">
+                            <a href="#" class="soc-btn soc-fb"><i class="fab fa-facebook-f"></i> Facebook</a>
+                            <a href="#" class="soc-btn soc-ig"><i class="fab fa-instagram"></i> Instagram</a>
+                            <a href="#" class="soc-btn soc-tw"><i class="fab fa-twitter"></i> Twitter</a>
+                            <a href="#" class="soc-btn soc-line"><i class="fab fa-line"></i> LINE</a>
+                        </div>
+                    </div>
+
+                    <!-- Emergency note -->
+                    <div style="background:linear-gradient(135deg,#FFF0F0,#FFE8E8);border-radius:18px;padding:20px 22px;margin-top:20px;border-left:4px solid #D46060;" class="fade-up delay-5">
+                        <p style="font-size:.85rem;font-weight:700;color:#A04040;margin-bottom:4px;">⚠️ กรณีฉุกเฉิน</p>
+                        <p style="font-size:.82rem;color:#804040;line-height:1.6;margin:0;">หากคุณหรือคนใกล้ชิดอยู่ในสถานการณ์วิกฤต กรุณาติดต่อ<br>
+                        <strong>สายด่วนสุขภาพจิต 1323</strong> หรือ <strong>กู้ชีพ 1669</strong> ทันที</p>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT — Form -->
+                <div class="col-lg-7 fade-up delay-2">
+                    <div class="form-card">
+                        <div class="form-card-title">ส่งข้อความหาเรา 💌</div>
+                        <div class="form-card-sub">กรอกข้อมูลด้านล่าง เราจะติดต่อกลับโดยเร็วที่สุด</div>
+
+                        <!-- Topic chips -->
+                        <p style="font-size:.82rem;font-weight:600;color:var(--text-light);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;">เรื่องที่ต้องการติดต่อ</p>
+                        <div class="topic-chips" id="topicChips">
+                            <span class="topic-chip" onclick="selectTopic(this)">💬 สอบถามทั่วไป</span>
+                            <span class="topic-chip" onclick="selectTopic(this)">🐛 รายงานปัญหา</span>
+                            <span class="topic-chip" onclick="selectTopic(this)">🤝 ความร่วมมือ</span>
+                            <span class="topic-chip" onclick="selectTopic(this)">💡 ข้อเสนอแนะ</span>
+                            <span class="topic-chip" onclick="selectTopic(this)">💚 สนับสนุนสุขภาพจิต</span>
+                            <span class="topic-chip" onclick="selectTopic(this)">📰 สื่อมวลชน</span>
+                        </div>
+
+                        <div id="contactForm">
+                            <!-- Name + Email row -->
+                            <div class="row-2">
+                                <div class="inp-group" id="field-name">
+                                    <label>ชื่อ-นามสกุล <span class="req">*</span></label>
+                                    <div class="inp-wrap">
+                                        <i class="fas fa-user inp-icon"></i>
+                                        <input type="text" id="inputName" placeholder="กรอกชื่อของคุณ">
+                                    </div>
+                                    <p class="field-error">กรุณากรอกชื่อ</p>
+                                </div>
+                                <div class="inp-group" id="field-email">
+                                    <label>อีเมล <span class="req">*</span></label>
+                                    <div class="inp-wrap">
+                                        <i class="fas fa-envelope inp-icon"></i>
+                                        <input type="email" id="inputEmail" placeholder="your@email.com">
+                                    </div>
+                                    <p class="field-error">กรุณากรอกอีเมลที่ถูกต้อง</p>
+                                </div>
+                            </div>
+
+                            <!-- Phone + Subject -->
+                            <div class="row-2">
+                                <div class="inp-group">
+                                    <label>เบอร์โทรศัพท์ <span style="color:var(--text-light);font-size:.78rem;">(ไม่บังคับ)</span></label>
+                                    <div class="inp-wrap">
+                                        <i class="fas fa-phone inp-icon"></i>
+                                        <input type="tel" id="inputPhone" placeholder="0XX-XXX-XXXX">
+                                    </div>
+                                </div>
+                                <div class="inp-group" id="field-subject">
+                                    <label>หัวข้อ <span class="req">*</span></label>
+                                    <div class="inp-wrap">
+                                        <i class="fas fa-tag inp-icon"></i>
+                                        <input type="text" id="inputSubject" placeholder="หัวข้อสั้นๆ">
+                                    </div>
+                                    <p class="field-error">กรุณากรอกหัวข้อ</p>
+                                </div>
+                            </div>
+
+                            <!-- How did you hear -->
+                            <div class="inp-group">
+                                <label>รู้จัก Flourich จากที่ไหน? <span style="color:var(--text-light);font-size:.78rem;">(ไม่บังคับ)</span></label>
+                                <div class="inp-wrap">
+                                    <i class="fas fa-search inp-icon"></i>
+                                    <select id="inputSource" style="padding-left:44px;">
+                                        <option value="">— เลือก —</option>
+                                        <option>Facebook / Instagram</option>
+                                        <option>เพื่อนแนะนำ</option>
+                                        <option>Google / Search Engine</option>
+                                        <option>มหาวิทยาลัย</option>
+                                        <option>LINE</option>
+                                        <option>อื่นๆ</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Message -->
+                            <div class="inp-group" id="field-msg">
+                                <label>ข้อความ <span class="req">*</span></label>
+                                <div class="inp-wrap textarea-wrap">
+                                    <i class="fas fa-comment-dots inp-icon"></i>
+                                    <textarea id="inputMsg" rows="5" placeholder="บอกเราได้เลยว่าอยากพูดถึงเรื่องอะไร..."></textarea>
+                                </div>
+                                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:5px;">
+                                    <p class="field-error" style="margin:0;">กรุณากรอกข้อความ</p>
+                                    <span id="charCount" style="font-size:.75rem;color:var(--text-light);">0 / 500</span>
+                                </div>
+                            </div>
+
+                            <!-- Privacy checkbox -->
+                            <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:20px;" id="field-privacy">
+                                <input type="checkbox" id="privacyCheck" style="width:18px;height:18px;accent-color:var(--sage);margin-top:2px;cursor:pointer;flex-shrink:0;">
+                                <label for="privacyCheck" style="font-size:.83rem;color:var(--text-mid);cursor:pointer;line-height:1.5;">
+                                    ฉันยอมรับ <a href="#" style="color:var(--sage);font-weight:600;">นโยบายความเป็นส่วนตัว</a> และยินยอมให้ Flourich ติดต่อกลับตามข้อมูลที่ให้ไว้ <span style="color:var(--sage);">*</span>
+                                </label>
+                            </div>
+                            <p class="field-error" id="err-privacy" style="margin-top:-12px;margin-bottom:12px;display:none;">กรุณายอมรับนโยบายความเป็นส่วนตัว</p>
+
+                            <!-- Submit -->
+                            <button class="btn-submit" id="btnSubmit" onclick="handleSubmit()">
+                                <span class="spin" id="submitSpin"></span>
+                                <i class="fas fa-paper-plane" id="submitIcon"></i>
+                                <span id="submitText">ส่งข้อความ</span>
+                            </button>
+                        </div>
+
+                        <!-- Success message -->
+                        <div class="success-msg" id="successMsg">
+                            <span class="sm-icon">🌱</span>
+                            <div class="sm-title">ส่งข้อความสำเร็จแล้ว!</div>
+                            <p class="sm-sub">ขอบคุณที่ติดต่อเรานะ 💚<br>ทีม Flourich จะตอบกลับภายใน <strong>24 ชั่วโมง</strong> (วันทำการ)</p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════ MAP SECTION ═══════════ -->
+    <section style="padding:0 0 90px;background:#fff;">
+        <div class="container">
+            <div class="text-center mb-4 fade-up">
+                <p class="section-eyebrow">ที่ตั้ง</p>
+                <h2 class="section-title" style="font-size:clamp(1.6rem,3vw,2.2rem);">เจอกันได้ที่ มหาวิทยาลัยรังสิต 🎓</h2>
+            </div>
+            <div class="map-card fade-up delay-1">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3871.4!2d100.607!3d14.028!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e27e23e3e7c3e7%3A0x8b2e2d2e2e2e2e2e!2z4Lih4Liy4Lil4LiH4LiZ4Liy4LiB4Lij4Li14Lia!5e0!3m2!1sth!2sth!4v1234567890"
+                    width="100%" height="360" style="border:0;display:block;" allowfullscreen loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════ FAQ ═══════════ -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="text-center mb-5">
+                        <p class="section-eyebrow fade-up">FAQ</p>
+                        <h2 class="section-title fade-up delay-1">คำถามที่พบบ่อย</h2>
+                        <p class="section-sub text-center fade-up delay-2">ถ้าไม่เจอคำตอบที่ต้องการ ส่งข้อความมาหาเราได้เลยนะ 💚</p>
+                    </div>
+
+                    <div class="faq-item fade-up delay-1">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            ตอบกลับข้อความเร็วแค่ไหน?
+                            <span class="icon"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <div class="faq-a">ในวันทำการ (จันทร์–ศุกร์) เราตอบกลับภายใน 4–8 ชั่วโมง สำหรับอีเมลที่ส่งในวันหยุด จะได้รับการตอบกลับในวันทำการถัดไป</div>
+                    </div>
+
+                    <div class="faq-item fade-up delay-2">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            ถ้ามีปัญหาเร่งด่วนเรื่องสุขภาพจิต ต้องทำยังไง?
+                            <span class="icon"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <div class="faq-a">กรุณาติดต่อสายด่วนสุขภาพจิต 1323 (กรมสุขภาพจิต) หรือกู้ชีพ 1669 โดยตรง เพราะเราอาจไม่สามารถตอบกลับได้ทันในกรณีฉุกเฉิน</div>
+                    </div>
+
+                    <div class="faq-item fade-up delay-3">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            ต้องการร่วมมือกับ Flourich ต้องติดต่อยังไง?
+                            <span class="icon"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <div class="faq-a">ส่งอีเมลมาที่ partner@flourich.app หรือกรอกฟอร์มด้านบนโดยเลือกหัวข้อ "ความร่วมมือ" แล้วทีมงานจะติดต่อกลับภายใน 2 วันทำการ</div>
+                    </div>
+
+                    <div class="faq-item fade-up delay-1">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            Flourich เปิดรับ Internship / นักศึกษาฝึกงานไหม?
+                            <span class="icon"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <div class="faq-a">เปิดรับครับ! เรายินดีต้อนรับนักศึกษาที่มีความสนใจด้าน Mental Health Tech, AI, UX/UI Design ส่งประวัติมาที่ hello@flourich.app พร้อมระบุว่าสนใจแผนก/ตำแหน่งอะไร</div>
+                    </div>
+
+                    <div class="faq-item fade-up delay-2">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            สื่อมวลชนต้องการข้อมูลสำหรับบทความ ติดต่อได้อย่างไร?
+                            <span class="icon"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <div class="faq-a">สำหรับสื่อมวลชน โปรดติดต่อ press@flourich.app โดยระบุสังกัดสื่อและประเด็นที่ต้องการ ทีม PR จะเตรียม Media Kit และตอบกลับภายใน 1 วันทำการ</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════ CTA ═══════════ -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div class="position-relative" style="z-index:2;">
+                    <div style="font-size:3.5rem;margin-bottom:16px;">💌</div>
+                    <h2 class="cta-title">ยังไม่ได้ลองใช้ Flourich?</h2>
+                    <p class="cta-sub">เริ่มดูแลใจตัวเองได้เลยวันนี้ ฟรี 7 วัน ไม่ต้องใช้บัตรเครดิต 🌱</p>
+                    <a href="register.html" class="btn-cta-white">
+                        <i class="fas fa-seedling me-2"></i> เริ่มต้นฟรี — ทันที!
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer class="flourich-footer">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="img/logo-flourich.png" alt="Flourich" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'">
+                        <span class="footer-brand-name">Flourich</span>
+                    </div>
+                    <p class="footer-desc">พื้นที่ปลอดภัยสำหรับทุกคนที่ต้องการดูแลสุขภาพจิต เราเชื่อว่าทุกคนสมควรได้รับความเข้าใจและการดูแล</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-heading">บริการ</h5>
+                    <ul class="footer-links">
+                        <li><a href="service.html">Safe Room</a></li>
+                        <li><a href="service.html">Echo Room</a></li>
+                        <li><a href="service.html">Inner Child</a></li>
+                        <li><a href="blog.html">บทความ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-heading">บริษัท</h5>
+                    <ul class="footer-links">
+                        <li><a href="about.html">เกี่ยวกับเรา</a></li>
+                        <li><a href="team.html">ทีมงาน</a></li>
+                        <li><a href="contact.html">ติดต่อเรา</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="footer-heading">รับข่าวสาร</h5>
+                    <p style="font-size:.9rem;color:rgba(255,255,255,.6);margin-bottom:16px;">รับบทความและเคล็ดลับดูแลสุขภาพจิตทุกสัปดาห์</p>
+                    <div class="d-flex gap-2">
+                        <input type="email" placeholder="อีเมลของคุณ" style="flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:24px;padding:10px 18px;color:#fff;font-size:.9rem;outline:none;">
+                        <button style="background:var(--sage);border:none;border-radius:24px;padding:10px 20px;color:#fff;font-weight:600;cursor:pointer;white-space:nowrap;" onmouseover="this.style.background='#5A9A6E'" onmouseout="this.style.background='var(--sage)'">สมัคร</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <p class="footer-bottom mb-0">© 2025 Flourich. สงวนลิขสิทธิ์ทุกประการ</p>
+                <div class="d-flex gap-4">
+                    <a href="#" style="font-size:.83rem;color:rgba(255,255,255,.4);text-decoration:none;">นโยบายความเป็นส่วนตัว</a>
+                    <a href="#" style="font-size:.83rem;color:rgba(255,255,255,.4);text-decoration:none;">ข้อกำหนดการใช้งาน</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></a>
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script>
+        // Spinner
+        window.addEventListener('load', () => { document.getElementById('spinner').classList.remove('show'); });
+
+        // Navbar + back-to-top
+        window.addEventListener('scroll', () => {
+            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
+            document.getElementById('backToTop').style.opacity = window.scrollY > 300 ? '1' : '0';
+        });
+
+        // Fade-up
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+        }, {threshold: 0.1});
+        document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+        // Topic chip selection
+        function selectTopic(el) {
+            document.querySelectorAll('.topic-chip').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            // Pre-fill subject
+            const label = el.textContent.replace(/[^\u0E00-\u0E7Fa-zA-Z ]/g,'').trim();
+            document.getElementById('inputSubject').value = label;
+        }
+
+        // Char counter
+        document.getElementById('inputMsg').addEventListener('input', function() {
+            const len = this.value.length;
+            document.getElementById('charCount').textContent = len + ' / 500';
+            if(len > 500) this.value = this.value.slice(0,500);
+            document.getElementById('field-msg').classList.remove('has-error');
+        });
+
+        // Clear errors on input
+        ['inputName','inputEmail','inputSubject'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.addEventListener('input', () => {
+                const fieldId = id.replace('input','field-').toLowerCase();
+                const field = document.getElementById(fieldId.replace('field-name','field-name').replace('field-email','field-email').replace('field-subject','field-subject'));
+                if(field) field.classList.remove('has-error');
+            });
+        });
+
+        // Submit handler
+        function handleSubmit() {
+            const name    = document.getElementById('inputName').value.trim();
+            const email   = document.getElementById('inputEmail').value.trim();
+            const subject = document.getElementById('inputSubject').value.trim();
+            const msg     = document.getElementById('inputMsg').value.trim();
+            const privacy = document.getElementById('privacyCheck').checked;
+            let valid = true;
+
+            document.getElementById('field-name').classList.toggle('has-error', !name);
+            document.getElementById('field-email').classList.toggle('has-error', !email || !/\S+@\S+\.\S+/.test(email));
+            document.getElementById('field-subject').classList.toggle('has-error', !subject);
+            document.getElementById('field-msg').classList.toggle('has-error', !msg);
+
+            if(!name || !email || !/\S+@\S+\.\S+/.test(email) || !subject || !msg) valid = false;
+
+            document.getElementById('err-privacy').style.display = privacy ? 'none' : 'block';
+            if(!privacy) valid = false;
+
+            if(!valid) return;
+
+            // Loading state
+            const btn  = document.getElementById('btnSubmit');
+            btn.disabled = true;
+            document.getElementById('submitSpin').style.display = 'block';
+            document.getElementById('submitIcon').style.display = 'none';
+            document.getElementById('submitText').textContent = 'กำลังส่ง...';
+
+            // Simulate API
+            setTimeout(() => {
+                document.getElementById('contactForm').style.display = 'none';
+                document.getElementById('successMsg').style.display  = 'block';
+            }, 1800);
+        }
+
+        // FAQ accordion
+        function toggleFaq(el) {
+            const item = el.closest('.faq-item');
+            const isOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+            if(!isOpen) item.classList.add('open');
+        }
+    </script>
+</body>
+</html>

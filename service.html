@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+    <title>Flourich — บริการและราคา</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --sage:         #7BAE8A;
+            --sage-light:   #A8CBAF;
+            --sage-pale:    #D6EBD9;
+            --mint:         #B8E0C5;
+            --deep:         #2D5A3D;
+            --forest:       #1E3D28;
+            --earth:        #8B6543;
+            --earth-light:  #C4A882;
+            --earth-pale:   #F5EBD9;
+            --cream:        #FDFAF5;
+            --yellow-soft:  #F5D87A;
+            --blush:        #F5B8C4;
+            --text-dark:    #2D4A35;
+            --text-mid:     #5A7A62;
+            --text-light:   #8BA892;
+        }
+
+        *{box-sizing:border-box;}
+        body{font-family:'Noto Sans Thai','Nunito',sans-serif;background:var(--cream);color:var(--text-dark);overflow-x:hidden;}
+
+        /* ── Spinner ── */
+        #spinner{opacity:0;visibility:hidden;transition:opacity .8s ease-out,visibility 0s linear .5s;z-index:99999;}
+        #spinner.show{transition:opacity .8s ease-out,visibility 0s linear 0s;visibility:visible;opacity:1;}
+
+        /* ── Navbar ── */
+        .flourich-nav{position:sticky;top:0;z-index:1000;background:rgba(253,250,245,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(123,174,138,.15);padding:14px 0;transition:box-shadow .3s;}
+        .flourich-nav.scrolled{box-shadow:0 4px 24px rgba(45,74,53,.08);}
+        .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+        .nav-brand img{width:42px;height:42px;border-radius:50%;object-fit:cover;}
+        .nav-brand-text{font-family:'Fredoka',sans-serif;font-size:1.6rem;font-weight:700;color:var(--sage);}
+        .nav-links{display:flex;gap:8px;align-items:center;}
+        .nav-links a{font-size:.95rem;font-weight:500;color:var(--text-mid);text-decoration:none;padding:7px 14px;border-radius:20px;transition:.25s;}
+        .nav-links a:hover,.nav-links a.active{background:var(--sage-pale);color:var(--sage);}
+        .btn-nav-login{padding:8px 22px;border:2px solid var(--sage);color:var(--sage)!important;border-radius:24px;font-weight:600!important;background:transparent;text-decoration:none;transition:.3s;display:inline-flex;align-items:center;}
+        .btn-nav-login:hover{background:var(--sage);color:#fff!important;}
+        .btn-nav-register{padding:8px 22px;background:var(--sage);color:#fff!important;border-radius:24px;font-weight:600;border:2px solid var(--sage);text-decoration:none;transition:.3s;display:inline-flex;align-items:center;}
+        .btn-nav-register:hover{background:var(--text-dark);border-color:var(--text-dark);}
+
+        /* ── Blobs ── */
+        .blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.4;pointer-events:none;z-index:0;}
+
+        /* ── Page Hero ── */
+        .page-hero{
+            background:linear-gradient(160deg,#C8EFD4 0%,#A8D8B8 30%,#C2E8D0 60%,#E8F7EE 100%);
+            padding:88px 0 70px;position:relative;overflow:hidden;text-align:center;
+        }
+        .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.6);color:var(--deep);font-size:.85rem;font-weight:600;padding:6px 18px;border-radius:20px;margin-bottom:18px;letter-spacing:.4px;backdrop-filter:blur(6px);}
+        .hero-eyebrow .dot{width:8px;height:8px;background:var(--sage);border-radius:50%;animation:pulse-dot 2s ease-in-out infinite;}
+        @keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.6}}
+        .page-hero h1{font-family:'Fredoka',sans-serif;font-size:clamp(2.4rem,5.5vw,3.8rem);font-weight:700;color:var(--forest);margin-bottom:16px;position:relative;z-index:1;line-height:1.2;}
+        .page-hero h1 .hl{color:var(--sage);position:relative;}
+        .page-hero h1 .hl::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:10px;background:var(--yellow-soft);border-radius:5px;z-index:-1;opacity:.6;}
+        .page-hero .sub{font-size:1.1rem;color:var(--deep);max-width:580px;margin:0 auto 30px;line-height:1.8;position:relative;z-index:1;opacity:.85;}
+
+        /* Trust badges */
+        .trust-row{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;position:relative;z-index:1;margin-top:8px;}
+        .trust-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.7);backdrop-filter:blur(8px);border-radius:20px;padding:8px 16px;font-size:.83rem;font-weight:600;color:var(--deep);box-shadow:0 2px 12px rgba(45,90,61,.08);}
+
+        /* Wave */
+        .wave-divider{line-height:0;}
+        .wave-divider svg{display:block;}
+
+        /* ── Feature Pills Strip ── */
+        .feature-strip{background:#fff;padding:56px 0;}
+        .strip-title{font-family:'Fredoka',sans-serif;font-size:clamp(1.7rem,3vw,2.4rem);font-weight:700;color:var(--forest);margin-bottom:10px;}
+        .strip-sub{font-size:1rem;color:var(--text-mid);margin-bottom:40px;}
+
+        .feature-pill-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+        @media(max-width:768px){.feature-pill-grid{grid-template-columns:1fr;}}
+        @media(max-width:991px) and (min-width:769px){.feature-pill-grid{grid-template-columns:repeat(2,1fr);}}
+
+        .fpill{
+            background:var(--cream);border-radius:22px;padding:28px 24px;
+            border:1.5px solid transparent;transition:.3s;
+            display:flex;flex-direction:column;gap:12px;
+        }
+        .fpill:hover{border-color:var(--sage-light);box-shadow:0 12px 36px rgba(123,174,138,.15);transform:translateY(-4px);}
+        .fpill-icon{font-size:2rem;width:56px;height:56px;background:var(--sage-pale);border-radius:16px;display:flex;align-items:center;justify-content:center;}
+        .fpill-title{font-family:'Fredoka',sans-serif;font-size:1.1rem;font-weight:600;color:var(--forest);}
+        .fpill-desc{font-size:.9rem;color:var(--text-mid);line-height:1.6;}
+
+        /* ── Pricing Section ── */
+        .pricing-section{
+            background:linear-gradient(170deg,#E8F7EE 0%,#D0EFD8 40%,#C8E6D0 70%,#B8DEC4 100%);
+            padding:90px 0 110px;position:relative;overflow:hidden;
+        }
+
+        .section-eyebrow{font-size:.85rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--deep);margin-bottom:10px;opacity:.8;}
+        .section-title{font-family:'Fredoka',sans-serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;color:var(--forest);line-height:1.25;margin-bottom:14px;}
+        .section-sub{font-size:1rem;color:var(--text-mid);max-width:520px;line-height:1.7;}
+
+        /* Pricing toggle */
+        .billing-toggle{
+            display:inline-flex;background:rgba(255,255,255,.6);backdrop-filter:blur(8px);
+            border-radius:30px;padding:5px;gap:4px;margin-bottom:48px;
+            box-shadow:0 2px 14px rgba(45,90,61,.1);
+        }
+        .billing-toggle button{
+            padding:9px 24px;border:none;border-radius:24px;font-family:'Noto Sans Thai','Nunito',sans-serif;
+            font-size:.9rem;font-weight:600;cursor:pointer;transition:.25s;background:transparent;color:var(--text-mid);
+        }
+        .billing-toggle button.active{background:var(--sage);color:#fff;box-shadow:0 4px 14px rgba(123,174,138,.35);}
+
+        /* Cards wrapper — allow middle to overflow */
+        .pricing-row{
+            display:flex;align-items:flex-start;justify-content:center;gap:24px;flex-wrap:wrap;
+        }
+
+        /* Base card */
+        .p-card{
+            background:#fff;border-radius:28px;padding:36px 30px 32px;
+            width:300px;flex-shrink:0;
+            border:2px solid rgba(123,174,138,.18);
+            transition:.35s;position:relative;overflow:hidden;
+        }
+        .p-card::before{content:'';position:absolute;top:-50px;right:-50px;width:130px;height:130px;border-radius:50%;opacity:.12;}
+        .p-card.buddy::before{background:var(--sage);}
+        .p-card.bestfriend::before{background:var(--forest);}
+        .p-card.soulmate::before{background:var(--earth);}
+
+        .p-card:hover{transform:translateY(-6px);box-shadow:0 20px 56px rgba(45,74,53,.12);}
+
+        /* Featured card */
+        .p-card.bestfriend{
+            background:linear-gradient(160deg,var(--forest) 0%,#2A5A3A 60%,#1E4A2D 100%);
+            border-color:transparent;
+            transform:scale(1.06) translateY(-8px);
+            box-shadow:0 24px 64px rgba(30,61,40,.35);
+            color:#fff;
+            z-index:2;
+        }
+        .p-card.bestfriend:hover{transform:scale(1.06) translateY(-14px);box-shadow:0 32px 72px rgba(30,61,40,.4);}
+
+        /* Popular badge */
+        .popular-badge{
+            position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+            background:linear-gradient(90deg,var(--yellow-soft),#F0C840);
+            color:var(--forest);font-size:.75rem;font-weight:700;
+            padding:5px 20px 7px;border-radius:0 0 16px 16px;
+            letter-spacing:.8px;white-space:nowrap;
+            box-shadow:0 4px 12px rgba(245,216,122,.4);
+        }
+
+        /* Card icon */
+        .plan-icon{font-size:2.8rem;margin-bottom:16px;display:block;line-height:1;}
+
+        /* Plan name */
+        .plan-name{font-family:'Fredoka',sans-serif;font-size:1.5rem;font-weight:700;color:var(--forest);margin-bottom:4px;}
+        .p-card.bestfriend .plan-name{color:#fff;}
+        .plan-desc{font-size:.85rem;color:var(--text-mid);margin-bottom:24px;line-height:1.5;}
+        .p-card.bestfriend .plan-desc{color:rgba(255,255,255,.7);}
+
+        /* Price */
+        .plan-price-wrap{margin-bottom:8px;}
+        .plan-price{font-family:'Fredoka',sans-serif;font-size:3.2rem;font-weight:700;color:var(--forest);line-height:1;}
+        .p-card.bestfriend .plan-price{color:#fff;}
+        .plan-currency{font-size:1.1rem;font-weight:600;vertical-align:top;margin-top:8px;display:inline-block;}
+        .plan-period{font-size:.85rem;color:var(--text-light);margin-left:4px;}
+        .p-card.bestfriend .plan-period{color:rgba(255,255,255,.55);}
+        .plan-daily{font-size:.8rem;color:var(--sage);font-weight:600;margin-bottom:24px;min-height:20px;}
+        .p-card.bestfriend .plan-daily{color:var(--yellow-soft);}
+
+        /* Divider */
+        .plan-divider{height:1px;background:rgba(123,174,138,.15);margin:0 0 20px;}
+        .p-card.bestfriend .plan-divider{background:rgba(255,255,255,.15);}
+
+        /* Features */
+        .plan-features{list-style:none;padding:0;margin:0 0 28px;display:flex;flex-direction:column;gap:10px;}
+        .plan-features li{display:flex;align-items:flex-start;gap:10px;font-size:.88rem;color:var(--text-mid);line-height:1.5;}
+        .p-card.bestfriend .plan-features li{color:rgba(255,255,255,.85);}
+        .plan-features li .check{width:22px;height:22px;border-radius:50%;background:var(--sage-pale);display:flex;align-items:center;justify-content:center;color:var(--sage);font-size:.75rem;flex-shrink:0;margin-top:1px;}
+        .p-card.bestfriend .plan-features li .check{background:rgba(255,255,255,.2);color:#fff;}
+
+        /* CTA button */
+        .btn-plan{
+            width:100%;padding:14px;border:none;border-radius:18px;
+            font-family:'Noto Sans Thai','Nunito',sans-serif;font-size:1rem;font-weight:700;
+            cursor:pointer;transition:.3s;text-decoration:none;display:block;text-align:center;
+        }
+        .btn-plan-outline{background:transparent;color:var(--sage);border:2px solid var(--sage);}
+        .btn-plan-outline:hover{background:var(--sage);color:#fff;transform:translateY(-2px);box-shadow:0 6px 20px rgba(123,174,138,.3);}
+        .btn-plan-featured{background:linear-gradient(135deg,var(--yellow-soft),#E8C430);color:var(--forest);}
+        .btn-plan-featured:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(245,216,122,.5);color:var(--forest);}
+        .btn-plan-soulmate{background:linear-gradient(135deg,var(--earth-light),var(--earth));color:#fff;}
+        .btn-plan-soulmate:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(139,101,67,.3);color:#fff;}
+
+        /* Saving badge */
+        .saving-note{
+            text-align:center;margin-top:24px;
+            font-size:.88rem;color:var(--deep);
+            background:rgba(255,255,255,.55);backdrop-filter:blur(6px);
+            border-radius:14px;padding:12px 20px;
+            display:inline-flex;align-items:center;gap:8px;
+        }
+
+        /* ── How it works ── */
+        .how-section{padding:90px 0;background:#fff;position:relative;}
+        .step-connector{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;height:2px;background:linear-gradient(90deg,transparent,var(--sage-pale),transparent);z-index:0;}
+
+        .step-card{
+            background:var(--cream);border-radius:24px;padding:32px 24px;
+            text-align:center;border:1.5px solid transparent;transition:.3s;
+            position:relative;z-index:1;
+        }
+        .step-card:hover{border-color:var(--sage-light);box-shadow:0 12px 36px rgba(123,174,138,.15);transform:translateY(-4px);}
+        .step-num{
+            width:52px;height:52px;border-radius:50%;
+            background:linear-gradient(135deg,var(--sage),var(--deep));
+            color:#fff;font-family:'Fredoka',sans-serif;font-size:1.4rem;font-weight:700;
+            display:flex;align-items:center;justify-content:center;
+            margin:0 auto 20px;box-shadow:0 6px 18px rgba(123,174,138,.35);
+        }
+        .step-icon{font-size:2.2rem;margin-bottom:14px;display:block;}
+        .step-title{font-family:'Fredoka',sans-serif;font-size:1.15rem;font-weight:600;color:var(--forest);margin-bottom:8px;}
+        .step-desc{font-size:.88rem;color:var(--text-mid);line-height:1.6;}
+
+        /* ── Comparison table ── */
+        .compare-section{
+            padding:80px 0;
+            background:linear-gradient(160deg,var(--cream) 0%,#E8F5EC 100%);
+        }
+        .compare-table{
+            background:#fff;border-radius:24px;overflow:hidden;
+            box-shadow:0 8px 40px rgba(45,74,53,.08);
+            border:1px solid rgba(123,174,138,.15);
+        }
+        .compare-table table{width:100%;border-collapse:collapse;}
+        .compare-table th{
+            padding:18px 20px;font-family:'Fredoka',sans-serif;font-size:1rem;font-weight:600;
+            text-align:center;border-bottom:2px solid var(--sage-pale);
+        }
+        .compare-table th.col-feature{text-align:left;color:var(--text-dark);}
+        .compare-table th.col-buddy{color:var(--sage);}
+        .compare-table th.col-best{background:linear-gradient(160deg,var(--forest),var(--deep));color:#fff;}
+        .compare-table th.col-soul{color:var(--earth);}
+        .compare-table td{
+            padding:14px 20px;font-size:.9rem;color:var(--text-mid);
+            border-bottom:1px solid rgba(123,174,138,.1);text-align:center;
+        }
+        .compare-table td.feature-name{text-align:left;font-weight:500;color:var(--text-dark);}
+        .compare-table td.col-best{background:rgba(30,61,40,.03);}
+        .compare-table tr:last-child td{border-bottom:none;}
+        .compare-table .tick{color:var(--sage);font-size:1rem;}
+        .compare-table .tick-gold{color:#C9A52A;font-size:1rem;}
+        .compare-table .cross{color:#ccc;}
+        .compare-table .val{font-weight:700;color:var(--text-dark);}
+
+        /* ── FAQ ── */
+        .faq-section{padding:80px 0;background:#fff;}
+        .faq-item{
+            background:var(--cream);border-radius:18px;margin-bottom:12px;
+            border:1.5px solid transparent;transition:.3s;overflow:hidden;
+        }
+        .faq-item.open{border-color:var(--sage-light);}
+        .faq-q{
+            padding:20px 24px;cursor:pointer;
+            display:flex;justify-content:space-between;align-items:center;
+            font-weight:600;font-size:.95rem;color:var(--forest);
+        }
+        .faq-q .icon{width:28px;height:28px;border-radius:50%;background:var(--sage-pale);display:flex;align-items:center;justify-content:center;color:var(--sage);font-size:.8rem;transition:transform .3s;flex-shrink:0;}
+        .faq-item.open .faq-q .icon{transform:rotate(45deg);background:var(--sage);color:#fff;}
+        .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease;padding:0 24px;font-size:.9rem;color:var(--text-mid);line-height:1.7;}
+        .faq-item.open .faq-a{max-height:200px;padding:0 24px 20px;}
+
+        /* ── CTA ── */
+        .cta-section{padding:80px 0;background:linear-gradient(140deg,var(--cream) 0%,#E8F5EC 100%);}
+        .cta-card{background:linear-gradient(135deg,var(--forest) 0%,var(--deep) 100%);border-radius:32px;padding:64px 48px;position:relative;overflow:hidden;text-align:center;}
+        .cta-card::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.07);}
+        .cta-card::after{content:'';position:absolute;bottom:-60px;left:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.04);}
+        .cta-title{font-family:'Fredoka',sans-serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;color:#fff;margin-bottom:12px;}
+        .cta-sub{color:rgba(255,255,255,.8);font-size:1rem;margin-bottom:32px;}
+        .btn-cta-gold{padding:15px 40px;background:linear-gradient(135deg,var(--yellow-soft),#E8C430);color:var(--forest);border:none;border-radius:30px;font-size:1rem;font-weight:700;cursor:pointer;text-decoration:none;transition:.3s;box-shadow:0 6px 24px rgba(245,216,122,.4);display:inline-block;}
+        .btn-cta-gold:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(245,216,122,.55);color:var(--forest);}
+        .cta-note{font-size:.82rem;color:rgba(255,255,255,.5);margin-top:14px;}
+
+        /* ── Footer ── */
+        .flourich-footer{background:var(--text-dark);padding:60px 0 30px;color:rgba(255,255,255,.7);}
+        .footer-brand-name{font-family:'Fredoka',sans-serif;font-size:1.8rem;font-weight:700;color:var(--sage-light);}
+        .footer-desc{font-size:.9rem;line-height:1.7;margin:12px 0 20px;max-width:260px;}
+        .footer-social a{width:36px;height:36px;background:rgba(255,255,255,.08);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);text-decoration:none;margin-right:8px;transition:.25s;}
+        .footer-social a:hover{background:var(--sage);color:#fff;}
+        .footer-heading{font-family:'Fredoka',sans-serif;font-size:1rem;font-weight:600;color:#fff;margin-bottom:16px;}
+        .footer-links{list-style:none;padding:0;margin:0;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.9rem;transition:.2s;}
+        .footer-links a:hover{color:var(--sage-light);padding-left:4px;}
+        .footer-divider{border-color:rgba(255,255,255,.1);margin:30px 0 20px;}
+        .footer-bottom{font-size:.83rem;color:rgba(255,255,255,.4);}
+
+        /* Back to top */
+        .back-to-top{position:fixed;right:28px;bottom:28px;width:46px;height:46px;border-radius:50%;background:var(--sage);color:#fff;display:flex;align-items:center;justify-content:center;border:none;box-shadow:0 4px 18px rgba(123,174,138,.4);transition:.3s;z-index:99;opacity:0;text-decoration:none;}
+        .back-to-top:hover{background:var(--text-dark);transform:translateY(-3px);color:#fff;}
+
+        /* Fade-up */
+        .fade-up{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+        .fade-up.visible{opacity:1;transform:translateY(0);}
+        .delay-1{transition-delay:.1s!important;}
+        .delay-2{transition-delay:.2s!important;}
+        .delay-3{transition-delay:.3s!important;}
+        .delay-4{transition-delay:.4s!important;}
+
+        /* Decorative leaves */
+        .leaf{position:absolute;pointer-events:none;z-index:0;opacity:.25;font-size:3rem;animation:leaf-float 8s ease-in-out infinite;}
+        @keyframes leaf-float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(8deg)}}
+
+        @media(max-width:991px){
+            .p-card.bestfriend{transform:scale(1) translateY(0);}
+            .p-card.bestfriend:hover{transform:translateY(-8px);}
+            .pricing-row{flex-direction:column;align-items:center;}
+            .p-card{width:100%;max-width:380px;}
+        }
+        @media(max-width:768px){
+            .page-hero{padding:60px 0 50px;}
+            .feature-pill-grid{grid-template-columns:1fr;}
+            .cta-card{padding:44px 28px;}
+            .compare-table{overflow-x:auto;}
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Spinner -->
+    <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50 d-flex align-items-center justify-content-center">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+            <div style="width:52px;height:52px;background:var(--sage-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                <img src="img/logo-flourich.png" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%2220%22 fill=%22%23A8CBAF%22/%3E%3C/svg%3E'">
+            </div>
+            <p style="font-family:'Fredoka',sans-serif;color:#7BAE8A;font-size:1.1rem;font-weight:600;margin:0;">Flourich</p>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="flourich-nav" id="mainNav">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="index.html" class="nav-brand">
+                <img src="img/logo-flourich.png" alt="Flourich" onerror="this.style.display='none'">
+                <span class="nav-brand-text">Flourich</span>
+            </a>
+            <div class="nav-links d-none d-lg-flex">
+                <a href="index.html">หน้าแรก</a>
+                <a href="about.html">เกี่ยวกับเรา</a>
+                <a href="service.html" class="active">บริการ</a>
+                <a href="team.html">ทีมงาน</a>
+                <a href="contact.html">ติดต่อ</a>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+                <a href="login.html" class="btn-nav-login d-none d-md-inline-flex"><i class="fas fa-sign-in-alt me-2"></i>Log In</a>
+                <a href="register.html" class="btn-nav-register"><i class="fas fa-user-plus me-2"></i>ลงทะเบียน</a>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- ════════════════════════════
+         PAGE HERO
+    ════════════════════════════ -->
+    <section class="page-hero">
+        <span class="leaf" style="top:10%;left:5%;animation-delay:0s;">🍃</span>
+        <span class="leaf" style="top:20%;right:8%;animation-delay:2s;font-size:2rem;">🌿</span>
+        <span class="leaf" style="bottom:15%;left:12%;animation-delay:4s;font-size:1.8rem;">🍀</span>
+        <span class="leaf" style="bottom:10%;right:6%;animation-delay:1s;">🌱</span>
+
+        <div class="blob" style="width:360px;height:360px;background:#5A9A6E;top:-100px;left:-100px;opacity:.2;"></div>
+        <div class="blob" style="width:280px;height:280px;background:#A8D8B8;bottom:-60px;right:-60px;opacity:.3;"></div>
+
+        <div class="container position-relative" style="z-index:2;">
+            <div class="hero-eyebrow fade-up visible">
+                <span class="dot"></span> แผนการดูแลใจที่ออกแบบเพื่อคุณ
+            </div>
+            <h1 class="fade-up visible delay-1">
+                เลือก<span class="hl">แผนที่ใช่</span><br>สำหรับใจของคุณ
+            </h1>
+            <p class="sub fade-up visible delay-2">
+                ไม่ว่าคุณจะเพิ่งเริ่มต้น หรืออยากดูแลตัวเองอย่างจริงจัง<br>
+                Flourich มีแผนที่พร้อมเคียงข้างคุณในทุกก้าว 🌿
+            </p>
+            <div class="trust-row fade-up visible delay-3">
+                <span class="trust-chip">🔒 ข้อมูลปลอดภัย 100%</span>
+                <span class="trust-chip">💚 ไม่มีโฆษณา</span>
+                <span class="trust-chip">✨ ยกเลิกได้ทุกเมื่อ</span>
+                <span class="trust-chip">🎁 ทดลองฟรี 7 วัน</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="wave-divider" style="background:linear-gradient(170deg,#E8F7EE 0%,#D0EFD8 40%,#C8E6D0 70%,#B8DEC4 100%);">
+        <svg viewBox="0 0 1440 55" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,35 C480,70 960,0 1440,35 L1440,55 L0,55 Z" fill="#ffffff"/>
+        </svg>
+    </div>
+
+
+    <!-- ════════════════════════════
+         FEATURE STRIP
+    ════════════════════════════ -->
+    <section class="feature-strip">
+        <div class="container">
+            <div class="text-center mb-5">
+                <p class="section-eyebrow fade-up">สิ่งที่คุณจะได้รับ</p>
+                <h2 class="strip-title fade-up delay-1">Flourich ช่วยคุณได้ยังไง?</h2>
+                <p class="strip-sub fade-up delay-2">ผู้ช่วยสุขภาพจิต AI ที่เข้าใจคุณ พร้อมอยู่เคียงข้างตลอด 24 ชั่วโมง</p>
+            </div>
+            <div class="feature-pill-grid">
+                <div class="fpill fade-up delay-1">
+                    <div class="fpill-icon">🌿</div>
+                    <div class="fpill-title">Safe Room — ระบายได้อย่างปลอดภัย</div>
+                    <div class="fpill-desc">พื้นที่บันทึกความรู้สึกส่วนตัว ไม่มีการตัดสิน Flourich รับฟังทุกอารมณ์ของคุณ</div>
+                </div>
+                <div class="fpill fade-up delay-2">
+                    <div class="fpill-icon">🔔</div>
+                    <div class="fpill-title">Echo Room — แลกเปลี่ยนเรื่องราว</div>
+                    <div class="fpill-desc">ชุมชนที่อบอุ่น แบ่งปันประสบการณ์ รู้ว่าคุณไม่ได้อยู่คนเดียวในโลก</div>
+                </div>
+                <div class="fpill fade-up delay-3">
+                    <div class="fpill-icon">🌸</div>
+                    <div class="fpill-title">Inner Child — เติบโตไปด้วยกัน</div>
+                    <div class="fpill-desc">เยียวยาบาดแผลเก่า ค้นพบตัวตน และเริ่มต้นเวอร์ชันใหม่ที่แข็งแกร่งกว่าเดิม</div>
+                </div>
+                <div class="fpill fade-up delay-1">
+                    <div class="fpill-icon">🧠</div>
+                    <div class="fpill-title">AI วิเคราะห์อารมณ์</div>
+                    <div class="fpill-desc">เทคโนโลยี AI วิเคราะห์รูปแบบความรู้สึกของคุณ และแนะนำวิธีดูแลใจที่เหมาะกับคุณที่สุด</div>
+                </div>
+                <div class="fpill fade-up delay-2">
+                    <div class="fpill-icon">📊</div>
+                    <div class="fpill-title">ติดตามอารมณ์รายวัน</div>
+                    <div class="fpill-desc">กราฟสุขภาพจิตส่วนตัว บันทึกความเปลี่ยนแปลงของคุณในแต่ละวัน ดูพัฒนาการของตัวเอง</div>
+                </div>
+                <div class="fpill fade-up delay-3">
+                    <div class="fpill-icon">🌙</div>
+                    <div class="fpill-title">พร้อมคุยตลอด 24/7</div>
+                    <div class="fpill-desc">ตื่นกลางดึก กังวลเรื่องอะไร หรืออยากระบาย Flourich อยู่ที่นี่เสมอ ไม่มีวันหยุด</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════
+         PRICING SECTION
+    ════════════════════════════ -->
+    <section class="pricing-section" id="pricing">
+        <span class="leaf" style="top:5%;left:3%;animation-delay:1s;opacity:.2;">🌳</span>
+        <span class="leaf" style="top:15%;right:4%;animation-delay:3s;opacity:.2;font-size:2rem;">🍃</span>
+        <span class="leaf" style="bottom:8%;left:6%;animation-delay:2s;opacity:.2;font-size:1.5rem;">🌿</span>
+
+        <div class="container position-relative" style="z-index:2;">
+            <div class="text-center mb-2">
+                <p class="section-eyebrow fade-up">แผนราคา</p>
+                <h2 class="section-title fade-up delay-1">เลือกแผนที่เหมาะกับคุณ</h2>
+                <p class="section-sub mx-auto text-center fade-up delay-2" style="margin-bottom:32px;">
+                    ทุกแผนมีช่วงทดลองฟรี 7 วัน ยกเลิกได้ทุกเมื่อ ไม่มีเงื่อนไขซับซ้อน
+                </p>
+            </div>
+
+            <!-- Billing toggle -->
+            <div class="text-center fade-up delay-2">
+                <div class="billing-toggle" id="billingToggle">
+                    <button class="active" onclick="setBilling('weekly')">รายสัปดาห์</button>
+                    <button onclick="setBilling('monthly')">รายเดือน</button>
+                    <button onclick="setBilling('yearly')">รายปี</button>
+                </div>
+            </div>
+
+            <!-- Cards -->
+            <div class="pricing-row fade-up delay-3">
+
+                <!-- Buddy -->
+                <div class="p-card buddy">
+                    <span class="plan-icon">🌱</span>
+                    <div class="plan-name">Buddy</div>
+                    <div class="plan-desc">เหมาะสำหรับทดลองใช้ระยะสั้น เริ่มต้นง่ายๆ</div>
+                    <div class="plan-price-wrap">
+                        <span class="plan-currency">฿</span><span class="plan-price" id="price-buddy">49</span>
+                        <span class="plan-period" id="period-buddy">/สัปดาห์</span>
+                    </div>
+                    <div class="plan-daily" id="daily-buddy">&nbsp;</div>
+                    <div class="plan-divider"></div>
+                    <ul class="plan-features">
+                        <li><span class="check"><i class="fas fa-check"></i></span>รับคำปรึกษา <strong>50 ครั้ง</strong>/สัปดาห์</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span>วิเคราะห์อารมณ์เบื้องต้น</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span>Safe Room &amp; Echo Room</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span>ความเร็วตอบกลับระดับปกติ</li>
+                    </ul>
+                    <a href="register.html" class="btn-plan btn-plan-outline">เริ่มทดลองฟรี 7 วัน</a>
+                </div>
+
+                <!-- Best Friend (Featured) -->
+                <div class="p-card bestfriend">
+                    <div class="popular-badge">⭐ Most Popular</div>
+                    <span class="plan-icon">🌿</span>
+                    <div class="plan-name">Best Friend</div>
+                    <div class="plan-desc">คุ้มค่าสำหรับการดูแลใจต่อเนื่องทุกเดือน</div>
+                    <div class="plan-price-wrap">
+                        <span class="plan-currency" style="color:rgba(255,255,255,.7)">฿</span><span class="plan-price" id="price-best">129</span>
+                        <span class="plan-period" id="period-best">/เดือน</span>
+                    </div>
+                    <div class="plan-daily" id="daily-best">เพียง ≈ 4.3 บาท/วัน</div>
+                    <div class="plan-divider"></div>
+                    <ul class="plan-features">
+                        <li><span class="check"><i class="fas fa-check"></i></span>รับคำปรึกษา <strong>250 ครั้ง</strong>/เดือน</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span>วิเคราะห์อารมณ์แบบละเอียดพิเศษ</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span>ครบทุกฟีเจอร์ + Inner Child</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span>ความเร็วตอบกลับ <strong>รวดเร็วทันใจ</strong></li>
+                        <li><span class="check"><i class="fas fa-check"></i></span>เข้าถึงฟีเจอร์ใหม่ก่อนใคร 🚀</li>
+                    </ul>
+                    <a href="register.html" class="btn-plan btn-plan-featured">เลือกแผนนี้เลย ✨</a>
+                </div>
+
+                <!-- Soulmate -->
+                <div class="p-card soulmate">
+                    <span class="plan-icon">🌳</span>
+                    <div class="plan-name">Soulmate</div>
+                    <div class="plan-desc">ดูแลใจกันยาวๆ แบบพรีเมียมระดับ VIP</div>
+                    <div class="plan-price-wrap">
+                        <span class="plan-currency">฿</span><span class="plan-price" id="price-soul">1,499</span>
+                        <span class="plan-period" id="period-soul">/ปี</span>
+                    </div>
+                    <div class="plan-daily" id="daily-soul" style="color:var(--earth);">เพียง 4.1 บาท/วัน — ถูกที่สุด!</div>
+                    <div class="plan-divider"></div>
+                    <ul class="plan-features">
+                        <li><span class="check"><i class="fas fa-check"></i></span><strong>Unlimited</strong> ไม่จำกัดจำนวนครั้ง</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span>VIP Lane — ความเร็วสูงสุด ⚡</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span>สิทธิพิเศษระดับ Soulmate</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span>ทุกฟีเจอร์ทั้งหมดรวมอยู่ในแผนนี้</li>
+                        <li><span class="check"><i class="fas fa-check"></i></span>ราคาต่อวันถูกที่สุด 💚</li>
+                    </ul>
+                    <a href="register.html" class="btn-plan btn-plan-soulmate">เป็น Soulmate กันเลย 🌳</a>
+                </div>
+
+            </div>
+
+            <div class="text-center mt-4 fade-up delay-4">
+                <div class="saving-note">
+                    💡 แผน Soulmate ประหยัดกว่ารายเดือนถึง <strong>~3.5 เดือน</strong> — คุ้มสุดสุด!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="wave-divider" style="background:linear-gradient(160deg,#E8F7EE 0%,#D0EFD8 40%,#C8E6D0 70%,#B8DEC4 100%);">
+        <svg viewBox="0 0 1440 55" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,35 C480,0 960,55 1440,20 L1440,55 L0,55 Z" fill="#ffffff"/>
+        </svg>
+    </div>
+
+
+    <!-- ════════════════════════════
+         HOW IT WORKS
+    ════════════════════════════ -->
+    <section class="how-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <p class="section-eyebrow fade-up">เริ่มต้นง่ายมาก</p>
+                <h2 class="section-title fade-up delay-1">3 ขั้นตอน สู่ใจที่แข็งแกร่ง</h2>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-4 col-md-6">
+                    <div class="step-card fade-up delay-1">
+                        <div class="step-num">1</div>
+                        <span class="step-icon">🌱</span>
+                        <div class="step-title">สมัครฟรีใน 1 นาที</div>
+                        <div class="step-desc">ลงทะเบียนด้วยอีเมลหรือ Social Login ไม่ต้องกรอกข้อมูลเยอะ เริ่มต้นได้เลยทันที ไม่ต้องใช้บัตรเครดิต</div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="step-card fade-up delay-2">
+                        <div class="step-num">2</div>
+                        <span class="step-icon">💚</span>
+                        <div class="step-title">เลือกแผนที่เหมาะกับคุณ</div>
+                        <div class="step-desc">ทดลองใช้ฟรี 7 วันก่อน แล้วค่อยเลือกแผนที่ตรงใจ ไม่รีบร้อน ปรับเปลี่ยนได้ตลอด</div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="step-card fade-up delay-3">
+                        <div class="step-num">3</div>
+                        <span class="step-icon">🌳</span>
+                        <div class="step-title">เริ่มดูแลใจของคุณ</div>
+                        <div class="step-desc">Flourich จะอยู่เคียงข้างคุณทุกวัน ช่วยวิเคราะห์อารมณ์ รับฟัง และเติบโตไปพร้อมกัน</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════
+         COMPARISON TABLE
+    ════════════════════════════ -->
+    <section class="compare-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <p class="section-eyebrow fade-up">เปรียบเทียบแผน</p>
+                <h2 class="section-title fade-up delay-1">อยากรู้ว่าแผนไหนได้อะไรบ้าง?</h2>
+                <p class="section-sub mx-auto text-center fade-up delay-2">ดูรายละเอียดเต็มๆ ก่อนตัดสินใจได้เลย</p>
+            </div>
+            <div class="compare-table fade-up delay-2">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="col-feature">ฟีเจอร์</th>
+                            <th class="col-buddy">🌱 Buddy</th>
+                            <th class="col-best">🌿 Best Friend</th>
+                            <th class="col-soul">🌳 Soulmate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="feature-name">จำนวนครั้งที่คุยได้</td>
+                            <td class="val">50/สัปดาห์</td>
+                            <td class="col-best val">250/เดือน</td>
+                            <td class="val">♾️ ไม่จำกัด</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Safe Room</td>
+                            <td><span class="tick">✓</span></td>
+                            <td class="col-best"><span class="tick">✓</span></td>
+                            <td><span class="tick">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Echo Room</td>
+                            <td><span class="tick">✓</span></td>
+                            <td class="col-best"><span class="tick">✓</span></td>
+                            <td><span class="tick">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Inner Child</td>
+                            <td><span class="cross">—</span></td>
+                            <td class="col-best"><span class="tick">✓</span></td>
+                            <td><span class="tick">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">วิเคราะห์อารมณ์</td>
+                            <td>เบื้องต้น</td>
+                            <td class="col-best val">ละเอียดพิเศษ</td>
+                            <td class="val">ละเอียดพิเศษ</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">ความเร็วตอบกลับ</td>
+                            <td>ปกติ</td>
+                            <td class="col-best val">รวดเร็วทันใจ</td>
+                            <td class="val">VIP Lane ⚡</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">ฟีเจอร์ใหม่ก่อนใคร</td>
+                            <td><span class="cross">—</span></td>
+                            <td class="col-best"><span class="tick">✓</span></td>
+                            <td><span class="tick">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">สิทธิพิเศษ Soulmate</td>
+                            <td><span class="cross">—</span></td>
+                            <td class="col-best"><span class="cross">—</span></td>
+                            <td><span class="tick-gold">★</span></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">ราคา/วัน (โดยเฉลี่ย)</td>
+                            <td>≈ 7 บาท</td>
+                            <td class="col-best">≈ 4.3 บาท</td>
+                            <td class="val">4.1 บาท 🏆</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════
+         FAQ
+    ════════════════════════════ -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="text-center mb-5">
+                        <p class="section-eyebrow fade-up">คำถามที่พบบ่อย</p>
+                        <h2 class="section-title fade-up delay-1">มีข้อสงสัย? เราตอบได้เลย 💚</h2>
+                    </div>
+
+                    <div class="faq-item fade-up delay-1">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            ทดลองใช้ฟรี 7 วัน ต้องใส่ข้อมูลบัตรเครดิตไหม?
+                            <span class="icon"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <div class="faq-a">ไม่ต้องเลยครับ! การทดลองใช้ฟรี 7 วันไม่ต้องกรอกข้อมูลบัตรเครดิตหรือข้อมูลชำระเงินใดๆ เพียงสมัครด้วยอีเมลแล้วเริ่มใช้งานได้เลยทันที</div>
+                    </div>
+
+                    <div class="faq-item fade-up delay-2">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            ถ้าอยากยกเลิกต้องทำยังไง?
+                            <span class="icon"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <div class="faq-a">ยกเลิกได้ง่ายมากผ่านหน้า "การตั้งค่า" ในแอป ไม่ต้องโทรหาใคร ไม่มีเงื่อนไขผูกมัด และถ้ายังอยู่ในช่วงทดลองฟรี ก็ไม่มีการเรียกเก็บเงินใดๆ ทั้งสิ้น</div>
+                    </div>
+
+                    <div class="faq-item fade-up delay-3">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            Flourich เป็น AI จริงๆ แล้วมันเข้าใจความรู้สึกได้ไหม?
+                            <span class="icon"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <div class="faq-a">Flourich ถูกออกแบบมาโดยผู้เชี่ยวชาญด้านสุขภาพจิต เพื่อให้เข้าใจอารมณ์และบริบทของการสนทนา แม้จะไม่ใช่นักจิตวิทยาจริงๆ แต่สามารถรับฟัง วิเคราะห์ และแนะนำแนวทางดูแลตัวเองได้อย่างเหมาะสม</div>
+                    </div>
+
+                    <div class="faq-item fade-up delay-1">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            ข้อมูลที่ฉันพูดคุยกับ Flourich จะถูกนำไปใช้ไหม?
+                            <span class="icon"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <div class="faq-a">ข้อมูลของคุณเป็นของคุณเท่านั้น เราไม่นำข้อมูลส่วนตัวหรือเนื้อหาการสนทนาไปขายหรือแชร์กับบุคคลที่สาม ทุกอย่างถูกเข้ารหัสและปกป้องอย่างเข้มงวด</div>
+                    </div>
+
+                    <div class="faq-item fade-up delay-2">
+                        <div class="faq-q" onclick="toggleFaq(this)">
+                            อัปเกรดหรือดาวน์เกรดแผนได้ไหม?
+                            <span class="icon"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <div class="faq-a">ได้เลยครับ! สามารถเปลี่ยนแผนได้ตลอดเวลาผ่านการตั้งค่าบัญชี ระบบจะคำนวณส่วนต่างให้อัตโนมัติ ไม่ต้องยกเลิกแล้วสมัครใหม่</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════
+         CTA SECTION
+    ════════════════════════════ -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div class="position-relative" style="z-index:2;">
+                    <div style="font-size:4rem;margin-bottom:16px;animation:leaf-float 4s ease-in-out infinite;">🌿</div>
+                    <h2 class="cta-title">พร้อมเริ่มต้นดูแลใจตัวเองแล้วหรือยัง?</h2>
+                    <p class="cta-sub">ทดลองใช้ฟรี 7 วัน ไม่ต้องใช้บัตรเครดิต ยกเลิกได้ทุกเมื่อ<br>Flourich จะอยู่เคียงข้างคุณในทุกก้าวของการเติบโต 🌱</p>
+                    <a href="register.html" class="btn-cta-gold">
+                        <i class="fas fa-seedling me-2"></i> เริ่มทดลองฟรี 7 วัน — ไม่มีค่าใช้จ่าย!
+                    </a>
+                    <p class="cta-note">✓ ไม่ต้องใช้บัตรเครดิต &nbsp;·&nbsp; ✓ ยกเลิกได้ทุกเมื่อ &nbsp;·&nbsp; ✓ ข้อมูลปลอดภัย 100%</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer class="flourich-footer">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="img/logo-flourich.png" alt="Flourich" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'">
+                        <span class="footer-brand-name">Flourich</span>
+                    </div>
+                    <p class="footer-desc">พื้นที่ปลอดภัยสำหรับทุกคนที่ต้องการดูแลสุขภาพจิต เราเชื่อว่าทุกคนสมควรได้รับความเข้าใจและการดูแล</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-heading">บริการ</h5>
+                    <ul class="footer-links">
+                        <li><a href="service.html">Safe Room</a></li>
+                        <li><a href="service.html">Echo Room</a></li>
+                        <li><a href="service.html">Inner Child</a></li>
+                        <li><a href="blog.html">บทความ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-heading">บริษัท</h5>
+                    <ul class="footer-links">
+                        <li><a href="about.html">เกี่ยวกับเรา</a></li>
+                        <li><a href="team.html">ทีมงาน</a></li>
+                        <li><a href="contact.html">ติดต่อเรา</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="footer-heading">รับข่าวสาร</h5>
+                    <p style="font-size:.9rem;color:rgba(255,255,255,.6);margin-bottom:16px;">รับบทความและเคล็ดลับดูแลสุขภาพจิตทุกสัปดาห์</p>
+                    <div class="d-flex gap-2">
+                        <input type="email" placeholder="อีเมลของคุณ" style="flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:24px;padding:10px 18px;color:#fff;font-size:.9rem;outline:none;">
+                        <button style="background:var(--sage);border:none;border-radius:24px;padding:10px 20px;color:#fff;font-weight:600;cursor:pointer;white-space:nowrap;" onmouseover="this.style.background='#5A9A6E'" onmouseout="this.style.background='var(--sage)'">สมัคร</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <p class="footer-bottom mb-0">© 2025 Flourich. สงวนลิขสิทธิ์ทุกประการ</p>
+                <div class="d-flex gap-4">
+                    <a href="#" style="font-size:.83rem;color:rgba(255,255,255,.4);text-decoration:none;">นโยบายความเป็นส่วนตัว</a>
+                    <a href="#" style="font-size:.83rem;color:rgba(255,255,255,.4);text-decoration:none;">ข้อกำหนดการใช้งาน</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></a>
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script>
+        // Spinner
+        window.addEventListener('load', () => { document.getElementById('spinner').classList.remove('show'); });
+
+        // Sticky nav + back to top
+        window.addEventListener('scroll', () => {
+            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
+            document.getElementById('backToTop').style.opacity = window.scrollY > 300 ? '1' : '0';
+        });
+
+        // Fade-up
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+        }, {threshold: 0.1});
+        document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+        // Billing toggle
+        const plans = {
+            weekly:  { buddy:['49','/สัปดาห์',''], best:['69','/สัปดาห์','เพียง ≈ 9.8 บาท/วัน'], soul:['299','/เดือน','เพียง ≈ 9.9 บาท/วัน'] },
+            monthly: { buddy:['149','/เดือน','≈ 4.9 บาท/วัน'], best:['129','/เดือน','เพียง ≈ 4.3 บาท/วัน'], soul:['149','/เดือน','≈ 4.9 บาท/วัน'] },
+            yearly:  { buddy:['999','/ปี','≈ 2.7 บาท/วัน'], best:['999','/ปี','≈ 2.7 บาท/วัน'], soul:['1,499','/ปี','4.1 บาท/วัน — ถูกที่สุด!'] }
+        };
+
+        function setBilling(type) {
+            const btns = document.querySelectorAll('#billingToggle button');
+            btns.forEach((b,i) => b.classList.toggle('active', ['weekly','monthly','yearly'][i] === type));
+            const p = plans[type];
+            document.getElementById('price-buddy').textContent  = p.buddy[0];
+            document.getElementById('period-buddy').textContent = p.buddy[1];
+            document.getElementById('daily-buddy').textContent  = p.buddy[2] || '\u00a0';
+            document.getElementById('price-best').textContent   = p.best[0];
+            document.getElementById('period-best').textContent  = p.best[1];
+            document.getElementById('daily-best').textContent   = p.best[2];
+            document.getElementById('price-soul').textContent   = p.soul[0];
+            document.getElementById('period-soul').textContent  = p.soul[1];
+            document.getElementById('daily-soul').textContent   = p.soul[2];
+        }
+
+        // FAQ toggle
+        function toggleFaq(el) {
+            const item = el.closest('.faq-item');
+            const isOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+            if (!isOpen) item.classList.add('open');
+        }
+    </script>
+</body>
+</html>

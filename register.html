@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8">
+    <title>Flourich — ลงทะเบียน</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --sage:        #7BAE8A;
+            --sage-light:  #A8CBAF;
+            --sage-pale:   #D6EBD9;
+            --mint:        #B8E0C5;
+            --cream:       #FDFAF5;
+            --yellow-soft: #F5D87A;
+            --peach:       #F7C5A0;
+            --blush:       #F5B8C4;
+            --sky:         #B8D8F0;
+            --text-dark:   #2D4A35;
+            --text-mid:    #5A7A62;
+            --text-light:  #8BA892;
+            --error:       #E07070;
+            --success:     #6BBF7A;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Noto Sans Thai', 'Nunito', sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Layout ── */
+        .reg-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ══ LEFT PANEL ══ */
+        .panel-left {
+            width: 400px;
+            flex-shrink: 0;
+            background: linear-gradient(160deg, #C8E6D0 0%, #EBF7EF 50%, #FDF0E4 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 36px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(55px);
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        .blob-a { width: 300px; height: 300px; background: var(--mint);        top: -70px;   left: -70px; }
+        .blob-b { width: 220px; height: 220px; background: var(--yellow-soft); bottom: -50px; right: -50px; }
+        .blob-c { width: 180px; height: 180px; background: var(--blush);       top: 45%;      right: 20px; }
+
+        .panel-inner {
+            position: relative; z-index: 2;
+            text-align: center; width: 100%;
+        }
+
+        .mascot-ring {
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.55);
+            backdrop-filter: blur(8px);
+            border: 3px solid rgba(255,255,255,.8);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 28px;
+            box-shadow: 0 16px 48px rgba(123,174,138,.22);
+            animation: float-m 5s ease-in-out infinite;
+        }
+        .mascot-ring img {
+            width: 124px; height: 124px;
+            border-radius: 50%; object-fit: cover;
+        }
+        @keyframes float-m {
+            0%,100% { transform: translateY(0); }
+            50%      { transform: translateY(-10px); }
+        }
+
+        .panel-brand {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.2rem; font-weight: 700;
+            color: var(--text-dark); margin-bottom: 8px;
+        }
+        .panel-brand span { color: var(--sage); }
+        .panel-tag {
+            font-size: .95rem; color: var(--text-mid);
+            line-height: 1.65; margin-bottom: 32px;
+        }
+
+        /* Steps indicator */
+        .steps-visual {
+            display: flex; flex-direction: column; gap: 0;
+            text-align: left; width: 100%;
+        }
+        .step-item {
+            display: flex; align-items: flex-start; gap: 14px;
+            position: relative;
+        }
+        .step-item:not(:last-child) .step-line {
+            position: absolute;
+            left: 19px; top: 40px;
+            width: 2px; height: 36px;
+            background: var(--sage-pale);
+        }
+        .step-num {
+            width: 38px; height: 38px; flex-shrink: 0;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Fredoka', sans-serif;
+            font-size: .95rem; font-weight: 700;
+            transition: .3s;
+            margin-bottom: 34px;
+        }
+        .step-num.active   { background: var(--sage); color: #fff; box-shadow: 0 4px 14px rgba(123,174,138,.4); }
+        .step-num.done     { background: var(--sage-pale); color: var(--sage); }
+        .step-num.inactive { background: #F0F4F1; color: var(--text-light); }
+        .step-body strong  { display: block; font-size: .9rem; font-weight: 600; color: var(--text-dark); padding-top: 8px; }
+        .step-body span    { font-size: .8rem; color: var(--text-mid); }
+
+        /* Benefit chips */
+        .benefit-chips {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            margin-top: 28px; justify-content: center;
+        }
+        .chip {
+            background: rgba(255,255,255,.65);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,.8);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: .8rem; font-weight: 600;
+            color: var(--text-dark);
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        /* ══ RIGHT PANEL ══ */
+        .panel-right {
+            flex: 1;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 52px 56px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .back-home {
+            position: absolute; top: 24px; left: 28px;
+            display: flex; align-items: center; gap: 6px;
+            font-size: .875rem; font-weight: 600;
+            color: var(--text-mid); text-decoration: none;
+            transition: .25s;
+        }
+        .back-home:hover { color: var(--sage); }
+
+        /* Progress bar */
+        .progress-bar-wrap {
+            margin-bottom: 36px;
+        }
+        .progress-steps {
+            display: flex; gap: 8px; margin-bottom: 10px;
+        }
+        .progress-step {
+            flex: 1; height: 5px;
+            border-radius: 10px;
+            background: #EEF2EF;
+            transition: background .4s;
+            cursor: pointer;
+        }
+        .progress-step.active   { background: var(--sage); }
+        .progress-step.complete { background: var(--sage-light); }
+        .progress-label {
+            font-size: .8rem; color: var(--text-light);
+        }
+        .progress-label span { color: var(--sage); font-weight: 600; }
+
+        /* Form header */
+        .form-eyebrow {
+            font-size: .8rem; font-weight: 600; letter-spacing: 1.5px;
+            text-transform: uppercase; color: var(--sage);
+            margin-bottom: 6px;
+        }
+        .form-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem; font-weight: 700;
+            color: var(--text-dark); margin-bottom: 6px;
+        }
+        .form-sub {
+            font-size: .9rem; color: var(--text-mid);
+            margin-bottom: 30px;
+        }
+        .form-sub a { color: var(--sage); font-weight: 600; text-decoration: none; }
+        .form-sub a:hover { text-decoration: underline; }
+
+        /* Slides */
+        .form-slides { position: relative; }
+        .form-slide {
+            display: none;
+            animation: slide-fade .35s ease;
+        }
+        .form-slide.active { display: block; }
+        @keyframes slide-fade {
+            from { opacity: 0; transform: translateX(18px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Input */
+        .input-group-f { margin-bottom: 18px; }
+        .input-group-f label {
+            display: block;
+            font-size: .875rem; font-weight: 600;
+            color: var(--text-dark); margin-bottom: 7px;
+        }
+        .input-group-f .hint {
+            font-size: .75rem; color: var(--text-light);
+            font-weight: 400; margin-left: 4px;
+        }
+        .input-wrap { position: relative; }
+        .input-wrap .icon {
+            position: absolute; left: 16px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light); font-size: .9rem;
+            pointer-events: none; transition: color .25s;
+        }
+        .input-wrap input,
+        .input-wrap select,
+        .input-wrap textarea {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 1.5px solid #E8EDE9;
+            border-radius: 13px;
+            font-family: 'Noto Sans Thai', 'Nunito', sans-serif;
+            font-size: .93rem;
+            color: var(--text-dark);
+            background: var(--cream);
+            transition: .25s; outline: none;
+            appearance: none;
+        }
+        .input-wrap textarea { padding-top: 14px; resize: none; }
+        .input-wrap input::placeholder,
+        .input-wrap textarea::placeholder { color: var(--text-light); }
+        .input-wrap input:focus,
+        .input-wrap select:focus,
+        .input-wrap textarea:focus {
+            border-color: var(--sage);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(123,174,138,.11);
+        }
+        .input-wrap input:focus ~ .icon { color: var(--sage); }
+
+        /* Password strength */
+        .pw-strength { margin-top: 8px; }
+        .pw-bars { display: flex; gap: 4px; margin-bottom: 4px; }
+        .pw-bar {
+            flex: 1; height: 4px; border-radius: 4px;
+            background: #EEF2EF; transition: background .3s;
+        }
+        .pw-bar.weak   { background: #E07070; }
+        .pw-bar.fair   { background: var(--yellow-soft); }
+        .pw-bar.strong { background: var(--sage); }
+        .pw-label { font-size: .75rem; color: var(--text-light); }
+
+        /* Password toggle */
+        .toggle-pw {
+            position: absolute; right: 14px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light); cursor: pointer;
+            font-size: .9rem; background: none; border: none; padding: 0;
+            transition: color .2s;
+        }
+        .toggle-pw:hover { color: var(--sage); }
+
+        /* Row 2-col */
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        @media (max-width: 560px) { .row-2 { grid-template-columns: 1fr; } }
+
+        /* Field error */
+        .field-error { font-size: .78rem; color: var(--error); margin-top: 5px; display: none; }
+        .has-error input,
+        .has-error select,
+        .has-error textarea { border-color: var(--error) !important; }
+        .has-error .field-error { display: block; }
+
+        /* Mood selector */
+        .mood-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+            margin-top: 2px;
+        }
+        .mood-btn {
+            border: 1.5px solid #E8EDE9;
+            border-radius: 14px; padding: 12px 8px;
+            background: var(--cream); cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            transition: .25s; user-select: none;
+        }
+        .mood-btn:hover { border-color: var(--sage-light); background: #fff; }
+        .mood-btn.selected {
+            border-color: var(--sage);
+            background: var(--sage-pale);
+            box-shadow: 0 0 0 3px rgba(123,174,138,.15);
+        }
+        .mood-emoji { font-size: 1.6rem; line-height: 1; }
+        .mood-label { font-size: .72rem; font-weight: 600; color: var(--text-mid); }
+
+        /* Goal chips */
+        .goal-chips {
+            display: flex; flex-wrap: wrap; gap: 9px; margin-top: 2px;
+        }
+        .goal-chip {
+            border: 1.5px solid #E8EDE9;
+            border-radius: 22px; padding: 8px 16px;
+            background: var(--cream); cursor: pointer;
+            font-size: .83rem; font-weight: 600; color: var(--text-mid);
+            transition: .25s; user-select: none;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .goal-chip:hover { border-color: var(--sage-light); background: #fff; }
+        .goal-chip.selected {
+            border-color: var(--sage);
+            background: var(--sage-pale); color: var(--text-dark);
+        }
+
+        /* Terms */
+        .terms-check {
+            display: flex; align-items: flex-start; gap: 10px;
+            margin-bottom: 20px;
+        }
+        .terms-check input[type="checkbox"] {
+            width: 18px; height: 18px; flex-shrink: 0;
+            accent-color: var(--sage); cursor: pointer; margin-top: 2px;
+        }
+        .terms-check span {
+            font-size: .85rem; color: var(--text-mid); line-height: 1.5;
+        }
+        .terms-check a { color: var(--sage); font-weight: 600; text-decoration: none; }
+        .terms-check a:hover { text-decoration: underline; }
+
+        /* Buttons row */
+        .btn-row { display: flex; gap: 12px; margin-top: 6px; }
+        .btn-back-f {
+            padding: 13px 24px;
+            border: 1.5px solid #E8EDE9;
+            border-radius: 13px; background: #fff;
+            font-family: 'Noto Sans Thai', 'Nunito', sans-serif;
+            font-size: .93rem; font-weight: 600; color: var(--text-mid);
+            cursor: pointer; transition: .25s;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .btn-back-f:hover { border-color: var(--sage-light); color: var(--sage); }
+        .btn-next-f, .btn-submit-f {
+            flex: 1; padding: 13px;
+            background: var(--sage); color: #fff;
+            border: none; border-radius: 13px;
+            font-family: 'Noto Sans Thai', 'Nunito', sans-serif;
+            font-size: .93rem; font-weight: 700;
+            cursor: pointer; transition: .3s;
+            box-shadow: 0 5px 20px rgba(123,174,138,.3);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-next-f:hover, .btn-submit-f:hover {
+            background: var(--text-dark);
+            box-shadow: 0 8px 26px rgba(45,74,53,.18);
+            transform: translateY(-2px);
+        }
+
+        /* Spinner btn */
+        .spinner-btn {
+            display: none;
+            width: 17px; height: 17px;
+            border: 2.5px solid rgba(255,255,255,.35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Divider */
+        .or-divider {
+            display: flex; align-items: center; gap: 12px; margin: 20px 0;
+        }
+        .or-divider::before,.or-divider::after { content:''; flex:1; height:1px; background:#E8EDE9; }
+        .or-divider span { font-size:.8rem; color:var(--text-light); white-space:nowrap; }
+
+        /* Social */
+        .social-btns { display: flex; gap: 10px; margin-bottom: 22px; }
+        .btn-social {
+            flex: 1; padding: 11px 8px;
+            border: 1.5px solid #E8EDE9; border-radius: 12px;
+            background: #fff; display: flex; align-items: center; justify-content: center; gap: 7px;
+            font-size: .82rem; font-weight: 600; color: var(--text-dark);
+            cursor: pointer; text-decoration: none; transition: .25s;
+        }
+        .btn-social:hover {
+            border-color: var(--sage-light); background: var(--cream);
+            color: var(--text-dark); transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(45,74,53,.08);
+        }
+
+        /* Login prompt */
+        .login-prompt {
+            text-align: center; font-size: .875rem; color: var(--text-mid);
+        }
+        .login-prompt a { color: var(--sage); font-weight: 700; text-decoration: none; }
+        .login-prompt a:hover { text-decoration: underline; }
+
+        /* ── Success screen ── */
+        .success-screen {
+            display: none;
+            flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 20px 0;
+            animation: slide-fade .5s ease;
+        }
+        .success-screen.show { display: flex; }
+        .success-circle {
+            width: 110px; height: 110px;
+            background: var(--sage-pale);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 28px;
+            animation: pop-in .5s cubic-bezier(.22,.61,.36,1.4) both;
+            box-shadow: 0 8px 32px rgba(123,174,138,.25);
+        }
+        @keyframes pop-in {
+            from { transform: scale(.4); opacity: 0; }
+            to   { transform: scale(1);  opacity: 1; }
+        }
+        .success-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem; font-weight: 700;
+            color: var(--text-dark); margin-bottom: 10px;
+        }
+        .success-sub { font-size: .95rem; color: var(--text-mid); line-height: 1.7; max-width: 360px; margin-bottom: 32px; }
+
+        /* Toast */
+        .toast-f {
+            position: fixed; bottom: 28px; right: 28px;
+            background: #fff; border-radius: 16px;
+            padding: 16px 20px;
+            box-shadow: 0 8px 32px rgba(45,74,53,.14);
+            border-left: 4px solid var(--sage);
+            display: flex; align-items: center; gap: 12px;
+            z-index: 9999; max-width: 300px;
+            transform: translateX(130%);
+            transition: transform .4s cubic-bezier(.22,.61,.36,1);
+        }
+        .toast-f.show { transform: translateX(0); }
+        .toast-f.error { border-left-color: var(--error); }
+        .toast-icon { font-size: 1.35rem; }
+        .toast-msg  { font-size: .875rem; font-weight: 600; color: var(--text-dark); }
+        .toast-sub  { font-size: .78rem; color: var(--text-mid); margin-top: 2px; }
+
+        /* Responsive */
+        @media (max-width: 960px) {
+            .panel-left { display: none; }
+        }
+        @media (max-width: 600px) {
+            .panel-right { padding: 48px 24px 40px; }
+            .mood-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* Load animation */
+        .panel-right { animation: slide-in-r .6s cubic-bezier(.22,.61,.36,1) both; }
+        @keyframes slide-in-r {
+            from { opacity: 0; transform: translateX(24px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+
+<body>
+<div class="reg-wrapper">
+
+    <!-- ══ LEFT PANEL ══ -->
+    <div class="panel-left">
+        <div class="blob blob-a"></div>
+        <div class="blob blob-b"></div>
+        <div class="blob blob-c"></div>
+
+        <div class="panel-inner">
+            <div class="mascot-ring">
+                <img src="img/logo-flourich.png" alt="Flourich Mascot"
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 124 124%22%3E%3Ccircle cx=%2262%22 cy=%2262%22 r=%2262%22 fill=%22%23A8CBAF%22/%3E%3Ctext x=%2250%25%22 y=%2256%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2248%22%3E🐹%3C/text%3E%3C/svg%3E'">
+            </div>
+
+            <h1 class="panel-brand">Flour<span>ich</span></h1>
+            <p class="panel-tag">เริ่มต้นการเดินทางสู่<br>สุขภาพจิตที่ดีขึ้น 🌱</p>
+
+            <!-- Steps visual -->
+            <div class="steps-visual" id="stepsVisual">
+                <div class="step-item">
+                    <div class="step-line"></div>
+                    <div class="step-num active" id="sv1">1</div>
+                    <div class="step-body">
+                        <strong>ข้อมูลบัญชี</strong>
+                        <span>อีเมลและรหัสผ่าน</span>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-line"></div>
+                    <div class="step-num inactive" id="sv2">2</div>
+                    <div class="step-body">
+                        <strong>ข้อมูลส่วนตัว</strong>
+                        <span>ชื่อและข้อมูลเพิ่มเติม</span>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-num inactive" id="sv3">3</div>
+                    <div class="step-body">
+                        <strong>ปรับแต่งประสบการณ์</strong>
+                        <span>เป้าหมายและความต้องการ</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefit chips -->
+            <div class="benefit-chips">
+                <div class="chip">✅ ฟรี ไม่มีค่าใช้จ่าย</div>
+                <div class="chip">🔒 ข้อมูลปลอดภัย</div>
+                <div class="chip">🚫 ไม่มีโฆษณา</div>
+                <div class="chip">💚 ไม่ตัดสิน</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ RIGHT PANEL ══ -->
+    <div class="panel-right">
+
+        <a href="index.html" class="back-home">
+            <i class="fas fa-arrow-left"></i> กลับหน้าแรก
+        </a>
+
+        <!-- Progress bar -->
+        <div class="progress-bar-wrap">
+            <div class="progress-steps">
+                <div class="progress-step active"   id="pb1"></div>
+                <div class="progress-step"          id="pb2"></div>
+                <div class="progress-step"          id="pb3"></div>
+            </div>
+            <p class="progress-label">ขั้นตอน <span id="stepLabel">1</span> จาก 3</p>
+        </div>
+
+        <!-- Form slides -->
+        <div class="form-slides" id="formSlides">
+
+            <!-- ══════ STEP 1: Account ══════ -->
+            <div class="form-slide active" id="step1">
+                <p class="form-eyebrow">ขั้นตอนที่ 1</p>
+                <h2 class="form-title">สร้างบัญชีของคุณ</h2>
+                <p class="form-sub">มีบัญชีแล้ว? <a href="login.html">เข้าสู่ระบบเลย</a></p>
+
+                <!-- Social register -->
+                <div class="social-btns">
+                    <a href="#" class="btn-social" onclick="socialReg('Google');return false;">
+                        <svg width="18" height="18" viewBox="0 0 24 24">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        </svg>
+                        สมัครด้วย Google
+                    </a>
+                    <a href="#" class="btn-social" onclick="socialReg('LINE');return false;">
+                        <span style="background:#06C755;color:#fff;border-radius:5px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;flex-shrink:0;">LINE</span>
+                        สมัครด้วย LINE
+                    </a>
+                </div>
+
+                <div class="or-divider"><span>หรือสมัครด้วยอีเมล</span></div>
+
+                <div class="input-group-f" id="f1-email">
+                    <label for="regEmail">อีเมล <span class="hint">*</span></label>
+                    <div class="input-wrap">
+                        <i class="fas fa-envelope icon"></i>
+                        <input type="email" id="regEmail" placeholder="example@email.com" autocomplete="email">
+                    </div>
+                    <p class="field-error">กรุณากรอกอีเมลที่ถูกต้อง</p>
+                </div>
+
+                <div class="row-2">
+                    <div class="input-group-f" id="f1-pw">
+                        <label for="regPw">รหัสผ่าน <span class="hint">*</span></label>
+                        <div class="input-wrap">
+                            <i class="fas fa-lock icon"></i>
+                            <input type="password" id="regPw" placeholder="อย่างน้อย 8 ตัวอักษร" oninput="checkStrength()" autocomplete="new-password">
+                            <button class="toggle-pw" type="button" onclick="toggleVis('regPw',this)"><i class="fas fa-eye"></i></button>
+                        </div>
+                        <div class="pw-strength">
+                            <div class="pw-bars">
+                                <div class="pw-bar" id="bar1"></div>
+                                <div class="pw-bar" id="bar2"></div>
+                                <div class="pw-bar" id="bar3"></div>
+                                <div class="pw-bar" id="bar4"></div>
+                            </div>
+                            <p class="pw-label" id="pwLabel">ความปลอดภัยของรหัสผ่าน</p>
+                        </div>
+                        <p class="field-error">รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร</p>
+                    </div>
+                    <div class="input-group-f" id="f1-pw2">
+                        <label for="regPw2">ยืนยันรหัสผ่าน <span class="hint">*</span></label>
+                        <div class="input-wrap">
+                            <i class="fas fa-lock icon"></i>
+                            <input type="password" id="regPw2" placeholder="••••••••" autocomplete="new-password">
+                            <button class="toggle-pw" type="button" onclick="toggleVis('regPw2',this)"><i class="fas fa-eye"></i></button>
+                        </div>
+                        <p class="field-error">รหัสผ่านไม่ตรงกัน</p>
+                    </div>
+                </div>
+
+                <div class="btn-row">
+                    <button class="btn-next-f" onclick="goStep(2)">
+                        ถัดไป <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ══════ STEP 2: Profile ══════ -->
+            <div class="form-slide" id="step2">
+                <p class="form-eyebrow">ขั้นตอนที่ 2</p>
+                <h2 class="form-title">บอกเราเรื่องคุณนิดนึง</h2>
+                <p class="form-sub" style="margin-bottom:22px;">ข้อมูลนี้จะช่วยให้เราดูแลคุณได้ดียิ่งขึ้น</p>
+
+                <div class="row-2">
+                    <div class="input-group-f" id="f2-fname">
+                        <label for="regFname">ชื่อ <span class="hint">*</span></label>
+                        <div class="input-wrap">
+                            <i class="fas fa-user icon"></i>
+                            <input type="text" id="regFname" placeholder="ชื่อของคุณ">
+                        </div>
+                        <p class="field-error">กรุณากรอกชื่อ</p>
+                    </div>
+                    <div class="input-group-f" id="f2-lname">
+                        <label for="regLname">นามสกุล <span class="hint">(ไม่บังคับ)</span></label>
+                        <div class="input-wrap">
+                            <i class="fas fa-user icon"></i>
+                            <input type="text" id="regLname" placeholder="นามสกุลของคุณ">
+                        </div>
+                        <p class="field-error"></p>
+                    </div>
+                </div>
+
+                <div class="row-2">
+                    <div class="input-group-f" id="f2-dob">
+                        <label for="regDob">วันเกิด <span class="hint">(ไม่บังคับ)</span></label>
+                        <div class="input-wrap">
+                            <i class="fas fa-birthday-cake icon"></i>
+                            <input type="date" id="regDob" style="color:var(--text-dark);">
+                        </div>
+                        <p class="field-error"></p>
+                    </div>
+                    <div class="input-group-f" id="f2-gender">
+                        <label for="regGender">เพศ <span class="hint">(ไม่บังคับ)</span></label>
+                        <div class="input-wrap">
+                            <i class="fas fa-heart icon"></i>
+                            <select id="regGender">
+                                <option value="" disabled selected>เลือกเพศ</option>
+                                <option value="female">หญิง</option>
+                                <option value="male">ชาย</option>
+                                <option value="nonbinary">Non-binary</option>
+                                <option value="other">อื่นๆ</option>
+                                <option value="prefer_not">ไม่ระบุ</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group-f" id="f2-username">
+                    <label for="regUsername">ชื่อผู้ใช้ (Username) <span class="hint">*</span></label>
+                    <div class="input-wrap">
+                        <i class="fas fa-at icon"></i>
+                        <input type="text" id="regUsername" placeholder="flourich_username" autocomplete="username">
+                    </div>
+                    <p class="field-error">กรุณากรอกชื่อผู้ใช้</p>
+                </div>
+
+                <div class="btn-row">
+                    <button class="btn-back-f" onclick="goStep(1)">
+                        <i class="fas fa-arrow-left"></i> ย้อนกลับ
+                    </button>
+                    <button class="btn-next-f" onclick="goStep(3)">
+                        ถัดไป <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ══════ STEP 3: Customize ══════ -->
+            <div class="form-slide" id="step3">
+                <p class="form-eyebrow">ขั้นตอนที่ 3</p>
+                <h2 class="form-title">ปรับให้เป็นของคุณ</h2>
+                <p class="form-sub" style="margin-bottom:20px;">ตอบนิดเดียว เพื่อให้ Flourich ดูแลคุณได้ตรงใจที่สุด</p>
+
+                <!-- Mood -->
+                <div class="input-group-f">
+                    <label>ตอนนี้คุณรู้สึกอย่างไร? <span class="hint">(เลือก 1 อารมณ์)</span></label>
+                    <div class="mood-grid">
+                        <div class="mood-btn" onclick="selectMood(this,'happy')">
+                            <span class="mood-emoji">😊</span>
+                            <span class="mood-label">มีความสุข</span>
+                        </div>
+                        <div class="mood-btn" onclick="selectMood(this,'calm')">
+                            <span class="mood-emoji">😌</span>
+                            <span class="mood-label">สงบ</span>
+                        </div>
+                        <div class="mood-btn" onclick="selectMood(this,'sad')">
+                            <span class="mood-emoji">😔</span>
+                            <span class="mood-label">เศร้า</span>
+                        </div>
+                        <div class="mood-btn" onclick="selectMood(this,'anxious')">
+                            <span class="mood-emoji">😰</span>
+                            <span class="mood-label">กังวล</span>
+                        </div>
+                        <div class="mood-btn" onclick="selectMood(this,'angry')">
+                            <span class="mood-emoji">😤</span>
+                            <span class="mood-label">หงุดหงิด</span>
+                        </div>
+                        <div class="mood-btn" onclick="selectMood(this,'tired')">
+                            <span class="mood-emoji">😴</span>
+                            <span class="mood-label">เหนื่อย</span>
+                        </div>
+                        <div class="mood-btn" onclick="selectMood(this,'lost')">
+                            <span class="mood-emoji">😶</span>
+                            <span class="mood-label">สับสน</span>
+                        </div>
+                        <div class="mood-btn" onclick="selectMood(this,'hopeful')">
+                            <span class="mood-emoji">🌟</span>
+                            <span class="mood-label">มีความหวัง</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Goals -->
+                <div class="input-group-f" style="margin-top:20px;">
+                    <label>เป้าหมายของคุณใน Flourich คืออะไร? <span class="hint">(เลือกได้หลายข้อ)</span></label>
+                    <div class="goal-chips">
+                        <div class="goal-chip" onclick="toggleGoal(this)">🌿 ระบายความรู้สึก</div>
+                        <div class="goal-chip" onclick="toggleGoal(this)">👥 หาชุมชนที่เข้าใจ</div>
+                        <div class="goal-chip" onclick="toggleGoal(this)">🌱 รู้จักตัวเองมากขึ้น</div>
+                        <div class="goal-chip" onclick="toggleGoal(this)">💪 เสริมความแข็งแกร่งใจ</div>
+                        <div class="goal-chip" onclick="toggleGoal(this)">🧘 จัดการความเครียด</div>
+                        <div class="goal-chip" onclick="toggleGoal(this)">🌸 เยียวยาบาดแผลเก่า</div>
+                        <div class="goal-chip" onclick="toggleGoal(this)">📖 เรียนรู้เรื่องจิตใจ</div>
+                        <div class="goal-chip" onclick="toggleGoal(this)">✨ แค่อยากลอง</div>
+                    </div>
+                </div>
+
+                <!-- Terms -->
+                <div class="terms-check" style="margin-top:22px;" id="f3-terms">
+                    <input type="checkbox" id="agreeTerms">
+                    <span>ฉันยอมรับ <a href="#">ข้อกำหนดการใช้งาน</a> และ <a href="#">นโยบายความเป็นส่วนตัว</a> ของ Flourich</span>
+                </div>
+                <p class="field-error" id="err-terms">กรุณายอมรับข้อกำหนดก่อนสมัคร</p>
+
+                <div class="btn-row">
+                    <button class="btn-back-f" onclick="goStep(2)">
+                        <i class="fas fa-arrow-left"></i> ย้อนกลับ
+                    </button>
+                    <button class="btn-submit-f" id="btnSubmit" onclick="handleSubmit()">
+                        <span class="spinner-btn" id="regSpinner"></span>
+                        <i class="fas fa-seedling" id="submitIcon"></i>
+                        <span id="submitTxt">สร้างบัญชี Flourich</span>
+                    </button>
+                </div>
+            </div>
+
+        </div><!-- /form-slides -->
+
+        <!-- ══ SUCCESS SCREEN ══ -->
+        <div class="success-screen" id="successScreen">
+            <div class="success-circle">🌱</div>
+            <h2 class="success-title">ยินดีต้อนรับสู่ Flourich!</h2>
+            <p class="success-sub">
+                บัญชีของคุณพร้อมแล้ว 🎉<br>
+                เริ่มต้นการเดินทางดูแลสุขภาพจิตได้เลย<br>
+                เราอยู่เคียงข้างคุณทุกก้าว 💚
+            </p>
+            <a href="index.html" class="btn-next-f" style="text-decoration:none;width:auto;padding:14px 40px;">
+                <i class="fas fa-home me-2"></i> ไปที่หน้าแรก
+            </a>
+            <p style="margin-top:16px;font-size:.85rem;color:var(--text-light);">
+                หรือ <a href="login.html" style="color:var(--sage);font-weight:600;text-decoration:none;">เข้าสู่ระบบ</a> เพื่อเริ่มใช้งานทันที
+            </p>
+        </div>
+
+        <!-- Login prompt -->
+        <p class="login-prompt" id="loginPromptBottom" style="margin-top:24px;">
+            มีบัญชีอยู่แล้ว? <a href="login.html">เข้าสู่ระบบ</a>
+        </p>
+
+    </div><!-- /panel-right -->
+</div><!-- /reg-wrapper -->
+
+
+<!-- Toast -->
+<div class="toast-f" id="toast">
+    <div class="toast-icon" id="toastIcon">✅</div>
+    <div>
+        <div class="toast-msg" id="toastMsg"></div>
+        <div class="toast-sub" id="toastSub"></div>
+    </div>
+</div>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    let currentStep = 1;
+    let selectedMood = '';
+
+    // ── Step navigation ──
+    function goStep(n) {
+        if (n > currentStep && !validateStep(currentStep)) return;
+
+        document.getElementById('step' + currentStep).classList.remove('active');
+        currentStep = n;
+        document.getElementById('step' + currentStep).classList.add('active');
+
+        updateProgress();
+    }
+
+    function updateProgress() {
+        for (let i = 1; i <= 3; i++) {
+            const pb = document.getElementById('pb' + i);
+            const sv = document.getElementById('sv' + i);
+            if (i < currentStep) {
+                pb.classList.add('complete'); pb.classList.remove('active');
+                sv.classList.replace('active','done');
+                sv.classList.replace('inactive','done');
+                sv.innerHTML = '<i class="fas fa-check" style="font-size:.75rem;"></i>';
+            } else if (i === currentStep) {
+                pb.classList.add('active'); pb.classList.remove('complete');
+                sv.className = 'step-num active';
+                sv.textContent = i;
+            } else {
+                pb.classList.remove('active','complete');
+                sv.className = 'step-num inactive';
+                sv.textContent = i;
+            }
+        }
+        document.getElementById('stepLabel').textContent = currentStep;
+    }
+
+    // ── Validation per step ──
+    function validateStep(s) {
+        let ok = true;
+        if (s === 1) {
+            const email = document.getElementById('regEmail').value.trim();
+            const pw    = document.getElementById('regPw').value;
+            const pw2   = document.getElementById('regPw2').value;
+            const re    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            setErr('f1-email', !re.test(email));
+            setErr('f1-pw',    pw.length < 8);
+            setErr('f1-pw2',   pw !== pw2);
+
+            if (!re.test(email) || pw.length < 8 || pw !== pw2) ok = false;
+        }
+        if (s === 2) {
+            const fname    = document.getElementById('regFname').value.trim();
+            const username = document.getElementById('regUsername').value.trim();
+            setErr('f2-fname',    !fname);
+            setErr('f2-username', !username);
+            if (!fname || !username) ok = false;
+        }
+        return ok;
+    }
+
+    function setErr(fieldId, hasError) {
+        const el = document.getElementById(fieldId);
+        if (!el) return;
+        if (hasError) el.classList.add('has-error');
+        else          el.classList.remove('has-error');
+    }
+
+    // ── Clear error on input ──
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+        el.addEventListener('input', () => {
+            const wrap = el.closest('.input-group-f');
+            if (wrap) wrap.classList.remove('has-error');
+        });
+    });
+
+    // ── Password strength ──
+    function checkStrength() {
+        const pw = document.getElementById('regPw').value;
+        const bars  = [document.getElementById('bar1'), document.getElementById('bar2'),
+                       document.getElementById('bar3'), document.getElementById('bar4')];
+        const label = document.getElementById('pwLabel');
+
+        bars.forEach(b => { b.className = 'pw-bar'; });
+
+        if (!pw) { label.textContent = 'ความปลอดภัยของรหัสผ่าน'; return; }
+
+        let score = 0;
+        if (pw.length >= 8)  score++;
+        if (pw.length >= 12) score++;
+        if (/[A-Z]/.test(pw) && /[0-9]/.test(pw)) score++;
+        if (/[^A-Za-z0-9]/.test(pw)) score++;
+
+        const cfg = [
+            { cls: 'weak',   txt: '😟 อ่อนแอมาก',     fill: 1 },
+            { cls: 'fair',   txt: '😐 พอใช้ได้',        fill: 2 },
+            { cls: 'strong', txt: '😊 ปลอดภัยดี',       fill: 3 },
+            { cls: 'strong', txt: '💪 แข็งแกร่งมาก',   fill: 4 },
+        ];
+        const lvl = Math.min(score, 3);
+        for (let i = 0; i < cfg[lvl].fill; i++) bars[i].classList.add(cfg[lvl].cls);
+        label.textContent = cfg[lvl].txt;
+    }
+
+    // ── Toggle password visibility ──
+    function toggleVis(inputId, btn) {
+        const inp  = document.getElementById(inputId);
+        const icon = btn.querySelector('i');
+        if (inp.type === 'password') {
+            inp.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            inp.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+
+    // ── Mood selection ──
+    function selectMood(el, mood) {
+        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedMood = mood;
+    }
+
+    // ── Goal chips toggle ──
+    function toggleGoal(el) {
+        el.classList.toggle('selected');
+    }
+
+    // ── Submit ──
+    function handleSubmit() {
+        if (!validateStep(3)) return;
+
+        const agreed = document.getElementById('agreeTerms').checked;
+        const errEl  = document.getElementById('err-terms');
+        if (!agreed) {
+            errEl.style.display = 'block';
+            document.getElementById('f3-terms').style.border = '1.5px solid var(--error)';
+            document.getElementById('f3-terms').style.borderRadius = '8px';
+            document.getElementById('f3-terms').style.padding = '6px 8px';
+            return;
+        }
+        errEl.style.display = 'none';
+
+        const btn     = document.getElementById('btnSubmit');
+        const spinner = document.getElementById('regSpinner');
+        const icon    = document.getElementById('submitIcon');
+        const txt     = document.getElementById('submitTxt');
+
+        btn.disabled = true;
+        spinner.style.display = 'block';
+        icon.style.display    = 'none';
+        txt.textContent       = 'กำลังสร้างบัญชี...';
+
+        // Simulate API call
+        setTimeout(() => {
+            document.getElementById('formSlides').style.display    = 'none';
+            document.getElementById('loginPromptBottom').style.display = 'none';
+            document.querySelector('.progress-bar-wrap').style.display  = 'none';
+            document.querySelector('.form-eyebrow') && null;
+
+            const ss = document.getElementById('successScreen');
+            ss.classList.add('show');
+
+            // Update left panel
+            for (let i = 1; i <= 3; i++) {
+                const sv = document.getElementById('sv' + i);
+                if (sv) {
+                    sv.className = 'step-num done';
+                    sv.innerHTML = '<i class="fas fa-check" style="font-size:.75rem;"></i>';
+                }
+                const pb = document.getElementById('pb' + i);
+                if (pb) { pb.classList.add('complete'); pb.classList.remove('active'); }
+            }
+        }, 2000);
+    }
+
+    // ── Social register ──
+    function socialReg(provider) {
+        showToast('🔗', 'กำลังเชื่อมต่อ ' + provider, 'กรุณารอสักครู่...', false);
+    }
+
+    // ── Toast ──
+    function showToast(icon, msg, sub, isError) {
+        const t = document.getElementById('toast');
+        document.getElementById('toastIcon').textContent = icon;
+        document.getElementById('toastMsg').textContent  = msg;
+        document.getElementById('toastSub').textContent  = sub;
+        t.classList.toggle('error', isError);
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ── Agree checkbox clears error ──
+    document.getElementById('agreeTerms').addEventListener('change', function () {
+        if (this.checked) {
+            document.getElementById('err-terms').style.display = 'none';
+            document.getElementById('f3-terms').style.border = '';
+            document.getElementById('f3-terms').style.padding = '';
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8">
+    <title>Flourich - พื้นที่ปลอดภัย เพื่อใจที่เข้มแข็ง</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="สุขภาพจิต, Mental Health, Flourich, พื้นที่ปลอดภัย" name="keywords">
+    <meta content="Flourich: แพลตฟอร์มดูแลสุขภาพจิต พื้นที่ปลอดภัยเพื่อใจที่เข้มแข็ง" name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --sage:       #7BAE8A;
+            --sage-light: #A8CBAF;
+            --sage-pale:  #D6EBD9;
+            --mint:       #B8E0C5;
+            --cream:      #FDFAF5;
+            --warm-white: #F9F5EE;
+            --yellow-soft:#F5D87A;
+            --peach:      #F7C5A0;
+            --blush:      #F5B8C4;
+            --sky:        #B8D8F0;
+            --text-dark:  #2D4A35;
+            --text-mid:   #5A7A62;
+            --text-light: #8BA892;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans Thai', 'Nunito', sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* ─── Blobs & decorative shapes ─── */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.45;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .blob-1 { width: 420px; height: 420px; background: var(--mint);       top: -80px;  left: -120px; }
+        .blob-2 { width: 300px; height: 300px; background: var(--yellow-soft); top: 40px;   right: -60px; }
+        .blob-3 { width: 260px; height: 260px; background: var(--blush);       bottom: 60px;left: 10%;   }
+
+        /* ─── Spinner ─── */
+        #spinner {
+            opacity: 0; visibility: hidden;
+            transition: opacity .8s ease-out, visibility 0s linear .5s;
+            z-index: 99999;
+        }
+        #spinner.show {
+            transition: opacity .8s ease-out, visibility 0s linear 0s;
+            visibility: visible; opacity: 1;
+        }
+
+        /* ─── Back to top ─── */
+        .back-to-top {
+            position: fixed; right: 28px; bottom: 28px;
+            width: 46px; height: 46px;
+            border-radius: 50%;
+            background: var(--sage);
+            color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            border: none;
+            box-shadow: 0 4px 18px rgba(123,174,138,.4);
+            transition: .3s; z-index: 99;
+        }
+        .back-to-top:hover { background: var(--text-dark); transform: translateY(-3px); }
+
+        /* ─── Navbar ─── */
+        .flourich-nav {
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(253, 250, 245, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(123,174,138,.15);
+            padding: 14px 0;
+            transition: box-shadow .3s;
+        }
+        .flourich-nav.scrolled { box-shadow: 0 4px 24px rgba(45,74,53,.08); }
+
+        .nav-brand {
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none;
+        }
+        .nav-brand img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
+        .nav-brand-text {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.6rem; font-weight: 700;
+            color: var(--sage); letter-spacing: .5px;
+        }
+
+        .nav-links { display: flex; gap: 8px; align-items: center; }
+        .nav-links a {
+            font-size: .95rem; font-weight: 500;
+            color: var(--text-mid); text-decoration: none;
+            padding: 7px 14px; border-radius: 20px;
+            transition: .25s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--sage-pale); color: var(--sage);
+        }
+
+        .btn-nav-login {
+            padding: 8px 22px !important;
+            border: 2px solid var(--sage) !important;
+            color: var(--sage) !important;
+            border-radius: 24px !important;
+            font-weight: 600 !important;
+            background: transparent !important;
+        }
+        .btn-nav-login:hover {
+            background: var(--sage) !important;
+            color: #fff !important;
+        }
+        .btn-nav-register {
+            padding: 8px 22px !important;
+            background: var(--sage) !important;
+            color: #fff !important;
+            border-radius: 24px !important;
+            font-weight: 600 !important;
+            border: 2px solid var(--sage) !important;
+        }
+        .btn-nav-register:hover {
+            background: var(--text-dark) !important;
+            border-color: var(--text-dark) !important;
+            transform: translateY(-2px);
+        }
+
+        /* ─── Hero ─── */
+        .hero-section {
+            min-height: 92vh;
+            position: relative;
+            overflow: hidden;
+            display: flex; align-items: center;
+            padding: 80px 0 60px;
+            background: linear-gradient(140deg, var(--cream) 0%, #E8F5EC 55%, #FDF0E4 100%);
+        }
+
+        .hero-tag {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--sage-pale);
+            color: var(--sage);
+            font-size: .85rem; font-weight: 600;
+            padding: 6px 16px; border-radius: 20px;
+            margin-bottom: 20px;
+            letter-spacing: .4px;
+        }
+        .hero-tag .dot {
+            width: 8px; height: 8px;
+            background: var(--sage); border-radius: 50%;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%,100% { transform: scale(1); opacity: 1; }
+            50%      { transform: scale(1.4); opacity: .6; }
+        }
+
+        .hero-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+        .hero-title .highlight {
+            color: var(--sage);
+            position: relative;
+        }
+        .hero-title .highlight::after {
+            content: '';
+            position: absolute; bottom: 2px; left: 0; right: 0;
+            height: 8px;
+            background: var(--yellow-soft);
+            border-radius: 4px;
+            z-index: -1;
+            opacity: .7;
+        }
+
+        .hero-sub {
+            font-size: 1.1rem; color: var(--text-mid);
+            line-height: 1.8; max-width: 520px;
+            margin-bottom: 36px;
+        }
+
+        .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+        .btn-primary-flourich {
+            padding: 14px 34px;
+            background: var(--sage);
+            color: #fff;
+            border: none; border-radius: 30px;
+            font-size: 1rem; font-weight: 600;
+            cursor: pointer; text-decoration: none;
+            transition: .3s;
+            box-shadow: 0 6px 24px rgba(123,174,138,.35);
+        }
+        .btn-primary-flourich:hover {
+            background: var(--text-dark); transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(45,74,53,.2);
+            color: #fff;
+        }
+        .btn-outline-flourich {
+            padding: 12px 32px;
+            background: transparent;
+            color: var(--sage);
+            border: 2px solid var(--sage); border-radius: 30px;
+            font-size: 1rem; font-weight: 600;
+            cursor: pointer; text-decoration: none;
+            transition: .3s;
+        }
+        .btn-outline-flourich:hover {
+            background: var(--sage-pale); transform: translateY(-2px);
+            color: var(--sage);
+        }
+
+        .hero-stats {
+            display: flex; gap: 36px; flex-wrap: wrap;
+            margin-top: 44px;
+        }
+        .stat-item { text-align: center; }
+        .stat-num {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem; font-weight: 700;
+            color: var(--sage);
+        }
+        .stat-label { font-size: .82rem; color: var(--text-light); margin-top: -4px; }
+
+        /* Phone mockup */
+        .hero-phone-wrap {
+            position: relative;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .phone-glow {
+            position: absolute;
+            width: 340px; height: 340px;
+            background: radial-gradient(circle, rgba(123,174,138,.35) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-phone-img {
+            position: relative; z-index: 2;
+            max-width: 340px; width: 100%;
+            animation: float-phone 5s ease-in-out infinite;
+            filter: drop-shadow(0 20px 40px rgba(45,74,53,.18));
+        }
+        @keyframes float-phone {
+            0%,100% { transform: translateY(0); }
+            50%      { transform: translateY(-16px); }
+        }
+
+        /* Floating badges */
+        .float-badge {
+            position: absolute; z-index: 3;
+            background: #fff;
+            border-radius: 16px;
+            padding: 10px 16px;
+            box-shadow: 0 8px 28px rgba(45,74,53,.12);
+            display: flex; align-items: center; gap: 10px;
+            animation: float-badge 4s ease-in-out infinite;
+        }
+        .float-badge-1 { top: 15%; left: -10px; animation-delay: 0s; }
+        .float-badge-2 { bottom: 20%; right: -10px; animation-delay: 1.5s; }
+        @keyframes float-badge {
+            0%,100% { transform: translateY(0); }
+            50%      { transform: translateY(-8px); }
+        }
+        .badge-icon { font-size: 1.5rem; }
+        .badge-text { font-size: .8rem; font-weight: 600; color: var(--text-dark); }
+        .badge-sub  { font-size: .7rem; color: var(--text-light); }
+
+        /* wave divider */
+        .wave-divider { line-height: 0; }
+        .wave-divider svg { display: block; }
+
+        /* ─── Features ─── */
+        .features-section {
+            padding: 90px 0;
+            background: #fff;
+            position: relative;
+        }
+        .section-eyebrow {
+            font-size: .85rem; font-weight: 600; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--sage);
+            margin-bottom: 10px;
+        }
+        .section-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-weight: 700; color: var(--text-dark);
+            line-height: 1.25; margin-bottom: 14px;
+        }
+        .section-sub {
+            font-size: 1rem; color: var(--text-mid);
+            max-width: 520px; line-height: 1.7;
+        }
+
+        .feature-card {
+            background: var(--cream);
+            border-radius: 28px;
+            padding: 40px 32px;
+            height: 100%;
+            position: relative; overflow: hidden;
+            transition: .35s;
+            border: 1.5px solid transparent;
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--sage-light);
+            box-shadow: 0 16px 48px rgba(123,174,138,.18);
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute; top: 0; right: 0;
+            width: 120px; height: 120px;
+            border-radius: 0 0 0 120px;
+            opacity: .25;
+        }
+        .fc-safe::before  { background: var(--sage); }
+        .fc-echo::before  { background: var(--sky); }
+        .fc-inner::before { background: var(--peach); }
+
+        .feature-icon-wrap {
+            width: 68px; height: 68px;
+            border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 24px;
+        }
+        .fi-safe  { background: var(--sage-pale); }
+        .fi-echo  { background: #DAF0FF; }
+        .fi-inner { background: #FDECD7; }
+
+        .feature-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem; font-weight: 600;
+            color: var(--text-dark); margin-bottom: 6px;
+        }
+        .feature-tag-en {
+            font-size: .8rem; font-weight: 600; letter-spacing: 1px;
+            text-transform: uppercase; color: var(--text-light);
+            margin-bottom: 14px; display: block;
+        }
+        .feature-desc {
+            font-size: .95rem; color: var(--text-mid);
+            line-height: 1.75;
+        }
+        .feature-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            margin-top: 20px;
+            font-size: .9rem; font-weight: 600;
+            color: var(--sage); text-decoration: none;
+            transition: gap .25s;
+        }
+        .feature-link:hover { gap: 10px; color: var(--text-dark); }
+
+        /* ─── Why section ─── */
+        .why-section {
+            padding: 90px 0;
+            background: linear-gradient(160deg, #EBF5EE 0%, var(--cream) 100%);
+            position: relative;
+        }
+        .why-list { list-style: none; padding: 0; margin: 0; }
+        .why-list li {
+            display: flex; align-items: flex-start; gap: 14px;
+            margin-bottom: 22px;
+        }
+        .why-check {
+            width: 32px; height: 32px; flex-shrink: 0;
+            background: var(--sage);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: .85rem;
+        }
+        .why-text strong { display: block; font-weight: 600; color: var(--text-dark); }
+        .why-text span { font-size: .9rem; color: var(--text-mid); }
+
+        /* ─── Testimonial strip ─── */
+        .testimonial-strip {
+            padding: 80px 0;
+            background: var(--text-dark);
+            position: relative; overflow: hidden;
+        }
+        .testimonial-strip .blob {
+            opacity: .08;
+        }
+        .t-card {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 20px; padding: 30px 28px;
+            transition: .3s;
+        }
+        .t-card:hover {
+            background: rgba(255,255,255,.12);
+            transform: translateY(-4px);
+        }
+        .t-stars { color: var(--yellow-soft); font-size: .9rem; margin-bottom: 12px; }
+        .t-text { font-size: .95rem; color: rgba(255,255,255,.8); line-height: 1.7; margin-bottom: 18px; }
+        .t-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--sage-pale);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+        }
+        .t-name { font-weight: 600; color: #fff; font-size: .9rem; }
+        .t-role { font-size: .8rem; color: rgba(255,255,255,.5); }
+
+        /* ─── CTA Banner ─── */
+        .cta-section {
+            padding: 90px 0;
+            background: #fff;
+        }
+        .cta-card {
+            background: linear-gradient(135deg, var(--sage) 0%, #5A9A6E 100%);
+            border-radius: 32px;
+            padding: 60px 48px;
+            position: relative; overflow: hidden;
+        }
+        .cta-card::before {
+            content: '';
+            position: absolute; top: -80px; right: -80px;
+            width: 260px; height: 260px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.1);
+        }
+        .cta-card::after {
+            content: '';
+            position: absolute; bottom: -60px; left: 10%;
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.07);
+        }
+        .cta-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            font-weight: 700; color: #fff;
+            margin-bottom: 12px;
+        }
+        .cta-sub { color: rgba(255,255,255,.85); font-size: 1rem; margin-bottom: 30px; }
+        .btn-cta-white {
+            padding: 14px 36px;
+            background: #fff; color: var(--sage);
+            border: none; border-radius: 30px;
+            font-size: 1rem; font-weight: 700;
+            cursor: pointer; text-decoration: none;
+            transition: .3s;
+            box-shadow: 0 6px 24px rgba(0,0,0,.15);
+        }
+        .btn-cta-white:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 32px rgba(0,0,0,.2);
+            color: var(--text-dark);
+        }
+
+        /* ─── Footer ─── */
+        .flourich-footer {
+            background: var(--text-dark);
+            padding: 60px 0 30px;
+            color: rgba(255,255,255,.7);
+        }
+        .footer-brand-name {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem; font-weight: 700; color: var(--sage-light);
+        }
+        .footer-desc { font-size: .9rem; line-height: 1.7; margin: 12px 0 20px; max-width: 260px; }
+        .footer-social a {
+            width: 36px; height: 36px;
+            background: rgba(255,255,255,.08);
+            border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            color: rgba(255,255,255,.7); text-decoration: none;
+            margin-right: 8px; transition: .25s;
+        }
+        .footer-social a:hover { background: var(--sage); color: #fff; }
+        .footer-heading { font-family: 'Fredoka', sans-serif; font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 16px; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: rgba(255,255,255,.6); text-decoration: none; font-size: .9rem; transition: .2s; }
+        .footer-links a:hover { color: var(--sage-light); padding-left: 4px; }
+        .footer-divider { border-color: rgba(255,255,255,.1); margin: 30px 0 20px; }
+        .footer-bottom { font-size: .83rem; color: rgba(255,255,255,.4); }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 991px) {
+            .hero-phone-wrap { margin-top: 50px; }
+            .hero-stats { gap: 24px; }
+            .float-badge-1 { left: 0; }
+            .float-badge-2 { right: 0; }
+        }
+        @media (max-width: 768px) {
+            .hero-section { min-height: auto; padding: 60px 0 40px; }
+            .cta-card { padding: 40px 28px; }
+            .nav-links { display: none; }
+            .nav-mobile-btns { display: flex !important; gap: 8px; }
+        }
+
+        /* ─── Fade-in animations ─── */
+        .fade-up {
+            opacity: 0; transform: translateY(28px);
+            transition: opacity .7s ease, transform .7s ease;
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: .1s !important; }
+        .delay-2 { transition-delay: .2s !important; }
+        .delay-3 { transition-delay: .3s !important; }
+        .delay-4 { transition-delay: .4s !important; }
+    </style>
+</head>
+
+<body>
+
+    <!-- Spinner Start -->
+    <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50 d-flex align-items-center justify-content-center">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+            <div style="width:52px;height:52px;background:var(--sage-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;animation:pulse-dot 1.2s ease-in-out infinite;">
+                <img src="img/logo-flourich.png" alt="Flourich" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%2220%22 fill=%22%23A8CBAF%22/%3E%3C/svg%3E'">
+            </div>
+            <p style="font-family:'Fredoka',sans-serif;color:#7BAE8A;font-size:1.1rem;font-weight:600;margin:0;">Flourich</p>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="flourich-nav" id="mainNav">
+    <div class="container d-flex align-items-center justify-content-between">
+        <!-- Brand -->
+        <a href="index.html" class="nav-brand">
+            <img src="img/logo-flourich.png" alt="Flourich Logo" onerror="this.style.display='none'">
+            <span class="nav-brand-text">Flourich</span>
+        </a>
+
+        <!-- Links (desktop) -->
+        <div class="nav-links d-none d-lg-flex align-items-center">
+            <a href="index.html" class="active">หน้าแรก</a>
+            <a href="about.html">เกี่ยวกับเรา</a>
+            <a href="service.html">บริการ</a>
+            <a href="blog.html">บทความ</a>
+            <a href="contact.html">ติดต่อ</a>
+
+            <!-- Search trigger -->
+            <button id="searchToggle" onclick="toggleSearch()" style="background:none;border:none;padding:7px 12px;border-radius:20px;cursor:pointer;color:var(--text-mid);font-size:.95rem;display:flex;align-items:center;gap:6px;transition:.25s;font-family:inherit;font-weight:500;">
+                <i class="fas fa-search" style="font-size:.85rem;"></i> ค้นหา
+            </button>
+        </div>
+
+        <!-- Auth buttons -->
+        <div class="d-flex gap-2 align-items-center">
+            <a href="login.html" class="nav-links a btn-nav-login d-none d-md-inline-flex align-items-center" style="border:2px solid var(--sage);padding:8px 22px;border-radius:24px;font-weight:600;color:var(--sage);text-decoration:none;transition:.3s;">
+                <i class="fas fa-sign-in-alt me-2"></i> Log In
+            </a>
+            <a href="register.html" class="btn-nav-register" style="padding:8px 22px;background:var(--sage);color:#fff;border-radius:24px;font-weight:600;text-decoration:none;transition:.3s;border:2px solid var(--sage);display:inline-flex;align-items:center;">
+                <i class="fas fa-user-plus me-2"></i> ลงทะเบียน
+            </a>
+        </div>
+    </div>
+
+    <!-- Search bar (dropdown) -->
+    <div id="searchBar" style="display:none;border-top:1px solid rgba(123,174,138,.15);padding:12px 0;background:rgba(253,250,245,.97);backdrop-filter:blur(12px);animation:slideDown .25s ease;">
+        <div class="container">
+            <div style="position:relative;max-width:600px;margin:0 auto;">
+                <i class="fas fa-search" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-light);font-size:.9rem;pointer-events:none;"></i>
+                <input id="searchInput" type="text" placeholder="ค้นหาบทความ บริการ หรือหัวข้อที่สนใจ..."
+                    style="width:100%;padding:12px 48px 12px 44px;border:1.5px solid var(--sage-pale);border-radius:24px;font-family:inherit;font-size:.93rem;color:var(--text-dark);background:#fff;outline:none;transition:.25s;"
+                    onfocus="this.style.borderColor='var(--sage)';this.style.boxShadow='0 0 0 4px rgba(123,174,138,.12)'"
+                    onblur="this.style.borderColor='var(--sage-pale)';this.style.boxShadow='none'"
+                    onkeydown="if(event.key==='Enter')doSearch();if(event.key==='Escape')toggleSearch()">
+                <button onclick="toggleSearch()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-light);font-size:.9rem;padding:4px 8px;" title="ปิด">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<style>
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+#searchToggle:hover { background: var(--sage-pale); color: var(--sage); }
+</style>
+
+<script>
+function toggleSearch() {
+    const bar   = document.getElementById('searchBar');
+    const input = document.getElementById('searchInput');
+    const isOpen = bar.style.display !== 'none';
+    bar.style.display = isOpen ? 'none' : 'block';
+    if (!isOpen) setTimeout(() => input.focus(), 50);
+}
+function doSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (q) window.location.href = 'search.html?q=' + encodeURIComponent(q);
+}
+</script>
+
+
+    <!-- ═══ HERO SECTION ═══ -->
+    <section class="hero-section">
+        <!-- decorative blobs -->
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+
+        <div class="container position-relative" style="z-index:2;">
+            <div class="row align-items-center g-5">
+                <!-- Left text -->
+                <div class="col-lg-6">
+                    <span class="hero-tag fade-up visible">
+                        <span class="dot"></span>
+                        แพลตฟอร์มดูแลสุขภาพจิต
+                    </span>
+                    <h1 class="hero-title fade-up visible delay-1">
+                        <span class="highlight">Flourich</span><br>
+                        พื้นที่ปลอดภัย<br>
+                        เพื่อใจที่เข้มแข็ง
+                    </h1>
+                    <p class="hero-sub fade-up visible delay-2">
+                        พื้นที่ส่วนตัวที่เปิดรับความรู้สึกทุกแบบ ไม่ตัดสิน ไม่คาดหวัง
+                        เพียงแค่อยู่เคียงข้างคุณในทุกก้าวของการเติบโต 🌱
+                    </p>
+                    <div class="hero-cta fade-up visible delay-3">
+                        <a href="register.html" class="btn-primary-flourich">
+                            <i class="fas fa-seedling me-2"></i> เริ่มต้นเลย — ฟรี!
+                        </a>
+                        <a href="about.html" class="btn-outline-flourich">
+                            ดูว่า Flourich คืออะไร
+                        </a>
+                    </div>
+                    <div class="hero-stats fade-up visible delay-4">
+                        <div class="stat-item">
+                            <div class="stat-num">10K+</div>
+                            <div class="stat-label">ผู้ใช้งานที่ไว้วางใจ</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-num">98%</div>
+                            <div class="stat-label">รู้สึกดีขึ้นหลังใช้งาน</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-num">24/7</div>
+                            <div class="stat-label">พื้นที่พร้อมรับฟัง</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right phone mockup -->
+                <div class="col-lg-6">
+                    <div class="hero-phone-wrap">
+                        <div class="phone-glow"></div>
+
+                        <!-- floating badge left -->
+                        <div class="float-badge float-badge-1">
+                            <div class="badge-icon">💚</div>
+                            <div>
+                                <div class="badge-text">Safe Room</div>
+                                <div class="badge-sub">ระบายความรู้สึก</div>
+                            </div>
+                        </div>
+
+                        <img src="img/logo-flourich.png" alt="Flourich App" class="hero-phone-img"
+                             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 600%22%3E%3Crect width=%22300%22 height=%22600%22 rx=%2240%22 fill=%22%23D6EBD9%22/%3E%3C/svg%3E'">
+
+                        <!-- floating badge right -->
+                        <div class="float-badge float-badge-2">
+                            <div class="badge-icon">🌟</div>
+                            <div>
+                                <div class="badge-text">Inner Child</div>
+                                <div class="badge-sub">เติบโตไปด้วยกัน</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wave Divider -->
+    <div class="wave-divider" style="background:var(--cream);">
+        <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,40 C360,80 1080,0 1440,40 L1440,60 L0,60 Z" fill="#ffffff"/>
+        </svg>
+    </div>
+
+
+    <!-- ═══ FEATURES SECTION ═══ -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="row justify-content-center text-center mb-60" style="margin-bottom:56px;">
+                <div class="col-lg-7">
+                    <p class="section-eyebrow fade-up">ฟีเจอร์เด่น</p>
+                    <h2 class="section-title fade-up delay-1">สามพื้นที่ เพื่อทุกความรู้สึก</h2>
+                    <p class="section-sub mx-auto fade-up delay-2">
+                        Flourich ออกแบบมาเพื่อให้คุณรู้สึกปลอดภัย ไม่ว่าคุณจะอยู่ในช่วงไหนของชีวิต
+                    </p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Safe Room -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card fc-safe fade-up">
+                        <div class="feature-icon-wrap fi-safe">🌿</div>
+                        <h3 class="feature-title">Safe Room</h3>
+                        <span class="feature-tag-en">พื้นที่ระบายความรู้สึก</span>
+                        <p class="feature-desc">
+                            บันทึกความรู้สึก ความคิด และเรื่องราวที่คุณอาจพูดไม่ออก
+                            ในพื้นที่ส่วนตัวที่มีแค่คุณและใจของคุณ ไม่มีการตัดสิน
+                            มีเพียงความเข้าใจและการรับฟัง
+                        </p>
+                        <a href="service.html" class="feature-link">
+                            ดูเพิ่มเติม <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Echo Room -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card fc-echo fade-up delay-1">
+                        <div class="feature-icon-wrap fi-echo">🔔</div>
+                        <h3 class="feature-title">Echo Room</h3>
+                        <span class="feature-tag-en">พื้นที่แลกเปลี่ยนเรื่องราว</span>
+                        <p class="feature-desc">
+                            แบ่งปันประสบการณ์และรับฟังเรื่องราวของคนอื่น
+                            ในชุมชนที่เต็มไปด้วยความเข้าใจ รู้ว่าคุณไม่ได้โดดเดี่ยว
+                            มีคนที่ผ่านสิ่งเดียวกันกับคุณ
+                        </p>
+                        <a href="service.html" class="feature-link">
+                            ดูเพิ่มเติม <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Inner Child -->
+                <div class="col-lg-4 col-md-6 mx-auto">
+                    <div class="feature-card fc-inner fade-up delay-2">
+                        <div class="feature-icon-wrap fi-inner">🌸</div>
+                        <h3 class="feature-title">Inner Child</h3>
+                        <span class="feature-tag-en">เติบโตไปพร้อมกับเรา</span>
+                        <p class="feature-desc">
+                            สำรวจตัวตนและเยียวยาบาดแผลเก่าๆ ด้วยกิจกรรม
+                            และบทเรียนที่ออกแบบมาเพื่อช่วยให้คุณค้นพบ
+                            ตัวเองในเวอร์ชันที่แข็งแกร่งกว่าเดิม
+                        </p>
+                        <a href="service.html" class="feature-link">
+                            ดูเพิ่มเติม <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══ WHY FLOURICH ═══ -->
+    <section class="why-section">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <p class="section-eyebrow fade-up">ทำไมต้อง Flourich?</p>
+                    <h2 class="section-title fade-up delay-1">พื้นที่ที่ใจคุณ<br>รู้สึกปลอดภัยจริงๆ</h2>
+                    <p class="section-sub fade-up delay-2" style="margin-bottom:32px;">
+                        เราเชื่อว่าทุกคนสมควรได้รับพื้นที่เพื่อดูแลสุขภาพจิต
+                        โดยไม่ต้องรู้สึกกลัวหรือกังวลใดๆ
+                    </p>
+                    <ul class="why-list fade-up delay-2">
+                        <li>
+                            <div class="why-check"><i class="fas fa-check"></i></div>
+                            <div class="why-text">
+                                <strong>ปลอดภัย 100% — ข้อมูลเป็นของคุณ</strong>
+                                <span>เข้ารหัสข้อมูลทั้งหมด ไม่มีการแชร์กับบุคคลที่สาม</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="why-check"><i class="fas fa-check"></i></div>
+                            <div class="why-text">
+                                <strong>ไม่มีการตัดสิน ไม่ว่าคุณจะรู้สึกอะไร</strong>
+                                <span>พื้นที่ที่ยอมรับทุกอารมณ์และทุกความรู้สึก</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="why-check"><i class="fas fa-check"></i></div>
+                            <div class="why-text">
+                                <strong>ผู้เชี่ยวชาญด้านสุขภาพจิตออกแบบ</strong>
+                                <span>เนื้อหาและกิจกรรมที่ผ่านการรับรองทางจิตวิทยา</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="why-check"><i class="fas fa-check"></i></div>
+                            <div class="why-text">
+                                <strong>ชุมชนที่อบอุ่น มีความเข้าใจ</strong>
+                                <span>ร่วมกับผู้ที่ผ่านประสบการณ์คล้ายกับคุณ</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 text-center fade-up delay-1">
+                    <div style="position:relative;display:inline-block;">
+                        <div style="width:380px;height:380px;max-width:100%;background:linear-gradient(135deg,var(--sage-pale),var(--mint));border-radius:50% 30% / 30% 50%;display:flex;align-items:center;justify-content:center;margin:auto;">
+                            <img src="img/iphone.png" alt="Flourich Mascot"
+                                 style="width:220px;height:220px;border-radius:50%;object-fit:cover;box-shadow:0 16px 48px rgba(123,174,138,.3);"
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Ccircle cx=%22100%22 cy=%22100%22 r=%22100%22 fill=%22%23A8CBAF%22/%3E%3C/svg%3E'">
+                        </div>
+                        <!-- small orbit badges -->
+                        <div style="position:absolute;top:20px;right:0;background:#fff;border-radius:16px;padding:10px 14px;box-shadow:0 6px 20px rgba(45,74,53,.12);font-size:.8rem;font-weight:600;color:var(--text-dark);">
+                            💛 รู้สึกดีขึ้นทุกวัน
+                        </div>
+                        <div style="position:absolute;bottom:30px;left:0;background:#fff;border-radius:16px;padding:10px 14px;box-shadow:0 6px 20px rgba(45,74,53,.12);font-size:.8rem;font-weight:600;color:var(--text-dark);">
+                            🌱 เติบโตพร้อมกัน
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══ TESTIMONIAL STRIP ═══ -->
+    <section class="testimonial-strip">
+        <div class="blob" style="width:400px;height:400px;background:var(--sage);top:-100px;right:-100px;"></div>
+        <div class="container position-relative" style="z-index:2;">
+            <div class="text-center mb-5">
+                <p class="section-eyebrow" style="color:var(--sage-light);">เสียงจากผู้ใช้งาน</p>
+                <h2 class="section-title" style="color:#fff;">พวกเขาเปลี่ยนแปลงแล้ว<br>คุณก็ทำได้เช่นกัน</h2>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="t-card">
+                        <div class="t-stars">★★★★★</div>
+                        <p class="t-text">"ก่อนมาใช้ Flourich ฉันรู้สึกหนักมาก แต่พอมีพื้นที่ระบายความรู้สึกโดยไม่ถูกตัดสิน ทุกอย่างเริ่มเบาลงทีละนิด"</p>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="t-avatar">🌸</div>
+                            <div>
+                                <div class="t-name">มินตรา ว.</div>
+                                <div class="t-role">ผู้ใช้งาน Safe Room</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="t-card">
+                        <div class="t-stars">★★★★★</div>
+                        <p class="t-text">"Echo Room ทำให้รู้ว่าไม่ได้โดดเดี่ยว มีคนที่เข้าใจและผ่านสิ่งเดียวกันมาจริงๆ มันช่วยได้มากกว่าที่คิด"</p>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="t-avatar">🌊</div>
+                            <div>
+                                <div class="t-name">ธนวัฒน์ ก.</div>
+                                <div class="t-role">ผู้ใช้งาน Echo Room</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="t-card">
+                        <div class="t-stars">★★★★★</div>
+                        <p class="t-text">"Inner Child ช่วยให้ฉันเข้าใจตัวเองมากขึ้น ได้เยียวยาสิ่งที่ค้างคาใจมานาน รู้สึกว่าตัวเองเติบโตขึ้นจริงๆ"</p>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="t-avatar">✨</div>
+                            <div>
+                                <div class="t-name">พิมพ์วลัย ร.</div>
+                                <div class="t-role">ผู้ใช้งาน Inner Child</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══ CTA SECTION ═══ -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div class="row align-items-center g-4 position-relative" style="z-index:2;">
+                    <div class="col-lg-8">
+                        <h2 class="cta-title">พร้อมแล้วไหม<br>ที่จะดูแลใจตัวเอง?</h2>
+                        <p class="cta-sub">เริ่มต้นวันนี้ ฟรี ไม่ต้องใช้บัตรเครดิต สมัครใช้งานและเริ่มต้นการเดินทาง<br>เพื่อสุขภาพจิตที่ดีขึ้นได้เลย 🌱</p>
+                        <a href="register.html" class="btn-cta-white">
+                            <i class="fas fa-seedling me-2"></i> ลงทะเบียนฟรี — เริ่มเลย!
+                        </a>
+                    </div>
+                    <div class="col-lg-4 text-center d-none d-lg-block">
+                        <div style="font-size:6rem;filter:drop-shadow(0 8px 16px rgba(0,0,0,.15));animation:float-phone 4s ease-in-out infinite;">
+                            🌼
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="flourich-footer">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="img/logo-flourich.png" alt="Flourich" style="width:38px;height:38px;border-radius:50%;object-fit:cover;"
+                             onerror="this.style.display='none'">
+                        <span class="footer-brand-name">Flourich</span>
+                    </div>
+                    <p class="footer-desc">
+                        พื้นที่ปลอดภัยสำหรับทุกคนที่ต้องการดูแลสุขภาพจิต
+                        เราเชื่อว่าทุกคนสมควรได้รับความเข้าใจและการดูแล
+                    </p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-heading">บริการ</h5>
+                    <ul class="footer-links">
+                        <li><a href="service.html">Safe Room</a></li>
+                        <li><a href="service.html">Echo Room</a></li>
+                        <li><a href="service.html">Inner Child</a></li>
+                        <li><a href="blog.html">บทความ</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-heading">บริษัท</h5>
+                    <ul class="footer-links">
+                        <li><a href="about.html">เกี่ยวกับเรา</a></li>
+                        <li><a href="team.html">ทีมงาน</a></li>
+                        <li><a href="contact.html">ติดต่อเรา</a></li>
+                        <li><a href="#">ร่วมงานกับเรา</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="footer-heading">รับข่าวสาร</h5>
+                    <p style="font-size:.9rem;color:rgba(255,255,255,.6);margin-bottom:16px;">
+                        รับบทความและเคล็ดลับดูแลสุขภาพจิตทุกสัปดาห์
+                    </p>
+                    <div class="d-flex gap-2">
+                        <input type="email" placeholder="อีเมลของคุณ"
+                               style="flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:24px;padding:10px 18px;color:#fff;font-size:.9rem;outline:none;">
+                        <button style="background:var(--sage);border:none;border-radius:24px;padding:10px 20px;color:#fff;font-weight:600;cursor:pointer;transition:.3s;white-space:nowrap;"
+                                onmouseover="this.style.background='#5A9A6E'" onmouseout="this.style.background='var(--sage)'">
+                            สมัคร
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="footer-divider">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <p class="footer-bottom mb-0">© 2025 Flourich. สงวนลิขสิทธิ์ทุกประการ</p>
+                <div class="d-flex gap-4">
+                    <a href="#" style="font-size:.83rem;color:rgba(255,255,255,.4);text-decoration:none;">นโยบายความเป็นส่วนตัว</a>
+                    <a href="#" style="font-size:.83rem;color:rgba(255,255,255,.4);text-decoration:none;">ข้อกำหนดการใช้งาน</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/lightbox/js/lightbox.min.js"></script>
+
+    <script>
+        // ── Spinner ──
+        window.addEventListener('load', () => {
+            const s = document.getElementById('spinner');
+            if (s) { s.classList.remove('show'); }
+        });
+
+        // ── Sticky nav shadow ──
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('mainNav');
+            if (window.scrollY > 40) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+
+            // back to top
+            document.getElementById('backToTop').style.opacity = window.scrollY > 300 ? '1' : '0';
+        });
+
+        // ── Intersection observer for fade-up ──
+        const fadeEls = document.querySelectorAll('.fade-up');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add('visible'); }
+            });
+        }, { threshold: 0.15 });
+        fadeEls.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>

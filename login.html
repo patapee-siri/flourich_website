@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8">
+    <title>Flourich — เข้าสู่ระบบ</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --sage:        #7BAE8A;
+            --sage-light:  #A8CBAF;
+            --sage-pale:   #D6EBD9;
+            --mint:        #B8E0C5;
+            --cream:       #FDFAF5;
+            --warm-white:  #F9F5EE;
+            --yellow-soft: #F5D87A;
+            --peach:       #F7C5A0;
+            --blush:       #F5B8C4;
+            --sky:         #B8D8F0;
+            --text-dark:   #2D4A35;
+            --text-mid:    #5A7A62;
+            --text-light:  #8BA892;
+            --error:       #E07070;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Noto Sans Thai', 'Nunito', sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Layout split ── */
+        .login-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── Left panel (illustration) ── */
+        .panel-left {
+            flex: 1;
+            background: linear-gradient(160deg, #C8E6D0 0%, #EBF7EF 50%, #FDF0E4 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(55px);
+            opacity: 0.45;
+            pointer-events: none;
+        }
+        .blob-a { width: 340px; height: 340px; background: var(--mint);        top: -80px;   left: -80px; }
+        .blob-b { width: 260px; height: 260px; background: var(--yellow-soft); bottom: -60px; right: -60px; }
+        .blob-c { width: 200px; height: 200px; background: var(--blush);       top: 40%;      right: 30px; }
+
+        .panel-left-inner {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 420px;
+        }
+
+        /* Mascot circle */
+        .mascot-ring {
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.55);
+            backdrop-filter: blur(8px);
+            border: 3px solid rgba(255,255,255,.8);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 32px;
+            box-shadow: 0 16px 48px rgba(123,174,138,.25);
+            animation: float-mascot 5s ease-in-out infinite;
+        }
+        .mascot-ring img {
+            width: 140px; height: 140px;
+            border-radius: 50%; object-fit: cover;
+        }
+        @keyframes float-mascot {
+            0%,100% { transform: translateY(0); }
+            50%      { transform: translateY(-12px); }
+        }
+
+        .panel-brand {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.6rem; font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+        .panel-brand span { color: var(--sage); }
+
+        .panel-tagline {
+            font-size: 1.05rem; color: var(--text-mid);
+            line-height: 1.7; margin-bottom: 36px;
+        }
+
+        /* Feature pills */
+        .feature-pills {
+            display: flex; flex-direction: column; gap: 14px;
+            text-align: left;
+            width: 100%;
+        }
+        .pill {
+            display: flex; align-items: center; gap: 14px;
+            background: rgba(255,255,255,.65);
+            backdrop-filter: blur(6px);
+            border-radius: 18px;
+            padding: 14px 18px;
+            border: 1px solid rgba(255,255,255,.8);
+            box-shadow: 0 4px 16px rgba(45,74,53,.06);
+            transition: .3s;
+        }
+        .pill:hover { transform: translateX(6px); background: rgba(255,255,255,.85); }
+        .pill-icon {
+            width: 44px; height: 44px; flex-shrink: 0;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+        }
+        .pi-safe  { background: var(--sage-pale); }
+        .pi-echo  { background: #DAF0FF; }
+        .pi-inner { background: #FDECD7; }
+        .pill-text strong { display: block; font-size: .9rem; font-weight: 600; color: var(--text-dark); }
+        .pill-text span   { font-size: .8rem; color: var(--text-mid); }
+
+        /* Quote block */
+        .quote-block {
+            margin-top: 36px;
+            background: rgba(255,255,255,.5);
+            backdrop-filter: blur(6px);
+            border-left: 4px solid var(--sage);
+            border-radius: 0 16px 16px 0;
+            padding: 18px 20px;
+            text-align: left;
+        }
+        .quote-text { font-size: .95rem; color: var(--text-mid); line-height: 1.6; font-style: italic; }
+        .quote-author { font-size: .8rem; color: var(--text-light); margin-top: 8px; font-weight: 600; }
+
+        /* ── Right panel (form) ── */
+        .panel-right {
+            width: 480px;
+            flex-shrink: 0;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 52px 48px;
+            position: relative;
+            box-shadow: -8px 0 48px rgba(45,74,53,.06);
+        }
+
+        /* Top-right back link */
+        .back-home {
+            position: absolute;
+            top: 24px; left: 28px;
+            display: flex; align-items: center; gap: 6px;
+            font-size: .875rem; font-weight: 600;
+            color: var(--text-mid); text-decoration: none;
+            transition: .25s;
+        }
+        .back-home:hover { color: var(--sage); }
+
+        /* Form header */
+        .form-welcome {
+            font-size: .85rem; color: var(--text-light);
+            font-weight: 500; letter-spacing: .5px;
+            margin-bottom: 8px;
+        }
+        .form-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.2rem; font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+        .form-sub {
+            font-size: .92rem; color: var(--text-mid);
+            margin-bottom: 36px;
+        }
+        .form-sub a { color: var(--sage); font-weight: 600; text-decoration: none; }
+        .form-sub a:hover { text-decoration: underline; }
+
+        /* Input groups */
+        .input-group-flourich {
+            margin-bottom: 20px;
+        }
+        .input-group-flourich label {
+            display: block;
+            font-size: .875rem; font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+        .input-wrap {
+            position: relative;
+        }
+        .input-wrap .input-icon {
+            position: absolute; left: 16px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: .95rem;
+            pointer-events: none;
+            transition: color .25s;
+        }
+        .input-wrap input {
+            width: 100%;
+            padding: 13px 16px 13px 44px;
+            border: 1.5px solid #E8EDE9;
+            border-radius: 14px;
+            font-family: 'Noto Sans Thai', 'Nunito', sans-serif;
+            font-size: .95rem;
+            color: var(--text-dark);
+            background: var(--cream);
+            transition: .25s;
+            outline: none;
+        }
+        .input-wrap input::placeholder { color: var(--text-light); }
+        .input-wrap input:focus {
+            border-color: var(--sage);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(123,174,138,.12);
+        }
+        .input-wrap input:focus ~ .input-icon,
+        .input-wrap input:focus + .input-icon { color: var(--sage); }
+
+        /* password toggle */
+        .toggle-pw {
+            position: absolute; right: 16px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            cursor: pointer; font-size: .9rem;
+            transition: color .2s;
+            background: none; border: none; padding: 0;
+        }
+        .toggle-pw:hover { color: var(--sage); }
+
+        /* Error message */
+        .field-error {
+            font-size: .8rem; color: var(--error);
+            margin-top: 6px; display: none;
+        }
+        .has-error input { border-color: var(--error) !important; }
+        .has-error .field-error { display: block; }
+
+        /* Row: remember + forgot */
+        .form-meta {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 28px;
+        }
+        .remember-check { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .remember-check input[type="checkbox"] {
+            width: 18px; height: 18px;
+            accent-color: var(--sage);
+            cursor: pointer;
+        }
+        .remember-check span { font-size: .875rem; color: var(--text-mid); }
+        .forgot-link {
+            font-size: .875rem; font-weight: 600;
+            color: var(--sage); text-decoration: none;
+            transition: .2s;
+        }
+        .forgot-link:hover { color: var(--text-dark); }
+
+        /* Submit button */
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: var(--sage);
+            color: #fff;
+            border: none; border-radius: 14px;
+            font-family: 'Noto Sans Thai', 'Nunito', sans-serif;
+            font-size: 1rem; font-weight: 700;
+            cursor: pointer;
+            transition: .3s;
+            box-shadow: 0 6px 24px rgba(123,174,138,.35);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-bottom: 24px;
+        }
+        .btn-login:hover {
+            background: var(--text-dark);
+            box-shadow: 0 10px 30px rgba(45,74,53,.2);
+            transform: translateY(-2px);
+        }
+        .btn-login:active { transform: translateY(0); }
+
+        /* Loading state */
+        .btn-login .spinner-btn {
+            display: none;
+            width: 18px; height: 18px;
+            border: 2.5px solid rgba(255,255,255,.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Divider */
+        .or-divider {
+            display: flex; align-items: center; gap: 14px;
+            margin-bottom: 20px;
+        }
+        .or-divider::before, .or-divider::after {
+            content: ''; flex: 1;
+            height: 1px; background: #E8EDE9;
+        }
+        .or-divider span { font-size: .82rem; color: var(--text-light); white-space: nowrap; }
+
+        /* Social logins */
+        .social-btns { display: flex; gap: 12px; margin-bottom: 28px; }
+        .btn-social {
+            flex: 1; padding: 12px;
+            border: 1.5px solid #E8EDE9;
+            border-radius: 12px;
+            background: #fff;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            font-size: .875rem; font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer; text-decoration: none;
+            transition: .25s;
+        }
+        .btn-social:hover {
+            border-color: var(--sage-light);
+            background: var(--cream);
+            color: var(--text-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(45,74,53,.08);
+        }
+        .btn-social img { width: 20px; height: 20px; }
+
+        /* Register prompt */
+        .register-prompt {
+            text-align: center;
+            font-size: .875rem; color: var(--text-mid);
+        }
+        .register-prompt a {
+            color: var(--sage); font-weight: 700; text-decoration: none;
+        }
+        .register-prompt a:hover { text-decoration: underline; }
+
+        /* Toast notification */
+        .toast-flourish {
+            position: fixed;
+            bottom: 28px; right: 28px;
+            background: #fff;
+            border-radius: 16px;
+            padding: 16px 20px;
+            box-shadow: 0 8px 32px rgba(45,74,53,.16);
+            border-left: 4px solid var(--sage);
+            display: flex; align-items: center; gap: 12px;
+            z-index: 9999;
+            transform: translateX(120%);
+            transition: transform .4s cubic-bezier(.22,.61,.36,1);
+            max-width: 320px;
+        }
+        .toast-flourish.show { transform: translateX(0); }
+        .toast-flourish.error { border-left-color: var(--error); }
+        .toast-icon { font-size: 1.4rem; }
+        .toast-msg { font-size: .875rem; font-weight: 600; color: var(--text-dark); }
+        .toast-sub { font-size: .8rem; color: var(--text-mid); margin-top: 2px; }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .panel-left { display: none; }
+            .panel-right { width: 100%; box-shadow: none; }
+        }
+        @media (max-width: 480px) {
+            .panel-right { padding: 40px 28px; }
+            .social-btns { flex-direction: column; }
+        }
+
+        /* Fade-in on load */
+        .panel-right { animation: slide-in-right .6s cubic-bezier(.22,.61,.36,1) both; }
+        @keyframes slide-in-right {
+            from { opacity: 0; transform: translateX(30px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        .panel-left-inner { animation: slide-in-left .7s cubic-bezier(.22,.61,.36,1) both; }
+        @keyframes slide-in-left {
+            from { opacity: 0; transform: translateX(-20px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-wrapper">
+
+        <!-- ══════════════════════════════
+             LEFT PANEL
+        ══════════════════════════════ -->
+        <div class="panel-left">
+            <div class="blob blob-a"></div>
+            <div class="blob blob-b"></div>
+            <div class="blob blob-c"></div>
+
+            <div class="panel-left-inner">
+                <!-- Mascot -->
+                <div class="mascot-ring">
+                    <img src="img/logo-flourich.png" alt="Flourich Mascot"
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 140 140%22%3E%3Ccircle cx=%2270%22 cy=%2270%22 r=%2270%22 fill=%22%23A8CBAF%22/%3E%3Ctext x=%2250%25%22 y=%2256%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2252%22%3E🐹%3C/text%3E%3C/svg%3E'">
+                </div>
+
+                <h1 class="panel-brand">Flour<span>ich</span></h1>
+                <p class="panel-tagline">
+                    พื้นที่ปลอดภัย เพื่อใจที่เข้มแข็ง<br>
+                    ยินดีต้อนรับกลับมานะ 🌱
+                </p>
+
+                <!-- Feature pills -->
+                <div class="feature-pills">
+                    <div class="pill">
+                        <div class="pill-icon pi-safe">🌿</div>
+                        <div class="pill-text">
+                            <strong>Safe Room</strong>
+                            <span>พื้นที่ระบายความรู้สึกส่วนตัว</span>
+                        </div>
+                    </div>
+                    <div class="pill">
+                        <div class="pill-icon pi-echo">🔔</div>
+                        <div class="pill-text">
+                            <strong>Echo Room</strong>
+                            <span>แลกเปลี่ยนเรื่องราวกับชุมชน</span>
+                        </div>
+                    </div>
+                    <div class="pill">
+                        <div class="pill-icon pi-inner">🌸</div>
+                        <div class="pill-text">
+                            <strong>Inner Child</strong>
+                            <span>เติบโตและเยียวยาตัวเองไปด้วยกัน</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quote -->
+                <div class="quote-block">
+                    <p class="quote-text">"การดูแลสุขภาพจิตไม่ใช่ความอ่อนแอ แต่คือความกล้าหาญที่แท้จริง"</p>
+                    <p class="quote-author">— ทีม Flourich</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════
+             RIGHT PANEL (FORM)
+        ══════════════════════════════ -->
+        <div class="panel-right">
+
+            <!-- Back to home -->
+            <a href="index.html" class="back-home">
+                <i class="fas fa-arrow-left"></i> กลับหน้าแรก
+            </a>
+
+            <!-- Header -->
+            <p class="form-welcome">ยินดีต้อนรับกลับมา 👋</p>
+            <h2 class="form-title">เข้าสู่ระบบ</h2>
+            <p class="form-sub">
+                ยังไม่มีบัญชี?
+                <a href="register.html">ลงทะเบียนฟรีเลย</a>
+            </p>
+
+            <!-- ── FORM ── -->
+            <div id="loginForm">
+
+                <!-- Email / Username -->
+                <div class="input-group-flourich" id="field-user">
+                    <label for="inputUser">อีเมล หรือ ชื่อผู้ใช้</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="inputUser" placeholder="example@email.com" autocomplete="username">
+                    </div>
+                    <p class="field-error" id="err-user">กรุณากรอกอีเมลหรือชื่อผู้ใช้</p>
+                </div>
+
+                <!-- Password -->
+                <div class="input-group-flourich" id="field-pass">
+                    <label for="inputPass">รหัสผ่าน</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="inputPass" placeholder="••••••••" autocomplete="current-password">
+                        <button class="toggle-pw" id="togglePw" type="button" aria-label="แสดง/ซ่อนรหัสผ่าน">
+                            <i class="fas fa-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                    <p class="field-error" id="err-pass">กรุณากรอกรหัสผ่าน</p>
+                </div>
+
+                <!-- Remember + Forgot -->
+                <div class="form-meta">
+                    <label class="remember-check">
+                        <input type="checkbox" id="rememberMe">
+                        <span>จดจำฉันไว้</span>
+                    </label>
+                    <a href="forgot-password.html" class="forgot-link">ลืมรหัสผ่าน?</a>
+                </div>
+
+                <!-- Submit -->
+                <button class="btn-login" id="btnLogin" type="button" onclick="handleLogin()">
+                    <span class="spinner-btn" id="loginSpinner"></span>
+                    <i class="fas fa-seedling" id="loginIcon"></i>
+                    <span id="loginBtnText">เข้าสู่ระบบ</span>
+                </button>
+
+                <!-- Divider -->
+                <div class="or-divider"><span>หรือเข้าสู่ระบบด้วย</span></div>
+
+                <!-- Social -->
+                <div class="social-btns">
+                    <a href="#" class="btn-social" onclick="socialLogin('Google')">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        </svg>
+                        Google
+                    </a>
+                    <a href="#" class="btn-social" onclick="socialLogin('Facebook')">
+                        <i class="fab fa-facebook-f" style="color:#1877F2;font-size:1.1rem;"></i>
+                        Facebook
+                    </a>
+                    <a href="#" class="btn-social" onclick="socialLogin('LINE')">
+                        <span style="background:#06C755;color:#fff;border-radius:6px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;flex-shrink:0;">LINE</span>
+                        LINE
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- Register link -->
+            <p class="register-prompt">
+                ยังไม่เคยใช้ Flourich?
+                <a href="register.html">สร้างบัญชีฟรีเลย 🌱</a>
+            </p>
+
+        </div>
+    </div>
+
+
+    <!-- Toast -->
+    <div class="toast-flourish" id="toast">
+        <div class="toast-icon" id="toastIcon">✅</div>
+        <div>
+            <div class="toast-msg" id="toastMsg">เข้าสู่ระบบสำเร็จ</div>
+            <div class="toast-sub" id="toastSub">ยินดีต้อนรับกลับมานะ 🌱</div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ── Toggle password visibility ──
+        document.getElementById('togglePw').addEventListener('click', function () {
+            const inp  = document.getElementById('inputPass');
+            const icon = document.getElementById('eyeIcon');
+            if (inp.type === 'password') {
+                inp.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                inp.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+
+        // ── Clear error on input ──
+        ['inputUser', 'inputPass'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                const field = id === 'inputUser' ? 'field-user' : 'field-pass';
+                document.getElementById(field).classList.remove('has-error');
+            });
+        });
+
+        // ── Validate + Login ──
+        function handleLogin() {
+            const user = document.getElementById('inputUser').value.trim();
+            const pass = document.getElementById('inputPass').value.trim();
+            let valid = true;
+
+            if (!user) {
+                document.getElementById('field-user').classList.add('has-error');
+                valid = false;
+            }
+            if (!pass) {
+                document.getElementById('field-pass').classList.add('has-error');
+                valid = false;
+            }
+            if (!valid) return;
+
+            // Loading state
+            const btn     = document.getElementById('btnLogin');
+            const spinner = document.getElementById('loginSpinner');
+            const icon    = document.getElementById('loginIcon');
+            const txt     = document.getElementById('loginBtnText');
+
+            btn.disabled = true;
+            spinner.style.display = 'block';
+            icon.style.display    = 'none';
+            txt.textContent       = 'กำลังเข้าสู่ระบบ...';
+
+            // Simulate API call (replace with real fetch)
+            setTimeout(() => {
+                btn.disabled = false;
+                spinner.style.display = 'none';
+                icon.style.display    = 'inline';
+                txt.textContent       = 'เข้าสู่ระบบ';
+
+                // ✅ Success toast → redirect
+                showToast('✅', 'เข้าสู่ระบบสำเร็จ!', 'ยินดีต้อนรับกลับมานะ 🌱', false);
+                setTimeout(() => { window.location.href = 'index.html'; }, 1800);
+            }, 1500);
+        }
+
+        // ── Social login placeholder ──
+        function socialLogin(provider) {
+            showToast('🔗', 'กำลังเชื่อมต่อ ' + provider, 'กรุณารอสักครู่...', false);
+        }
+
+        // ── Toast helper ──
+        function showToast(icon, msg, sub, isError) {
+            const t = document.getElementById('toast');
+            document.getElementById('toastIcon').textContent = icon;
+            document.getElementById('toastMsg').textContent  = msg;
+            document.getElementById('toastSub').textContent  = sub;
+            t.classList.toggle('error', isError);
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3200);
+        }
+
+        // ── Enter key support ──
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Enter') handleLogin();
+        });
+    </script>
+
+</body>
+</html>
