@@ -8,7 +8,7 @@ from inference import FlourichAI
 
 # ── Config เหมือน main.py ──
 BERT_MODEL_DIR = r"D:\competition\SSS\Code\LLM_Test\model\final_hf"
-GROQ_API_KEY   = "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" # ใส่ API Key กันเอาเองนะที่ https://www.groq.com/dashboard/api-keys
+GROQ_API_KEY   = "" # ใส่ API Key กันเอาเองนะที่ https://www.groq.com/dashboard/api-keys
 
 app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"],
