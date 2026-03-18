@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+    <title>Flourich — Safe Room 🌿</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+
+    <style>
+        :root {
+            --sage:         #7BAE8A;
+            --sage-light:   #A8CBAF;
+            --sage-pale:    #D6EBD9;
+            --mint:         #B8E0C5;
+            --deep:         #1a5e3a;
+            --deep2:        #2D5A3D;
+            --cream:        #FDFAF5;
+            --yellow-soft:  #F5D87A;
+            --peach:        #F7C5A0;
+            --blush:        #F5B8C4;
+            --earth:        #8b4513;
+            --earth-light:  #c4905c;
+            --text-dark:    #2D4A35;
+            --text-mid:     #5A7A62;
+            --text-light:   #8BA892;
+            --neg-color:    #e07070;
+            --pos-color:    #7BAE8A;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        /* ══ PAGE FADE-IN — เหมือนหน้าอื่นในโปรเจกต์ ══ */
+        body {
+            font-family: 'Noto Sans Thai', 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #f3ffc4 0%, #c8f0d4 45%, #a4dbb0 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            opacity: 0;
+            animation: pageReveal .65s cubic-bezier(.22,.61,.36,1) .05s forwards;
+        }
+        @keyframes pageReveal {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0);    }
+        }
+
+        /* ─── TOP BAR ─── */
+        .topbar {
+            background: rgba(255,255,255,.72);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(123,174,138,.18);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 16px rgba(45,74,53,.07);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: var(--sage-pale);
+            border: none;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--deep);
+            cursor: pointer;
+            text-decoration: none;
+            transition: .25s;
+            font-size: .9rem;
+        }
+        .back-btn:hover { background: var(--sage); color: #fff; }
+
+        .mascot-wrap {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--sage-pale), var(--mint));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            border: 2px solid rgba(255,255,255,.8);
+            box-shadow: 0 2px 10px rgba(123,174,138,.25);
+            overflow: hidden;
+        }
+        .mascot-wrap img {
+            width: 100%; height: 100%;
+            object-fit: cover; border-radius: 50%;
+        }
+
+        .topbar-info {}
+        .topbar-name {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--deep);
+            line-height: 1;
+        }
+        .topbar-status {
+            font-size: .72rem;
+            color: var(--text-mid);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 2px;
+        }
+        .status-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--sage);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topbar-icon-btn {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: var(--sage-pale);
+            border: none;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--deep);
+            font-size: .85rem;
+            transition: .25s;
+        }
+        .topbar-icon-btn:hover { background: var(--sage); color: #fff; }
+
+        /* ─── MOOD STRIP ─── */
+        .mood-strip {
+            background: rgba(255,255,255,.55);
+            backdrop-filter: blur(8px);
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(123,174,138,.12);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .mood-strip::-webkit-scrollbar { display: none; }
+        .mood-label {
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--text-mid);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .mood-chip {
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: .8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid transparent;
+            transition: .2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .mood-chip:hover, .mood-chip.active {
+            background: var(--sage) !important;
+            color: #fff !important;
+            border-color: var(--sage) !important;
+        }
+
+        /* ─── CHAT AREA ─── */
+        .chat-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 820px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .messages-area {
+            flex: 1;
+            padding: 24px 0 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+            min-height: 0;
+        }
+
+        /* Welcome card */
+        .welcome-card {
+            background: rgba(255,255,255,.75);
+            backdrop-filter: blur(10px);
+            border-radius: 22px;
+            padding: 28px 28px;
+            border: 1.5px solid rgba(255,255,255,.8);
+            box-shadow: 0 4px 24px rgba(45,74,53,.08);
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .welcome-emoji { font-size: 2.8rem; margin-bottom: 10px; display: block; }
+        .welcome-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--deep);
+            margin-bottom: 8px;
+        }
+        .welcome-sub {
+            font-size: .9rem;
+            color: var(--text-mid);
+            line-height: 1.7;
+        }
+        .welcome-prompts {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 18px;
+        }
+        .prompt-chip {
+            padding: 7px 16px;
+            background: var(--sage-pale);
+            border: 1.5px solid rgba(123,174,138,.3);
+            border-radius: 20px;
+            font-size: .82rem;
+            font-weight: 500;
+            color: var(--deep);
+            cursor: pointer;
+            transition: .2s;
+        }
+        .prompt-chip:hover { background: var(--sage); color: #fff; }
+
+        /* Message bubbles */
+        .msg-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            animation: msg-in .35s cubic-bezier(.22,.61,.36,1) both;
+        }
+        @keyframes msg-in {
+            from { opacity:0; transform:translateY(12px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        .msg-row.user { flex-direction: row-reverse; }
+
+        .msg-avatar {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            overflow: hidden;
+        }
+        .msg-avatar.ai-av {
+            background: linear-gradient(135deg, var(--sage-pale), var(--mint));
+            border: 2px solid rgba(255,255,255,.8);
+        }
+        .msg-avatar.ai-av img { width:100%; height:100%; object-fit:cover; }
+        .msg-avatar.user-av {
+            background: linear-gradient(135deg, var(--yellow-soft), var(--peach));
+            font-size: .85rem;
+            font-weight: 700;
+            color: var(--earth);
+        }
+
+        .msg-body { max-width: 70%; display: flex; flex-direction: column; gap: 4px; }
+
+        .msg-bubble {
+            padding: 13px 17px;
+            border-radius: 18px;
+            font-size: .93rem;
+            line-height: 1.65;
+            position: relative;
+        }
+        .msg-row.ai .msg-bubble {
+            background: rgba(255,255,255,.88);
+            border: 1.5px solid rgba(123,174,138,.2);
+            box-shadow: 0 2px 12px rgba(45,74,53,.07);
+            color: var(--text-dark);
+            border-bottom-left-radius: 6px;
+        }
+        .msg-row.user .msg-bubble {
+            background: linear-gradient(135deg, var(--deep), var(--deep2));
+            color: #fff;
+            border-bottom-right-radius: 6px;
+            box-shadow: 0 4px 16px rgba(30,94,58,.25);
+        }
+
+        .msg-time {
+            font-size: .7rem;
+            color: var(--text-light);
+        }
+        .msg-row.user .msg-time { text-align: right; }
+
+        /* ─── DEBUG BADGE ─── */
+        .debug-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            background: rgba(255,255,255,.6);
+            backdrop-filter: blur(4px);
+            border: 1px dashed rgba(123,174,138,.4);
+            border-radius: 10px;
+            padding: 5px 10px;
+            margin-top: 4px;
+            font-size: .72rem;
+            color: var(--text-mid);
+        }
+        .debug-pill {
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: .7rem;
+        }
+        .debug-pill.neg { background: rgba(224,112,112,.15); color: var(--neg-color); }
+        .debug-pill.pos { background: rgba(123,174,138,.2); color: var(--deep); }
+        .debug-pill.strategy { background: rgba(245,216,122,.25); color: #8a6000; }
+        .debug-pill.score { background: rgba(100,100,220,.1); color: #4444aa; }
+
+        /* ─── TYPING INDICATOR ─── */
+        .typing-row { display: flex; gap: 10px; align-items: flex-end; }
+        .typing-bubble {
+            background: rgba(255,255,255,.88);
+            border: 1.5px solid rgba(123,174,138,.2);
+            border-radius: 18px;
+            border-bottom-left-radius: 6px;
+            padding: 14px 18px;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        .typing-bubble span {
+            width: 7px; height: 7px;
+            background: var(--sage-light);
+            border-radius: 50%;
+            animation: typing-bounce .9s ease-in-out infinite;
+        }
+        .typing-bubble span:nth-child(2) { animation-delay: .2s; }
+        .typing-bubble span:nth-child(3) { animation-delay: .4s; }
+        @keyframes typing-bounce {
+            0%,60%,100% { transform: translateY(0); opacity: .5; }
+            30%          { transform: translateY(-6px); opacity: 1; }
+        }
+
+        /* ─── INPUT BAR ─── */
+        .input-section {
+            padding: 12px 0 20px;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .input-card {
+            background: rgba(255,255,255,.85);
+            backdrop-filter: blur(14px);
+            border: 2px solid rgba(123,174,138,.3);
+            border-radius: 24px;
+            padding: 10px 14px;
+            box-shadow: 0 4px 24px rgba(45,74,53,.1);
+            transition: border-color .25s, box-shadow .25s;
+        }
+        .input-card:focus-within {
+            border-color: var(--sage);
+            box-shadow: 0 0 0 4px rgba(123,174,138,.15), 0 4px 24px rgba(45,74,53,.1);
+        }
+
+        .input-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .chat-textarea {
+            flex: 1;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-family: 'Noto Sans Thai', 'Nunito', sans-serif;
+            font-size: .95rem;
+            color: var(--text-dark);
+            resize: none;
+            min-height: 22px;
+            max-height: 120px;
+            line-height: 1.5;
+            padding: 4px 0;
+        }
+        .chat-textarea::placeholder { color: var(--text-light); }
+
+        .send-btn {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: var(--deep);
+            border: none;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: .25s;
+            flex-shrink: 0;
+        }
+        .send-btn:hover { background: var(--sage); transform: scale(1.05); }
+        .send-btn:disabled { background: var(--sage-light); cursor: not-allowed; transform: none; }
+
+        .input-hint {
+            font-size: .72rem;
+            color: var(--text-light);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+
+        /* ─── DEBUG PANEL (sidebar style) ─── */
+        .debug-panel {
+            position: fixed;
+            right: 20px;
+            top: 80px;
+            width: 280px;
+            background: rgba(255,255,255,.88);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(123,174,138,.25);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(45,74,53,.12);
+            z-index: 50;
+            transition: transform .3s cubic-bezier(.22,.61,.36,1), opacity .3s;
+        }
+        .debug-panel.hidden { transform: translateX(320px); opacity: 0; pointer-events: none; }
+
+        .debug-panel-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--deep);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .debug-close {
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            background: var(--sage-pale);
+            border: none;
+            cursor: pointer;
+            font-size: .75rem;
+            color: var(--deep);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .debug-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(123,174,138,.12);
+            font-size: .82rem;
+        }
+        .debug-row:last-child { border-bottom: none; }
+        .debug-key { color: var(--text-mid); font-weight: 500; }
+        .debug-val { font-weight: 700; color: var(--text-dark); }
+        .debug-val.neg-val { color: var(--neg-color); }
+        .debug-val.pos-val { color: var(--deep); }
+
+        .debug-bar-wrap {
+            width: 100%;
+            height: 8px;
+            background: rgba(123,174,138,.15);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+        .debug-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width .6s cubic-bezier(.22,.61,.36,1);
+        }
+        .debug-bar.neg-bar { background: var(--neg-color); }
+        .debug-bar.pos-bar { background: var(--sage); }
+
+        /* Toggle debug btn */
+        .debug-toggle {
+            position: fixed;
+            right: 20px;
+            bottom: 100px;
+            width: 46px; height: 46px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.85);
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(123,174,138,.3);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 16px rgba(45,74,53,.12);
+            transition: .25s;
+            z-index: 60;
+        }
+        .debug-toggle:hover { background: var(--sage); color: #fff; border-color: var(--sage); }
+        .debug-toggle.active { background: var(--deep); color: #fff; border-color: var(--deep); }
+
+        /* ─── EMOTION GAUGE ─── */
+        .emotion-gauge {
+            background: rgba(255,255,255,.7);
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-top: 10px;
+            border: 1px solid rgba(123,174,138,.2);
+        }
+        .gauge-label {
+            font-size: .75rem;
+            font-weight: 600;
+            color: var(--text-mid);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+        }
+        .gauge-track {
+            height: 12px;
+            background: linear-gradient(to right, var(--neg-color), #f0d070, var(--sage));
+            border-radius: 6px;
+            position: relative;
+        }
+        .gauge-thumb {
+            position: absolute;
+            top: -4px;
+            width: 20px; height: 20px;
+            background: #fff;
+            border: 3px solid var(--deep);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            transition: left .6s cubic-bezier(.22,.61,.36,1);
+            box-shadow: 0 2px 8px rgba(45,74,53,.2);
+        }
+        .gauge-ends {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: .68rem;
+            color: var(--text-light);
+        }
+
+        /* ─── Session stats ─── */
+        .session-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .stat-box {
+            background: var(--sage-pale);
+            border-radius: 12px;
+            padding: 10px 12px;
+            text-align: center;
+        }
+        .stat-box-num {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--deep);
+            line-height: 1;
+        }
+        .stat-box-label {
+            font-size: .68rem;
+            color: var(--text-mid);
+            margin-top: 3px;
+        }
+
+        /* ─── Scroll button ─── */
+        .scroll-bottom-btn {
+            position: absolute;
+            bottom: 90px;
+            right: 24px;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.9);
+            border: 1.5px solid rgba(123,174,138,.3);
+            cursor: pointer;
+            display: none;
+            align-items: center; justify-content: center;
+            font-size: .85rem;
+            color: var(--deep);
+            box-shadow: 0 3px 12px rgba(45,74,53,.12);
+            z-index: 10;
+        }
+        .scroll-bottom-btn.visible { display: flex; }
+
+        /* ─── Responsive ─── */
+        /* ══ MODEL SELECTOR ══ */
+        .model-selector-wrap { position: relative; flex-shrink: 0; }
+        .model-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 8px 12px; height: 44px;
+            background: var(--sage-pale);
+            border: 1.5px solid rgba(123,174,138,.35);
+            border-radius: 16px; cursor: pointer;
+            font-family: 'Noto Sans Thai','Nunito',sans-serif;
+            font-size: .78rem; font-weight: 700; color: var(--deep);
+            transition: .25s; white-space: nowrap;
+        }
+        .model-btn:hover { background: var(--mint); border-color: var(--sage); }
+        .model-btn .chevron { font-size: .6rem; transition: transform .2s; }
+        .model-btn.open .chevron { transform: rotate(180deg); }
+
+        .model-dropdown {
+            position: absolute; bottom: calc(100% + 8px); left: 0;
+            min-width: 248px;
+            background: rgba(255,255,255,.96); backdrop-filter: blur(14px);
+            border: 1.5px solid rgba(123,174,138,.25); border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(45,74,53,.14);
+            padding: 8px; z-index: 200; display: none;
+            animation: dropUp .2s cubic-bezier(.22,.61,.36,1) both;
+        }
+        .model-dropdown.open { display: block; }
+        @keyframes dropUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+        .model-dropdown-header {
+            font-size: .7rem; font-weight: 700; letter-spacing: 1.2px;
+            text-transform: uppercase; color: var(--text-light);
+            padding: 6px 10px 8px;
+        }
+        .model-option {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px; border-radius: 12px;
+            cursor: pointer; transition: .2s;
+        }
+        .model-option:hover { background: var(--sage-pale); }
+        .model-option.selected { background: var(--sage-pale); }
+        .model-option.selected::after { content: '✓'; margin-left: auto; color: var(--sage); font-weight: 700; font-size: .85rem; }
+        .model-opt-icon { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+        .model-opt-name { font-size: .88rem; font-weight: 700; color: var(--text-dark); }
+        .model-opt-desc { font-size: .72rem; color: var(--text-light); margin-top: 1px; }
+        .model-badge { font-size: .62rem; font-weight: 700; padding: 2px 7px; border-radius: 8px; margin-left: 6px; vertical-align: middle; }
+        .badge-fast  { background: rgba(245,216,122,.3); color: #8a6000; }
+        .badge-best  { background: rgba(123,174,138,.2); color: var(--deep); }
+        .badge-local { background: rgba(100,100,220,.12); color: #4444aa; }
+        .model-divider { height: 1px; background: rgba(123,174,138,.15); margin: 6px 8px; }
+        .debug-pill.model-tag { background: rgba(45,74,53,.1); color: var(--deep2); }
+
+        /* Backend toast */
+        .backend-toast {
+            position: fixed; top: 72px; left: 50%; transform: translateX(-50%);
+            background: rgba(255,255,255,.95); backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(123,174,138,.3); border-radius: 20px;
+            padding: 10px 20px; font-size: .82rem; color: var(--text-dark);
+            box-shadow: 0 4px 20px rgba(45,74,53,.12);
+            z-index: 300; transition: opacity .35s, transform .35s;
+            display: flex; align-items: center; gap: 8px;
+            pointer-events: none;
+        }
+        .backend-toast.hide { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+
+        @media (max-width: 960px) {
+            .debug-panel { display: none; }
+            .debug-toggle { display: none; }
+        }
+        @media (max-width: 600px) {
+            .chat-wrap { padding: 0 10px; }
+            .msg-body { max-width: 85%; }
+            .mood-strip { gap: 8px; }
+            .model-btn .model-label { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══ TOP BAR ═══ -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <a href="index.html" class="back-btn" title="กลับหน้าแรก">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="mascot-wrap">
+                <img src="img/logo-flourich.png" alt="Flourich"
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 44 44%22%3E%3Ccircle cx=%2222%22 cy=%2222%22 r=%2222%22 fill=%22%23A8CBAF%22/%3E%3Ctext x=%2250%25%22 y=%2256%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2224%22%3E🐹%3C/text%3E%3C/svg%3E'">
+            </div>
+            <div class="topbar-info">
+                <div class="topbar-name">Flourich 🌿 Safe Room</div>
+                <div class="topbar-status">
+                    <span class="status-dot"></span>
+                    <span id="statusText">พร้อมรับฟังคุณเสมอ</span>
+                </div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <button class="topbar-icon-btn" onclick="clearChat()" title="เริ่มบทสนทนาใหม่">
+                <i class="fas fa-redo-alt"></i>
+            </button>
+            <button class="topbar-icon-btn" onclick="exportChat()" title="บันทึกบทสนทนา">
+                <i class="fas fa-download"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ═══ MOOD STRIP ═══ -->
+    <div class="mood-strip">
+        <span class="mood-label">รู้สึกอย่างไรวันนี้?</span>
+        <span class="mood-chip" style="background:#FFF0F0;color:#C05050;border-color:#F5B8B8;" onclick="selectMood(this,'😔 เศร้า')">😔 เศร้า</span>
+        <span class="mood-chip" style="background:#FFF5E8;color:#A06020;border-color:#FDECD7;" onclick="selectMood(this,'😰 กังวล')">😰 กังวล</span>
+        <span class="mood-chip" style="background:#F5F0FF;color:#6040A0;border-color:#E0D0F8;" onclick="selectMood(this,'😡 โกรธ')">😡 โกรธ</span>
+        <span class="mood-chip" style="background:#E8F5EC;color:var(--deep);border-color:var(--sage-pale);" onclick="selectMood(this,'😊 ดีขึ้น')">😊 ดีขึ้น</span>
+        <span class="mood-chip" style="background:#FFF8E0;color:#806000;border-color:#F5D87A55;" onclick="selectMood(this,'😐 เฉยๆ')">😐 เฉยๆ</span>
+        <span class="mood-chip" style="background:#E8F5EC;color:var(--deep);border-color:var(--sage-pale);" onclick="selectMood(this,'🤩 ดีมาก')">🤩 ดีมาก</span>
+        <span class="mood-chip" style="background:#FFE8F0;color:#A03060;border-color:#F5B8C4;" onclick="selectMood(this,'😴 เหนื่อย')">😴 เหนื่อย</span>
+    </div>
+
+    <!-- ═══ MAIN CHAT ═══ -->
+    <div class="chat-wrap">
+        <div class="messages-area" id="messagesArea">
+
+            <!-- Welcome card -->
+            <div class="welcome-card" id="welcomeCard">
+                <span class="welcome-emoji">🌿</span>
+                <div class="welcome-title">ยินดีต้อนรับสู่ Safe Room</div>
+                <p class="welcome-sub">
+                    ที่นี่คือพื้นที่ส่วนตัวของคุณ ไม่มีการตัดสิน ไม่มีการบันทึก<br>
+                    บอกเล่าความรู้สึกของคุณให้ Flourich ฟังได้เลย 💚
+                </p>
+                <div class="welcome-prompts">
+                    <span class="prompt-chip" onclick="usePrompt(this)">วันนี้รู้สึกเครียดมาก</span>
+                    <span class="prompt-chip" onclick="usePrompt(this)">ฉันรู้สึกโดดเดี่ยว</span>
+                    <span class="prompt-chip" onclick="usePrompt(this)">ฉันไม่รู้จะเริ่มยังไงดี</span>
+                    <span class="prompt-chip" onclick="usePrompt(this)">วันนี้ดีขึ้นนิดหน่อย</span>
+                    <span class="prompt-chip" onclick="usePrompt(this)">ฉันเป็นห่วงเรื่องงาน</span>
+                </div>
+            </div>
+
+        </div><!-- /messages-area -->
+
+        <!-- ─── INPUT BAR ─── -->
+        <div class="input-section">
+            <div class="input-card">
+                <div class="input-row">
+
+                    <!-- ══ MODEL SELECTOR ══ -->
+                    <div class="model-selector-wrap" id="modelSelectorWrap">
+                        <button class="model-btn" id="modelBtn" onclick="toggleModelMenu()" title="เลือกโมเดล">
+                            <span id="modelBtnIcon">🤖</span>
+                            <span class="model-label" id="modelBtnLabel">Flourich 2.0</span>
+                            <i class="fas fa-chevron-down chevron" id="modelChevron"></i>
+                        </button>
+                        <div class="model-dropdown" id="modelDropdown">
+                            <div class="model-dropdown-header">NLG Model (Groq)</div>
+                            <div class="model-option selected" id="opt-f2"
+                                 onclick="selectModel('flourich2','🤖','Flourich 2.0','llama-3.3-70b-versatile')">
+                                <div class="model-opt-icon" style="background:#E8F5EC;">🤖</div>
+                                <div>
+                                    <div class="model-opt-name">Flourich 2.0 <span class="model-badge badge-best">Best</span></div>
+                                    <div class="model-opt-desc">llama-3.3-70b-versatile · Groq API</div>
+                                </div>
+                            </div>
+                            <div class="model-option" id="opt-f15"
+                                 onclick="selectModel('flourich15','⚡','Flourich 1.5 Flash','llama-3.1-8b-instant')">
+                                <div class="model-opt-icon" style="background:#FFF8E0;">⚡</div>
+                                <div>
+                                    <div class="model-opt-name">Flourich 1.5 Flash <span class="model-badge badge-fast">Fast</span></div>
+                                    <div class="model-opt-desc">llama-3.1-8b-instant · Groq API</div>
+                                </div>
+                            </div>
+                            <div class="model-divider"></div>
+                            <div class="model-dropdown-header">NLU Model (Fixed)</div>
+                            <div class="model-option" style="cursor:default;opacity:.7;">
+                                <div class="model-opt-icon" style="background:#E8E8FF;">🧠</div>
+                                <div>
+                                    <div class="model-opt-name">Local BERT <span class="model-badge badge-local">Local</span></div>
+                                    <div class="model-opt-desc">final_hf · Sentiment Classifier</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <textarea
+                        class="chat-textarea"
+                        id="chatInput"
+                        placeholder="บอกเล่าความรู้สึกของคุณให้ Flourich ฟัง..."
+                        rows="1"
+                        onkeydown="handleKey(event)"
+                        oninput="autoResize(this)"
+                    ></textarea>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="ส่งข้อความ">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="input-hint">
+                    <span>Enter ส่ง · Shift+Enter ขึ้นบรรทัดใหม่</span>
+                    <span id="charCount" style="font-size:.7rem;color:var(--text-light);">0 / 500</span>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /chat-wrap -->
+
+
+    <!-- ═══ DEBUG PANEL (Desktop) ═══ -->
+    <div class="debug-panel hidden" id="debugPanel">
+        <div class="debug-panel-title">
+            <span>🛠️ Debug Monitor</span>
+            <button class="debug-close" onclick="toggleDebug()">✕</button>
+        </div>
+
+        <!-- Emotion gauge -->
+        <div class="emotion-gauge">
+            <div class="gauge-label">Sentiment Score</div>
+            <div class="gauge-track">
+                <div class="gauge-thumb" id="gaugeThumb" style="left:50%;"></div>
+            </div>
+            <div class="gauge-ends">
+                <span>Negative</span>
+                <span>Positive</span>
+            </div>
+        </div>
+
+        <!-- Last result rows -->
+        <div style="margin-top:14px;">
+            <div class="debug-row">
+                <span class="debug-key">Label</span>
+                <span class="debug-val" id="dbLabel">—</span>
+            </div>
+            <div class="debug-row">
+                <span class="debug-key">Confidence</span>
+                <span class="debug-val" id="dbScore">—</span>
+            </div>
+            <div class="debug-row">
+                <span class="debug-key">Strategy</span>
+                <span class="debug-val" id="dbStrategy">—</span>
+            </div>
+            <div class="debug-row">
+                <span class="debug-key">Model</span>
+                <span class="debug-val" id="dbModel" style="font-size:.72rem;">llama-3.3-70b</span>
+            </div>
+            <div class="debug-row">
+                <span class="debug-key">NLU</span>
+                <span class="debug-val" style="font-size:.72rem;">Local BERT</span>
+            </div>
+            <div class="debug-row">
+                <span class="debug-key">Backend</span>
+                <span class="debug-val" id="dbBackend" style="font-size:.72rem;">—</span>
+            </div>
+        </div>
+
+        <!-- Confidence bar -->
+        <div style="margin-top:10px;">
+            <div style="font-size:.72rem;color:var(--text-mid);margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;">Confidence</div>
+            <div class="debug-bar-wrap">
+                <div class="debug-bar" id="dbBar" style="width:0%;"></div>
+            </div>
+        </div>
+
+        <!-- Session stats -->
+        <div class="session-stats">
+            <div class="stat-box">
+                <div class="stat-box-num" id="statMsgs">0</div>
+                <div class="stat-box-label">ข้อความ</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-box-num" id="statPos">0</div>
+                <div class="stat-box-label">Positive</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-box-num" id="statNeg">0</div>
+                <div class="stat-box-label">Negative</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-box-num" id="statTime">0s</div>
+                <div class="stat-box-label">Session</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Debug toggle button -->
+    <button class="debug-toggle" id="debugToggle" onclick="toggleDebug()" title="เปิด/ปิด Debug Panel">
+        🛠️
+    </button>
+
+
+    <!-- ═══ JAVASCRIPT ═══ -->
+    <script>
+    /* ══════════════════════════════════════════
+       CONFIG — อ้างอิงจาก main.py / inference.py
+       ──────────────────────────────────────────
+       BACKEND_URL → FastAPI endpoint (api.py ด้านล่าง)
+       USE_REAL_BACKEND → true ใช้ Python จริง / false ใช้ JS simulate
+       FALLBACK_ON_ERROR → fallback JS เมื่อ backend ไม่ตอบ
+    ══════════════════════════════════════════ */
+    const CONFIG = {
+        BACKEND_URL:      'http://localhost:8000/chat',
+        USE_REAL_BACKEND:  true,
+        FALLBACK_ON_ERROR: true,
+    };
+
+    /* Model registry — ตรงกับ LLM_MODEL_NAME ใน main.py */
+    const MODELS = {
+        'flourich2':  { llm: 'llama-3.3-70b-versatile', icon: '🤖', label: 'Flourich 2.0'       },
+        'flourich15': { llm: 'llama-3.1-8b-instant',    icon: '⚡', label: 'Flourich 1.5 Flash' },
+    };
+    let currentModel = 'flourich2';
+
+    /* ══════════════════════════════════════════
+       STATE
+    ══════════════════════════════════════════ */
+    let isTyping     = false;
+    let debugOpen    = false;
+    let sessionStart = Date.now();
+    let msgCount = 0, posCount = 0, negCount = 0;
+
+    setInterval(() => {
+        const s = Math.floor((Date.now() - sessionStart) / 1000);
+        const m = Math.floor(s / 60);
+        document.getElementById('statTime').textContent = m > 0 ? `${m}m` : `${s}s`;
+    }, 1000);
+
+    /* ══════════════════════════════════════════
+       MODEL SELECTOR
+    ══════════════════════════════════════════ */
+    function toggleModelMenu() {
+        document.getElementById('modelBtn').classList.toggle('open');
+        document.getElementById('modelDropdown').classList.toggle('open');
+    }
+
+    function selectModel(key, icon, label, llmName) {
+        currentModel = key;
+        document.getElementById('modelBtnIcon').textContent  = icon;
+        document.getElementById('modelBtnLabel').textContent = label;
+        document.getElementById('dbModel').textContent       = llmName;
+        document.querySelectorAll('.model-option').forEach(el => el.classList.remove('selected'));
+        document.getElementById(key === 'flourich2' ? 'opt-f2' : 'opt-f15').classList.add('selected');
+        document.getElementById('modelBtn').classList.remove('open');
+        document.getElementById('modelDropdown').classList.remove('open');
+        showToast(`เปลี่ยนโมเดลเป็น ${label}`);
+    }
+
+    document.addEventListener('click', e => {
+        const wrap = document.getElementById('modelSelectorWrap');
+        if (wrap && !wrap.contains(e.target)) {
+            document.getElementById('modelBtn').classList.remove('open');
+            document.getElementById('modelDropdown').classList.remove('open');
+        }
+    });
+
+    /* ══════════════════════════════════════════
+       BACKEND CALL (Real FastAPI → api.py)
+    ══════════════════════════════════════════ */
+    async function callBackend(text) {
+        const res = await fetch(CONFIG.BACKEND_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                message:   text,
+                llm_model: MODELS[currentModel].llm,
+            })
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        // expects: { label_debug, score, strategy, reply }
+        data.isNeg = data.label_debug === 'neg 0';
+        document.getElementById('dbBackend').textContent = '✅ FastAPI';
+        return data;
+    }
+
+    /* ── JS Fallback (keyword-based, mirrors inference.py logic) ── */
+    const negKeywords = ['เครียด','เศร้า','เหนื่อย','โดดเดี่ยว','กังวล','กลัว','หมดแรง','ร้องไห้','ท้อ','สิ้นหวัง','เจ็บ','เสียใจ','หนัก','ไม่ไหว','อยากตาย','โกรธ','ลำบาก','ยากเกิน','ไม่โอเค'];
+    const aiResponses = {
+        neg: [
+            "ฉันได้ยินคุณนะ และฉันเข้าใจว่ามันไม่ง่ายเลย 💚 ความรู้สึกนี้มีความหมาย และคุณกล้ามากที่เล่าให้ฉันฟัง อยากเล่าให้ฉันฟังเพิ่มเติมได้ไหมว่ามันเริ่มต้นมาจากอะไร?",
+            "ฟังดูหนักมากเลยนะ 😔 แต่รู้ไหมว่าการที่คุณพูดออกมาได้แบบนี้ มันคือก้าวที่กล้าหาญมาก ฉันอยู่ตรงนี้และพร้อมรับฟังทุกความรู้สึกของคุณ ไม่ตัดสินอะไรทั้งนั้น",
+            "ขอบคุณที่ไว้วางใจเล่าให้ฉันฟังนะ 🌿 สิ่งที่คุณรู้สึกอยู่นั้นสมเหตุสมผลมาก บางครั้งความรู้สึกแบบนี้ต้องการแค่ 'ที่' ให้มันอยู่ก่อน",
+            "นั่นฟังดูหนักมากเลย ขอบคุณที่เล่าให้ฟังนะ 🌱 มีอะไรที่อยากให้ฉันช่วยคิดด้วยกันไหม?"
+        ],
+        pos: [
+            "ดีใจที่ได้ยินแบบนี้เลย! 🌟 บอกหน่อยได้ไหมว่ามีอะไรทำให้วันนี้ดีขึ้น?",
+            "ได้ยินแล้วรู้สึกดีไปด้วยเลย 😊💚 ช่วงเวลาดีๆ แบบนี้สำคัญมาก อยากให้จดจำความรู้สึกนี้ไว้",
+            "นั่นฟังดูน่าชื่นใจมากเลย 🌿 ขอบคุณที่แชร์ช่วงเวลาดีๆ ให้ฟังนะ",
+            "เยี่ยมมากเลย! 🎉 มีอะไรที่ทำให้รู้สึกแบบนี้เป็นพิเศษไหม?"
+        ]
+    };
+
+    function jsFallback(text) {
+        const lower    = text.toLowerCase();
+        const negHits  = negKeywords.filter(k => lower.includes(k)).length;
+        const isNeg    = negHits > 0 || Math.random() < .12;
+        const score    = isNeg
+            ? Math.min(.97, .68 + negHits * .06 + (Math.random() - .5) * .1)
+            : Math.min(.97, .62 + Math.random() * .2);
+        const pool = isNeg ? aiResponses.neg : aiResponses.pos;
+        document.getElementById('dbBackend').textContent = '⚠️ JS Fallback';
+        return {
+            label_debug: isNeg ? 'neg 0' : 'pos 1',
+            score:       parseFloat(score.toFixed(4)),
+            strategy:    isNeg ? 'Validation' : 'Empathy',
+            reply:       pool[Math.floor(Math.random() * pool.length)],
+            isNeg
+        };
+    }
+
+    /* ══════════════════════════════════════════
+       MAIN SEND FLOW
+    ══════════════════════════════════════════ */
+    async function sendMessage() {
+        const inp  = document.getElementById('chatInput');
+        const text = inp.value.trim();
+        if (!text || isTyping || text.length > 500) return;
+
+        const wc = document.getElementById('welcomeCard');
+        if (wc) wc.style.display = 'none';
+
+        const t = now();
+        isTyping = true;
+        msgCount++;
+        document.getElementById('statMsgs').textContent = msgCount;
+        document.getElementById('sendBtn').disabled = true;
+        document.getElementById('statusText').textContent = `${MODELS[currentModel].label} กำลังคิด...`;
+
+        renderUserMsg(text, t);
+        inp.value = ''; inp.style.height = 'auto';
+        document.getElementById('charCount').textContent = '0 / 500';
+        scrollToBottom();
+        renderTyping();
+
+        let result;
+        try {
+            if (CONFIG.USE_REAL_BACKEND) {
+                result = await callBackend(text);
+            } else {
+                await new Promise(r => setTimeout(r, 800 + Math.random() * 600));
+                result = jsFallback(text);
+            }
+        } catch (err) {
+            console.warn('[Flourich] Backend error:', err.message);
+            document.getElementById('dbBackend').textContent = '❌ Offline';
+            if (CONFIG.FALLBACK_ON_ERROR) {
+                await new Promise(r => setTimeout(r, 350));
+                result = jsFallback(text);
+                showToast('⚠️ Backend ไม่ตอบสนอง — ใช้โหมด Offline');
+            } else {
+                removeTyping();
+                isTyping = false;
+                document.getElementById('sendBtn').disabled = false;
+                document.getElementById('statusText').textContent = 'พร้อมรับฟังคุณเสมอ';
+                showToast('❌ เชื่อมต่อ Backend ไม่ได้');
+                return;
+            }
+        }
+
+        removeTyping();
+        const replyTime = now();
+
+        if (result.isNeg) { negCount++; document.getElementById('statNeg').textContent = negCount; }
+        else              { posCount++; document.getElementById('statPos').textContent = posCount; }
+
+        renderAIMsg(result.reply, replyTime, result);
+        updateDebugPanel(result);
+        scrollToBottom();
+        isTyping = false;
+        document.getElementById('sendBtn').disabled = false;
+        document.getElementById('statusText').textContent = 'พร้อมรับฟังคุณเสมอ';
+    }
+
+    /* ══════════════════════════════════════════
+       RENDER
+    ══════════════════════════════════════════ */
+    const MASCOT_FB = "data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 34 34%22%3E%3Ccircle cx=%2217%22 cy=%2217%22 r=%2217%22 fill=%22%23A8CBAF%22/%3E%3C/svg%3E";
+
+    function renderUserMsg(text, time) {
+        const div = document.createElement('div');
+        div.className = 'msg-row user';
+        div.innerHTML = `
+            <div class="msg-avatar user-av">ฉัน</div>
+            <div class="msg-body">
+                <div class="msg-bubble">${escHtml(text)}</div>
+                <div class="msg-time">${time}</div>
+            </div>`;
+        document.getElementById('messagesArea').appendChild(div);
+    }
+
+    function renderTyping() {
+        const div = document.createElement('div');
+        div.className = 'typing-row'; div.id = 'typingIndicator';
+        div.innerHTML = `
+            <div class="msg-avatar ai-av"><img src="img/logo-flourich.png" alt="" onerror="this.src='${MASCOT_FB}'"></div>
+            <div class="typing-bubble"><span></span><span></span><span></span></div>`;
+        document.getElementById('messagesArea').appendChild(div);
+        scrollToBottom();
+    }
+    function removeTyping() { const t = document.getElementById('typingIndicator'); if (t) t.remove(); }
+
+    function renderAIMsg(reply, time, s) {
+        const div = document.createElement('div');
+        div.className = 'msg-row ai';
+        const mdl = MODELS[currentModel];
+        div.innerHTML = `
+            <div class="msg-avatar ai-av"><img src="img/logo-flourich.png" alt="" onerror="this.src='${MASCOT_FB}'"></div>
+            <div class="msg-body">
+                <div class="msg-bubble">${escHtml(reply)}</div>
+                <div class="debug-badge">
+                    🛠️ Debug:
+                    <span class="debug-pill ${s.isNeg ? 'neg' : 'pos'}">${s.label_debug}</span>
+                    <span class="debug-pill score">prob: ${s.score.toFixed(4)}</span>
+                    <span class="debug-pill strategy">Strategy: ${s.strategy}</span>
+                    <span class="debug-pill model-tag">${mdl.icon} ${mdl.label}</span>
+                </div>
+                <div class="msg-time">${time}</div>
+            </div>`;
+        document.getElementById('messagesArea').appendChild(div);
+    }
+
+    /* ══════════════════════════════════════════
+       DEBUG PANEL
+    ══════════════════════════════════════════ */
+    function updateDebugPanel(s) {
+        const lbl = document.getElementById('dbLabel');
+        lbl.textContent = s.label_debug;
+        lbl.className   = 'debug-val ' + (s.isNeg ? 'neg-val' : 'pos-val');
+        document.getElementById('dbScore').textContent    = (s.score * 100).toFixed(1) + '%';
+        document.getElementById('dbStrategy').textContent = s.strategy;
+        const bar = document.getElementById('dbBar');
+        bar.style.width = (s.score * 100) + '%';
+        bar.className   = 'debug-bar ' + (s.isNeg ? 'neg-bar' : 'pos-bar');
+        const pct = s.isNeg ? (1 - s.score) * 50 : 50 + s.score * 50;
+        document.getElementById('gaugeThumb').style.left = pct + '%';
+    }
+    function toggleDebug() {
+        debugOpen = !debugOpen;
+        document.getElementById('debugPanel').classList.toggle('hidden', !debugOpen);
+        document.getElementById('debugToggle').classList.toggle('active', debugOpen);
+    }
+
+    /* ══════════════════════════════════════════
+       UTILITIES
+    ══════════════════════════════════════════ */
+    function now() { return new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+    function scrollToBottom(smooth=true) { const a=document.getElementById('messagesArea'); a.scrollTo({top:a.scrollHeight,behavior:smooth?'smooth':'instant'}); }
+    function autoResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,120)+'px'; document.getElementById('charCount').textContent=`${el.value.length} / 500`; }
+    function handleKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
+    function selectMood(el,mood) { document.querySelectorAll('.mood-chip').forEach(c=>c.classList.remove('active')); el.classList.add('active'); const i=document.getElementById('chatInput'); i.value=`วันนี้ฉันรู้สึก${mood} `; i.focus(); autoResize(i); }
+    function usePrompt(el) { const i=document.getElementById('chatInput'); i.value=el.textContent; i.focus(); autoResize(i); }
+    function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/\n/g,'<br>'); }
+
+    let _toastTimer;
+    function showToast(msg) {
+        let t = document.getElementById('backendToast');
+        if(!t){ t=document.createElement('div'); t.id='backendToast'; t.className='backend-toast'; document.body.appendChild(t); }
+        t.innerHTML = msg; t.classList.remove('hide');
+        clearTimeout(_toastTimer);
+        _toastTimer = setTimeout(()=>t.classList.add('hide'), 3200);
+    }
+
+    function clearChat() {
+        if(!confirm('เริ่มบทสนทนาใหม่? บทสนทนาปัจจุบันจะถูกลบ')) return;
+        document.getElementById('messagesArea').innerHTML = `
+        <div class="welcome-card" id="welcomeCard">
+            <span class="welcome-emoji">🌿</span>
+            <div class="welcome-title">ยินดีต้อนรับสู่ Safe Room</div>
+            <p class="welcome-sub">ที่นี่คือพื้นที่ส่วนตัวของคุณ ไม่มีการตัดสิน ไม่มีการบันทึก<br>บอกเล่าความรู้สึกของคุณให้ Flourich ฟังได้เลย 💚</p>
+            <div class="welcome-prompts">
+                <span class="prompt-chip" onclick="usePrompt(this)">วันนี้รู้สึกเครียดมาก</span>
+                <span class="prompt-chip" onclick="usePrompt(this)">ฉันรู้สึกโดดเดี่ยว</span>
+                <span class="prompt-chip" onclick="usePrompt(this)">ฉันไม่รู้จะเริ่มยังไงดี</span>
+                <span class="prompt-chip" onclick="usePrompt(this)">วันนี้ดีขึ้นนิดหน่อย</span>
+                <span class="prompt-chip" onclick="usePrompt(this)">ฉันเป็นห่วงเรื่องงาน</span>
+            </div>
+        </div>`;
+        msgCount=posCount=negCount=0; sessionStart=Date.now();
+        ['statMsgs','statPos','statNeg'].forEach(id=>document.getElementById(id).textContent='0');
+        ['dbLabel','dbScore','dbStrategy'].forEach(id=>document.getElementById(id).textContent='—');
+        document.getElementById('dbBar').style.width='0%';
+        document.getElementById('gaugeThumb').style.left='50%';
+        document.getElementById('dbBackend').textContent='—';
+    }
+
+    function exportChat() {
+        const rows = document.getElementById('messagesArea').querySelectorAll('.msg-row');
+        if(!rows.length){alert('ยังไม่มีบทสนทนา');return;}
+        let txt=`Flourich Safe Room — บทสนทนา\n${'='.repeat(40)}\n`;
+        rows.forEach(r=>{
+            const isUser=r.classList.contains('user');
+            const bubble=r.querySelector('.msg-bubble'), time=r.querySelector('.msg-time'), debug=r.querySelector('.debug-badge');
+            txt+=`\n[${time?.textContent??''}] ${isUser?'คุณ':'Flourich'}:\n${bubble?.textContent}\n`;
+            if(debug) txt+=debug.textContent.trim().replace(/\s+/g,' ')+'\n';
+        });
+        const a=document.createElement('a');
+        a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain;charset=utf-8'}));
+        a.download=`flourich-saferoom-${Date.now()}.txt`; a.click();
+    }
+
+    window.addEventListener('load', () => document.getElementById('chatInput').focus());
+    </script>
+
+</body>
+</html>
